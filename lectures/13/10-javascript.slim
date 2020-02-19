@@ -1,0 +1,243 @@
+= slide 'JavaScript' do
+  list:
+    JavaScript е скриптов език за уеб.
+    Изпълнява се предимно в браузъра.
+    Oбектно-ориентиран език e. Числата са обект, масивите са обект, всичко е обект.
+    Има прототипно базирано наследяване.
+    Има динамично типизиране.
+    Има функционални елементи(first-class functions).
+= slide 'JavaScript в HTML' do
+  | <xmp><script type="text/javascript" src="file.js" /></xmp>
+= slide 'JavaScript в HTML' do
+  | <xmp><script type="text/javascript">...</script></xmp>
+= slide 'Променливи' do
+  | <xmp>var intValue = 1;
+    var floatValue = 3.0;
+    var stringValue = "This is a string\n";
+    var sqString = 'This is also a string';</xmp>
+= slide 'Масиви(вектори)' do
+  p Последователност от елементи. Индексирана и поредна колекция.
+  | <xmp>var emptyList = [];
+    var homogenousList = [1, 2, 3];
+    var heterogenousList = ['one', 2, 3.0];</xmp>
+= slide 'Достъп по елементи на масив' do
+  | <xmp>var heterogenousList = ['one', 2, 3.0];
+    alert(heterogenousList[0]); //'one'
+    alert(heterogenousList[1]); //2
+    alert(heterogenousList[2]); //3.0</xmp>
+= slide 'Речници(обекти)' do
+  p Или още map, хешове, речници, асоциативни масиви и други. Съдържа двойки с ключ и стойност. Ключовете са низове.
+  | <xmp>var emptyMap = {};
+    var homogenousMap = {'one': 1, 'two': 2, 'three': 3};
+    var heterogenousMap = {'one': 1,'two': 'two','three': 3.0};</xmp>
+= slide 'Достъп до елемент на речник' do
+  | <xmp>var homogenousMap = {'one': 1, 'two': 2, 'three': 3};
+    alert(homogenousMap.one);    //1
+    alert(homogenousMap['one']); //1</xmp>
+  p Първия(с точката) е за предпочитане.
+= slide 'Условни оператори' do
+  | <xmp>if (cond) {
+
+    }</xmp>
+= slide 'Условни оператори' do
+  | <xmp>if (cond) {
+
+    } else {
+
+    }</xmp>
+= slide 'Условни оператори' do
+  | <xmp>if (cond) {
+
+    } else if (cond) {
+
+    } else {
+
+    }</xmp>
+= slide 'Switch' do
+  | <xmp>switch (n) {
+      case 1:
+        //execute code block 1
+        break;
+      case 2:
+        //execute code block 2
+        break;
+      default:
+        //code to be executed if n is different from case 1 and 2
+    }</xmp>
+= slide 'Цикъл for' do
+  | <xmp>var cars = ['Audi', 'BMW', 'Mercedes-Benz', 'Opel', 'Porsche', 'Volkswagen'];
+    for (var i = 0; i < cars.length; i++) {
+      document.write(cars[i] + '<br>');
+    }</xmp>
+= slide 'Цикъл while' do
+  | <xmp>while (condition) {
+      //code block to be executed
+    }</xmp>
+= slide 'Цикъл while' do
+  | <xmp>do {
+      //code block to be executed
+    } while (condition);</xmp>
+= slide 'Обхождане на речник' do
+  | <xmp>var person = {first_name: 'John', last_name: 'Doe', age: 25};
+    var txt = '';
+    for (x in person) {
+      txt += person[x] + ' ';
+    }
+
+    document.write(txt) //John Doe 25</xmp>
+= slide 'Функции' do
+  | <xmp>var callable = function (message) {
+      alert('Callable called with message = ' + message);
+    };
+
+    function callable(message) {
+      alert('Callable called with message = ' + message);
+    }
+
+    callable('Hello World');</xmp>
+= slide 'Функции' do
+  | <xmp>// calculate distance between points (x1, y1) and (x2, y2)
+    function distance(x1, y1, x2, y2) {
+      var dx = x2 - x1;
+      var dy = y2 - y1;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    distance(0, 0, 1, 1);</xmp>
+= slide 'Функции' do
+  | <xmp>function squareProduct(x, y) {
+      function square(x) {
+        return x * x;
+      }
+
+      return square(x) * square(y);
+    }
+
+    squareProduct(2, 3); //36</xmp>
+= slide 'DOM' do
+  p HTML-a се описва в дървовидна структура. Тя се нарича DOM дърво.
+  img src='images/htmltree.gif'
+= slide 'Основни обекти в DOM' do
+  p Има няколко основни обекта в JavaScript, който ни помагат да работим с DOM.
+  list:
+    window (self, top, parent) - window обекта съдържа методи и свойства за прозореца за браузъра
+    screen - обект, чрез който може да се вземе информация за екрана - размери, отстояния и т.н.
+    history - обекта, който контролира история. Чрез него може да се връщаме в предишни страници.
+    location - обекта, който се грижи за текущия адрес. С него може да достъпим информация за адреса или да сменим с нов.
+    navigator - обект който съдържа свойста и методи, описващи браузъра
+    document - съдържа методи и свойства за работа с елементите в html документа.
+= slide 'Селектиране на елементи по id' do
+  | <xmp>var element = document.getElementById('example');</xmp>
+  p Връща първия елемент с подаденото id.
+  p В примера селектираме елемента с id - <b>example</b> и го записваме в променливата <b>element</b>.
+= slide 'Селектиране на елементи по id' do
+  p Пример.
+  | <xmp><h1 id="myHeader">Latest News</h1>
+
+    <script type="text_javascript">
+      var element = document.getElementById('myHeader');
+      var content = element.innerHTML;
+      alert(content); // Latest News
+    </script></xmp>
+= slide 'Селектиране на елементи по име' do
+  | <xmp>var elements = document.getElementsByTagName('p');</xmp>
+  | <xmp><h1 id="myHeader">Latest News</h1>
+    <h2>First article</h2>
+    <p id="date">08.04.13</p>
+    <p id="content">Article Content</p></xmp>
+  p В <b>elements</b> ще бъде записан масив с 2 елемента, които ще са двата параграфа.
+= slide 'Селектиране на елементи по клас' do
+  | <xmp>var elements = document.getElementsByClassName('food');</xmp>
+  | <xmp><p class="food">Pizza</p>
+    <p class="drink">Water</p>
+    <p class="drink">Wine<p></xmp>
+    <p class="food">Burger</p>
+  p В <b>elements</b> ще се запише масив, който се съдържа всички елементи по страница с идентификатор <b>food</b>.
+= slide 'Съдържание на елементите като текст' do
+  | <xmp>var paragraph,
+        text;
+
+    paragraph = document.getElementsByTagName('p')[0];
+    text = paragraph.textContent;
+    paragraph.textContent = 'Hello World!';</xmp>
+= slide 'Съдържание на елементите като html' do
+  | <xmp>var firstDiv,
+        html;
+
+    firstDiv = document.getElementsByTagName('div')[0];
+    html = firstDiv.innerHTML;
+    firstDiv.innerHTML = '<p>Test</p>';</xmp>
+= slide 'Създаване на елементи' do
+  | <xmp>var newnode = document.createTextNode('text node content');
+    var div = document.createElement('div');</xmp>
+= slide 'Вмъкване на елементи' do
+  p <b>appendChild</b> вмъква елемента подаден като аргумент, като последно дете на елемента, на който извикваме функцията.
+  | <xmp>var paragraph,
+        text;
+
+    paragraph = document.createElement('p');
+    text = document.createTextNode('first paragraph');
+    paragraph.appendChild(text);
+    document.body.appendChild(paragraph);</xmp>
+= slide 'Премахване на елементи' do
+  | <xmp>var list = document.getElementById('myList');
+    list.removeChild(list.childNodes[0]);</xmp>
+= slide 'Събития' do
+  list:
+    В клиентския JavaScript има асиснхронен event-driven програмен модел.
+    При него браузъра генерира събитие, когато се случи нещо интересно.
+= slide 'Събития' do
+  p Браузъра генерира събитие когато:
+  list:
+    Приключи зареждането на страницата
+    Потребителя кликне с мишката някъде
+    Потребителя натисне копче на клавиатурата
+    И много още...
+= slide 'Събития' do
+  p Ако някои събития за интересни за нас, може да имплементираме JavaScript код, който да реагира като извика функция при определено събитие.
+= slide 'Събития с атрибути' do
+  | <xmp><button onclick="alert('Thank you');">Click Here</button></xmp>
+= slide 'Събития с атрибути' do
+  pre
+    ' onafterprint onbeforeprint onbeforeunload onblur
+      onerror      onfocus       onhashchange   onload
+      onmessage    onoffline     ononline       onpagehide
+      onpageshow   onpopstate    onredo         onresize
+      onstorage    onundo        onunload
+= slide 'JavaScript събития' do
+  | <xmp>var b;
+    b = document.getElementById('mybutton');
+    b.onclick = function () {
+      alert('Thanks for clicking me!');
+    };</xmp>
+= slide 'JavaScript събития' do
+  | <xmp>var b;
+    b = document.getElementById('mybutton');
+    b.addEventListener('click', function() {
+      alert('Thanks again!');
+    }, false);</xmp>
+= slide 'JavaScript събития' do
+  | <xmp>var b,
+        handleMouseMove;
+
+    handleMouseMove = function() {
+      alert('Thanks again!');
+    };
+
+    b = document.getElementById('mybutton');
+    b.addEventListener('click', handleMouseMove, false);</xmp>
+= slide 'JavaScript събития' do
+  p Премахване на събития:
+  | <xmp>document.removeEventListener('mousemove', handleMouseMove, true);</xmp>
+= slide 'Задача 1' do
+  p Направете HTML страница, която съдържа формуляр, със select поле и един бутон. Целта е да се имплементира играта Rock-paper-scissors-lizard-Spock.
+  p <a href="http://en.wikipedia.org/wiki/Rock-paper-scissors-lizard-Spock">Правила</a>
+  p Във полето като отделн option елементи трябва да се съдържат петте възможности - rock, paper, scissors, lizard и spock. При натискане на бутона, трябва да се стартира скрипт, който да прочита избраната от потребителя опция и да избира ход, при който потребителя печели. Избрания от скрипта ход трябва да се изписва под формата в span елемент.
+  p Функцията се взимане на решение трябва да се казва findOptionToLose. Пример: findOptionToLose('rock'); // scissors
+= slide 'Задача 2' do
+  p Напишете функция count_change, която пресмята броя начини, по които може да развалим парична сума, подадена като аргумент, с монети с номинал 1, 2, 5, 10, 20 или 50.
+  p Пример:
+  p count_change(4); // връща 3, защото толкова са начините да развалим 4 стотинки с дадените монети
+  p count_chage(100); // 4111
+= slide 'Задача 3' do
+  p Направете HTML страница, която съдържа формуляр, с едно поле за въвеждане на текст и един бутон. При натискане на бутона, числото записано в полето, трябва да се подава на count_changе, от предишната задача и резултата трябва се визуализира под формата, в span елемент.

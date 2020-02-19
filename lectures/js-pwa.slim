@@ -1,0 +1,373 @@
+= slide 'PWA + others' do
+  p Какво ще разгледаме
+  list:
+    REST and GraphQL
+    MV* and Components
+    SPA and templates
+    PWA and service workers
+    Други Сървъри
+  /PHP Sessions
+
+= slide 'Видове сървъри' do
+  p Когато става въпрос за достъп до данни има няколко подхода, който един сървър може да приеме
+  ul
+    li.action Класически - users.php - връща html страница с попълнени данни
+    li.action
+      span <abbr title="REpresentational State Transfer">REST</abbr>
+      ul
+        li За всеки ресурс предоставяме <abbr title="Application Program Interface">API</abbr> за <abbr title="Create Read Update Delete">CRUD</abbr> чрез HTTP методи
+        li `GET /users`, `POST /user/new`, `UPDATE /user/5`, `DELETE /user/7`
+        li Обикновено работи с данните в <abbr title="JavaScript Object Notation">JSON</abbr> формат
+        li Лесно за имплементация и използване (в базовите случаи)
+    li.action
+      span GraphQL endpoint
+      ul
+        li Минусът на REST - винаги на даден адрес връща точно определени данни с (обикновено) предефинирани полета. Ако искаме комбинация от няколко ресурса и може би подмножество на техните полета ще трябва да правим няколко заявки и да получаваме излишни данни.
+        li GraphQL се опитва да реши този проблем, като въвежда един адрес, на който да можем да подаваме сложни GraphQL заявки ¿
+
+  .questions
+    pre.highlight
+      | query HeroNameAndFriends($episode: Episode) {
+          hero(episode: $episode) {
+            name
+            friends {
+              name
+            }
+          }
+        }
+
+= slide 'MV* vs Components' do
+  p Когато разработваме софтуер винаги стигаме до въпроса как да си организираме кода.
+  ul
+    li.action
+      span Model View Controller (MVC) и неговите вариации (<abbr title="Model View ViewModel">MVVM</abbr>, <abbr title="Model View Presenter">MVP</abbr>),  (MVVM) - обобщено MV*
+      ul
+        li Основната им идея е да си разделим модела (данните) от кода и презентацията.
+        li Неформално: Model - чистите данни, View - html шаблон за визуализация, * - всичко останало
+        li Ruby on Rails, BackboneJS, AngularJS
+    li.action
+      span Components
+      ul
+        li Докато при MV* обикновено имаме 3 папки, в които са разделени съответните файлове - при компонентно базираните архитектури бихме групирали свързаните MV* части в един самостоятелен компонент
+        li Все едно просто транспонираме файловата структура на MVC
+        li Компонентите лесно могат да се вграждат в други архитектури
+        li React, Vue, Angular (~)
+
+
+= slide 'SPA' do
+  ul
+    li.action SPA = Single Page Application
+    li.action Ако имаме REST/GraphQL API на сървъра е лесно. Преместваме почти всичката логика на клиента (js) и правим заявки към сървъра за данни etc.
+    li.action
+      pre.highlight.js
+        | // Because it is "Single Page" we either use the html5 history or hashchange
+          window.onhashchange = function () {
+            var url = location.hash.slice(1);
+            // make an ajax request for data
+            get(url, function (data){
+              // we use a front-end template to generate html
+              updateMainContent(templates[url].render(data));
+            });
+          };
+          // also call it once on initial load
+          window.onhashchange();
+
+= slide 'Templates' do
+  p `template` или `script[type=text/template]` таг, es6 template string или jsx
+  / a href="https://johnresig.com/blog/javascript-micro-templating/" template engine на 30 реда
+  p <a href="https://github.com/wycats/handlebars.js">Handlebars</a> <a href="https://github.com/janl/mustache.js">Mustache</a>
+  p <a href="https://github.com/pugjs/pug"> Pug (jade)</a>
+  p React/JSX е подобно на js версията, но малко по-красиво. Подобен ефект на react може да получите с template strings
+  .multi-column
+    pre.highlight.templates
+      | &lt;table id="handlebars-mustashe"&gt;
+          &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;
+          {{#people}}
+            &lt;tr&gt;&lt;td&gt;{{name}}&lt;/td&gt;&lt;td&gt;{{age}}&lt;/td&gt;&lt;/tr&gt;
+          {{/people}}
+        &lt;/table&gt;
+
+    pre.highlight.templates
+      | &lt;table id="underscore"&gt;
+          &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;
+          &lt;% _(people).each(function (person) { %&gt;
+            &lt;tr&gt;&lt;td&gt;&lt;%- name %&gt;&lt;/td&gt;&lt;td&gt;&lt;%- age %&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;% }); %&gt;
+        &lt;/table&gt;
+
+    pre.highlight.templates
+      | table#pug
+          tr &lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;
+          - for person in people
+            tr
+              td= person.name
+              td= person.age
+
+    pre.highlight.templates
+      | // JS - be mindful of {name: '&lt;script&gt;...&lt;/script&gt;'}
+        '&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;' + people.map(
+          p =&gt; '&lt;tr&gt;&lt;td&gt;' + p.name + '&lt;/td&gt;&lt;td&gt;' + p.age + '&lt;/td&gt;&lt;/tr&gt;'
+        ).join('') + '&lt;/table&gt;'
+
+        // You can also write your own
+        table#sky > tr { th[Name] + th[Age] } + *tr > td[@name] + td[@age]
+
+= slide 'Mobile' do
+  ul
+    li.action Добре и за какво ни е да имаме SPA? (освен, че с react се правят лесно)
+    li.action Оказва се, че SPA се ship-ва много лесно на мобилни устройства. Първоначалното зареждане е трудно, но след това работи добре - ако успеем да "инсталираме" нашето приложение то ще премахнем този минус.
+    li.action
+      p В момента имаме 3 основни начина да deploy-нем нашето приложение на телефон
+      ol
+        li.action
+          span Apache Cordova (PhoneGap)
+          ul
+            li Имаме html, css, js и получаваме JS API за phone-stuff
+            li Опаковаме си файловете в apk, слагаме го в store-овете и потребителите го инсталират
+        li.action
+          span Native / ReactNative
+          ul
+            li Дори и с ReactNative може да ни се наложи да погледнем малко native код
+            li Правим native приложение, слагаме го в store-овете и потребителите го инсталират
+        li.action
+          span PWA (Progressive Web App)
+          ul
+            li Правим страницата да отговаря на няколко критерии и когато потребителя я посети повторно получава prompt дали иска да я инсталира като приложение
+            li Засега обаче има малко ограничения за iOS
+
+= slide 'PWA' do
+  ul
+    li.action Щом сме курс по уеб технологии, значи може би се интересуваме от PWA.
+    li.action Оказва се, че са нужни много неща, за да започне да работи всичко магически
+    li.action
+      span Те са:
+      ol
+        li.action manifest.json
+        li.action https
+        li.action service-worker.js
+
+= slide 'PWA - manifest.json' do
+  p `&lt;link rel="manifest" href="manifest.json"&gt;`
+  p `&lt;meta name="theme-color" content="#289"&gt;` (recommended)
+  pre.highlight.js
+    | {
+        "name": "My App Name",
+        "short_name": "App",
+        "icons": [{                 // Icon and Splash art
+          "src": "small.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }, {
+          "src": "large.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }],
+        "display": "standalone",    // fullsreen, browser, minimal-ui
+        "start_url": "index.html",  // only works on Android
+        "background_color": "#289", // splash background
+        "theme_color": "#045"       // browser tab color
+      }
+
+= slide 'PWA - https' do
+  list:
+    Дори и ако нямам sensitive data? - да.
+    Иначе е много лесно човекът до вас в кафето да ви даде нещо, което не искате (man-in-the-middle attack).
+    Третата точка - service workers работят само през https.
+    Освен това за google ranking-a това е нещо, което има значение.
+    Последно - ако някой се опита да достъпи сайта през https докато нямате валиден сертификат - получавате един много страшен warning message, който не искате потребителите ви да виждат.
+    За щастие - има места като cloudflare, където да си получите сертификат бързо и лесно. <a href="https://www.000webhost.com/forum/t/how-to-use-cloudflare-for-ssl/53612">Как да setup-нем cloudflare за 000webhost</a>
+
+= slide 'PWA - Service Worker' do
+  ul
+    li.action Принципно и от chrome и safari можем винаги да дадем `Add to Homescreen` на дадена страница.
+    li.action Ако обаче нямаме интернет или сървърът е паднал?
+    li.action SW to the rescue! - SW е JS Web Worker, който може да слуша за всякакви заявки и да им отговаря с каквото той реши (кеширана стойност).
+    li.action С него имаме достъп до Cache API, където да съхраняваме каквито страници преценим за добре
+    li.action Имаме event-и като fetch (заявка за данни), install (при пускане), activate (при обновяване)
+    li.action
+      pre.highlight.js
+        | if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+          }
+
+= slide 'PWA - SW Code' do
+  pre.highlight.js
+    | self.addEventListener('install', (event) => {
+        event.waitUntil(
+          caches.open('MY_CACHE').then(
+            (cache) => cache.addAll(['file1', 'fileN'])
+          )
+        );
+      });
+
+      var strategies = {
+        cacheFirst: req => caches.match(req).then(res => res || fetch(req)),
+        networkFirst: req => fetch(req).catch(_ => caches.match(req)),
+      };
+
+      self.addEventListener('fetch', (event) => {
+        event.respondWith(strategies.networkFirst(event.request));
+      });
+  p * Samsung Internet 4 поддържа SW, но не и arrow functions
+  p За други стратегии обяснени с картинки <a href="https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/">тук</a>
+  p Алтернативно има библиотеки като <a href="https://developers.google.com/web/tools/workbox/guides/get-started">workbox</a>, които вършат тези неща вместо вас
+
+= slide 'PWA - Chrome vs Safari' do
+  list:
+    Принципно хората на google имат много идеи, но сафари се бави доста.
+    Service worker-ите работят в сафари от версия 11.3 (29 март 2018).
+    Засега обаче има изказване, че под iOS може кеша да ви бъде изтрит, ако приложението не е било използвано "a few weeks".
+    Междувременно в Android има background-sync, push notifications и тн.
+    За да работи като приложение под iOS ви трябва `&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;`. Това обаче премахва всякакъв Safari UI, включително и back бутона - хората с iPhone нямат физически back button, така че ако добавите този таг внимавайте да няма възможност потребителя да се заключи в дадена страница и да трябва да рестартира приложението.
+
+= slide 'PWA - Improvements' do
+  p Chrome вече има таб Audits, където може да ви даде съвети за performance-a на страницата.
+  p Някои неща, които сигурно може да подобрите:
+  ul
+    li.action Зареждайте си JS-a накрая, препоръчително асинхронно и по-малко код
+    li.action Гледайте да отделите App Shell код, нужен за началното зареждане
+    li.action Използвайте модерни формати за картинки - не се поддържат от всички браузъри, но от chrome ще има подобрение. Има лесен backwards compatibility чрез picture тага. ¿
+    li.action `&lt;link rel="preload"&gt;` може да помогне за зареждане
+    li.action CSS: `contain` property-то също (за chrome)
+    li.action За разлика от тези презентации - опитайте се да прилича повече на native app (ios/material design)
+
+  ul.questions
+    li
+      pre.highlight.html
+        | &lt;picture&gt;
+            &lt;source srcset="my-image.webp" type="image/webp"&gt;
+            &lt;source srcset="my-image.png" type="image/png"&gt;
+            &lt;img src="my-image.png" alt="My image"&gt;
+          &lt;/picture&gt;
+      p Webp е доста ефективен формат и се поддържа от 70% от браузърите - поддържа и видео (като gif). Ако сте фенове на Edge/Firefox има и формати като Jpeg2000, HEIF etc.
+
+/ = slide 'PHP Sessions' do
+/   list:
+/     session_start
+/     session_unset
+/     session_destroy
+
+/ = slide 'Hashing' do
+/   list:
+/     md5
+/     sha1
+/     sha256
+/     hash + salt
+
+= slide 'Прости сървъри - Sinatra (Ruby)' do
+  p Бонус - отклонение от темата - малко прости сървъри на не-php.
+  p Install ruby => gem install sinatra =>
+  pre.highlight.ruby
+    | require 'sinatra'
+
+      get '/hi/:name' do |name|
+        "Hello &#35;{name}"
+      end
+  p Дефиницията на просто.
+
+= slide 'Други езици' do
+  p Помните сумата от квадратите на четните числа по-малки от n?
+  p Ето я на ruby, python и perl:
+
+  / pre.highlight.js
+  /   | let range = (n) => Array(n).fill().map((e, i) => i);
+
+  /     let sumOfSquares = (n) => (
+  /       range(n).filter(x => x % 2).map(e => x * x).reduce((a, b) => a + b))
+  /     );
+
+  pre.highlight.ruby
+    | def sum_of_squares do |n|
+        (0...n).select { |x| x.even? }.map { |x| x*x }.reduce(:+)
+      end
+
+  pre.highlight.python
+    | def sum_of_squares(n):
+          return sum([x*x for x in range(n) if x % 2 == 0])
+
+  pre.highlight.perl
+    | sub sumOfNumbers {
+        eval join '+', map {$_ * $_} grep { $_ % 2 == 0 } (0..$_[0])
+      }
+
+= slide 'Прости сървъри - Sinatra Clones' do
+  list:
+    След <a href="http://sinatrarb.com">Sinatra</a> във всеки език се появява някакво копие
+    Python: <a href="http://flask.pocoo.org">Flask</a> ¿
+    PHP: <a href="https://slimframework.com">Slim</a> ¿
+    Perl: <a href="http://perldancer.org">Dancer</a> ¿
+    NodeJS: <a href="https://expressjs.com">Express</a> ¿
+    C#: <a href="http://nancyfx.org">Nancy</a> ¿
+    Java: <a href="http://sparkjava.com">Spark</a> ¿
+  ul.questions
+    li
+      pre.highlight.python
+        | from flask import Flask
+          app = Flask(__name__)
+
+          @app.route("/")
+          def hello():
+              return "Hello World!"
+
+          if __name__ == "__main__":
+              app.run()
+    li
+      pre.highlight.php
+        | $app = new \Slim\Slim(); // Slim 2 (3 is a bit more complex)
+
+          $app->get('/hello/:name', function ($name) {
+              echo "Hello, $name";
+          });
+
+          $app->run();
+
+    li
+      pre.highlight.perl
+        | use Dancer;
+
+          get '/' => sub {
+            "Hello World!"
+          };
+
+          dance;
+    li
+      pre.highlight.js
+        | const express = require('express')
+          const app = express()
+
+          app.get('/', (req, res) => res.send('Hello World!'))
+
+          app.listen(3000, () => console.log('Listening on port 3000!'))
+    li
+      pre.highlight.cs
+        | public class SampleModule : Nancy.NancyModule
+          {
+              public SampleModule()
+              {
+                  Get["/"] = _ => "Hello World!";
+              }
+          }
+    li
+      pre.highlight.java
+        | import static spark.Spark.*;
+
+          public class HelloWorld {
+              public static void main(String[] args) {
+                  get("/hello", (req, res) -> "Hello World");
+              }
+          }
+
+= slide 'Други сървъри' do
+  list:
+    Тези малки сървъри би трябвало да ви свършат работа за проектите ако искате нещо малко по-различно.
+    Frameworks като Rails (Ruby), Django (Python), Play (Scala) са прекалено големи и вършат прекалено много работа - за сегашните ви проекти не ви трябват.
+    По същата причина няма да се радваме и на неща като Bootstrap за front-end-а. Искаме да можем да оценим вашите знания и умения, а не тези на хората от rails, twitter и тн.
+
+/ columns
+/ break-inside
+/ overflow-behavour-y
+/ picture tag
+/ blur up
+/ webp https://css-tricks.com/using-webp-images/ https://webp-converter.com/
+
+/ service worker https://developers.google.com/web/fundamentals/primers/service-workers/ https://developers.google.com/web/fundamentals/instant-and-offline/offline-cookbook/

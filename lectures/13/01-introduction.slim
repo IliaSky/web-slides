@@ -1,0 +1,632 @@
+= slide 'За курса' do
+  ul
+    li.action 
+      a href="http://moodle.le.tsdoit.org/course/view.php?id=13" http://moodle.le.tsdoit.org
+    li.action Ключ за записване: www2013kn
+
+= slide 'Теми' do
+  ul
+    li.action Въведение в PHP и HTML
+    li.action PHP, SQL & HTML 
+    li.action Работа с форми и Regex
+    li.action ООП с PHP
+    li.action HTML & CSS, Част 1
+    li.action HTML & CSS, Част 2
+    li.action Преговор 1
+    li.action PHP MVC
+    li.action Аутентикация и ауторизация
+    li.action JavaScript & DOM
+    li.action jQuery & AJAX
+    li.action Преговор 2
+    li.action Web tools
+    li.action Advanced CSS
+    li.action PHP & JS libs
+
+= slide 'Клинет-сървър' do
+  img src="images/client_net.jpg" style="width: 60%"
+
+= slide 'PHP' do
+  img src="images/get-php-file.png"
+
+= slide 'PHP' do
+  ul
+    li.action Браузъра изпраща HTTP заявка към сървъра.
+    li.action Сървъря я обработва.
+    li.action Той може да прочете информация от база от данни.
+    li.action Накрая генерира отговор под формата на HTML документ.
+
+= slide 'Пример за HTML страница' do
+  p Запишете го във файл index.html и го отворете в браузъра.
+  example:
+    [lang:html]
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <title>My title</title>
+    </head>
+    <body>
+      <h1>My header</h1>
+      <a href="http://example.com">My Link</a>
+    </body>
+    </html>
+
+= slide 'HTML тагове' do
+  p Задача: Да запишем следните HTML тагове във файла и да го отворим в браузъра.
+
+= slide 'Заглавия' do
+  example:
+    [lang:html]
+    <h1>This is heading 1</h1>
+    <h2>This is heading 2</h2>
+    <h3>This is heading 3</h3>
+    <h4>This is heading 4</h4>
+    <h5>This is heading 5</h5>
+    <h6>This is heading 6</h6>
+
+= slide 'Параграф' do
+  example:
+    [lang:html]
+    <p>Paragraph with text.</p>
+
+= slide 'Секции в страницата' do
+  example:
+    [lang:html]
+    <span>Some text here.</span>
+
+= slide 'Секции в страницата' do
+  example:
+    [lang:html]
+    <div>Some text here.</div>
+
+= slide 'Номериран списък' do
+  example:
+    [lang:html]
+    <ol>
+        <li>To learn HTML</li>
+        <li>To show off</li>
+        <li>Because I've fallen in love with my computer and want to give her some HTML loving.</li>
+    </ol>
+
+= slide 'Неномериран Списък' do
+  example:
+    [lang:html]
+    <ul>
+        <li>To learn HTML</li>
+        <li>To show off</li>
+        <li>Because I've fallen in love with my computer and want to give her some HTML loving.</li>
+    </ul>
+
+= slide 'Хиперлинк' do
+  example:
+    [lang:html]
+    <a href="http://example.com" title="Link to example.com">My Link</a>
+
+= slide 'Изображения' do
+  example:
+    [lang:html]
+    <img src="http://example.com/image.jpg" alt="Example Image" />
+
+= slide 'Таблица' do
+  example:
+    [lang:html]
+    <table>
+      <tr>
+          <td>Row 1, Cell 1</td>
+          <td>Row 1, Cell 2</td>
+          <td>Row 1, Cell 3</td>
+      </tr>
+      <tr>
+          <td>Row 2, Cell 1</td>
+          <td>Row 2, Cell 2</td>
+          <td>Row 2, Cell 3</td>
+      </tr>
+    </table>
+
+= slide 'Семантични тагове' do
+  example:
+    [lang:html]
+    <article>
+      <h1>Internet Explorer 9</h1>
+      <p>Windows Internet Explorer 9 (abbreviated as IE9) was released to
+      the  public on March 14, 2011 at 21:00 PDT.....</p>
+    </article>
+
+
+= slide 'Семантични тагове' do
+  example:
+    [lang:html]
+    <aside>
+      <h4>Epcot Center</h4>
+      <p>The Epcot Center is a theme park in Disney World, Florida.</p>
+    </aside>
+
+= slide 'Семантични тагове' do
+  example:
+    [lang:html]
+    <footer>
+      <p>Posted by: Hege Refsnes</p>
+      <p>Contact information: <a href="mailto:someone@example.com">
+      someone@example.com</a>.</p>
+    </footer>
+
+= slide 'Семантични тагове' do
+  example:
+    [lang:html]
+    <header>
+      <h1>Example title</h1>
+      <p>Example text.</p>
+    </header>
+
+= slide 'Семантични тагове' do
+  example:
+    [lang:html]
+    <nav>
+      <a href="/html/">HTML</a> |
+      <a href="/css/">CSS</a> |
+      <a href="/js/">JavaScript</a> |
+      <a href="/jquery/">jQuery</a>
+    </nav>
+
+= slide 'Пример за PHP' do
+  example:
+    [lang:php]
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Example</title>
+      </head>
+      <body>
+        <?php
+          echo "Hi, I'm a PHP script!";
+        ?>
+      </body>
+    </html>
+= slide 'Пример за PHP' do
+  example:
+    [lang:html]
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Example</title>
+        </head>
+        <body>
+            Hi, I'm a PHP script!
+        </body>
+    </html>
+= slide 'Пример за PHP' do
+  example:
+    [lang:php]
+    <html>
+      <head>
+        <title>Example</title>
+      </head>
+      <body>
+        <?php
+          echo "<h2>Hi, I'm a PHP script!</h2>";
+        ?>
+      </body>
+    </html>
+= slide 'Пример за PHP' do
+  example:
+    [lang:html]
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Example</title>
+        </head>
+        <body>
+            <h2>Hi, I'm a PHP script!</h2>
+        </body>
+    </html>
+
+= slide 'Променливи' do
+  example:
+    <?php
+      $var = 'Bob';
+      $Var = 'Joe';
+      echo "$var, $Var";      // outputs "Bob, Joe"
+
+      $4site = 'not yet';     // invalid; starts with a number
+      $_4site = 'not yet';    // valid; starts with an underscore
+      $täyte = 'mansikka';    // valid; 'ä' is (Extended) ASCII 228.
+    ?>
+= slide 'Константи' do
+  example:
+    <?php
+      // Valid constant names
+      define("FOO",     "something");
+      define("FOO2",    "something else");
+      define("FOO_BAR", "something more");
+    ?>
+= slide 'Типове в PHP' do
+  example:
+    <?php
+      $myAge = 16;                    // a PHP Integer - always available
+      $yourAge = 15.5;                // a PHP Float   - always available
+      $hasHair = true;                // a PHP Boolean - always available
+      $greeting = "Hello World!"      // a PHP String  - always available
+
+      $person = new Person();         // a PHP Person  - available NOW!
+    ?>
+= slide 'Предефинирани променливи в PHP' do
+  example:
+    $_SERVER // Server and execution environment information
+    $_GET // HTTP GET variables
+    $_POST // HTTP POST variables
+    $_FILES // HTTP File Upload variables
+    $_REQUEST // HTTP Request variables
+    $_SESSION // Session variables
+    $_ENV // Environment variables
+    $_COOKIE // HTTP Cookies
+    $php_errormsg // The previous error message
+    $HTTP_RAW_POST_DATA // Raw POST data
+    $http_response_header // HTTP response headers
+    $argc // The number of arguments passed to script
+    $argv // Array of arguments passed to script
+= slide 'Оператори за сравнение' do
+  | <table class="doctable table">
+    <thead>
+      <tr>
+       <th>Example</th>
+       <th>Name</th>
+       <th>Result</th>
+      </tr>
+    </thead>
+
+    <tbody class="tbody">
+      <tr>
+       <td>$a == $b</td>
+       <td>Equal</td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is equal to <var class="varname"><var class="varname">$b</var></var> after type juggling.</td>
+      </tr>
+
+      <tr>
+       <td>$a === $b</td>
+       <td>Identical</td>
+       <td>
+        <strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is equal to <var class="varname"><var class="varname">$b</var></var>, and they are of the same
+        type.
+       </td>
+      </tr>
+
+      <tr>
+       <td>$a != $b</td>
+       <td>Not equal</td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is not equal to <var class="varname"><var class="varname">$b</var></var> after type juggling.</td>
+      </tr>
+
+      <tr>
+       <td>$a &lt;&gt; $b</td>
+       <td>Not equal</td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is not equal to <var class="varname"><var class="varname">$b</var></var> after type juggling.</td>
+      </tr>
+
+      <tr>
+       <td>$a !== $b</td>
+       <td>Not identical</td>
+       <td>
+        <strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is not equal to <var class="varname"><var class="varname">$b</var></var>, or they are not of the same
+        type.
+       </td>
+      </tr>
+
+      <tr>
+       <td>$a &lt; $b</td>
+       <td>Less than</td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is strictly less than <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a &gt; $b</td>
+       <td>Greater than</td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is strictly greater than <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a &lt;= $b</td>
+       <td>Less than or equal to </td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is less than or equal to <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a &gt;= $b</td>
+       <td>Greater than or equal to </td>
+       <td><strong><code>TRUE</code></strong> if <var class="varname"><var class="varname">$a</var></var> is greater than or equal to <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+    </tbody>
+
+    </table>
+= slide 'Аритметични оператори' do
+  | <table class="doctable table">
+      <thead>
+      <tr>
+       <th>Example</th>
+       <th>Name</th>
+       <th>Result</th>
+      </tr>
+
+      </thead>
+
+      <tbody class="tbody">
+      <tr>
+       <td>-$a</td>
+       <td>Negation</td>
+       <td>Opposite of <var class="varname"><var class="varname">$a</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a + $b</td>
+       <td>Addition</td>
+       <td>Sum of <var class="varname"><var class="varname">$a</var></var> and <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a - $b</td>
+       <td>Subtraction</td>
+       <td>Difference of <var class="varname"><var class="varname">$a</var></var> and <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a * $b</td>
+       <td>Multiplication</td>
+       <td>Product of <var class="varname"><var class="varname">$a</var></var> and <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a / $b</td>
+       <td>Division</td>
+       <td>Quotient of <var class="varname"><var class="varname">$a</var></var> and <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      <tr>
+       <td>$a % $b</td>
+       <td>Modulus</td>
+       <td>Remainder of <var class="varname"><var class="varname">$a</var></var> divided by <var class="varname"><var class="varname">$b</var></var>.</td>
+      </tr>
+
+      </tbody>
+
+    </table>
+= slide 'Аритметика' do
+  example:
+    <?php
+      echo (5 % 3)."\n";    // prints 2
+      echo (5 % -3)."\n";   // prints 2
+      echo (-5 % 3)."\n";   // prints -2
+      echo (-5 % -3)."\n";  // prints -2
+    ?>
+= slide 'if' do
+  example:
+    <?php
+      if ($a > $b) {
+       echo "a is bigger than b";
+      } elseif ($a == $b) {
+       echo "a is equal to b";
+      } else {
+        echo "a is smaller than b";
+      }
+    ?>
+= slide 'Алтернативен If' do 
+  example:
+    <?php
+      if ($a == 5):
+        echo "a equals 5";
+        echo "...";
+      elseif ($a == 6):
+        echo "a equals 6";
+       echo "!!!";
+      else:
+        echo "a is neither 5 nor 6";
+      endif;
+    ?>
+= slide 'While' do 
+  example:
+    <?php
+      $i = 1;
+      while ($i <= 10) {
+        echo $i++;
+      }
+
+      $i = 1;
+      while ($i <= 10):
+        echo $i;
+        $i++;
+      endwhile;
+    ?>
+= slide 'For' do 
+  example:
+    <?php
+      for ($i = 1; $i <= 10; $i++) {
+        echo $i;
+      }
+    ?>
+= slide 'Масиви' do 
+  p В PHP има само една структура от данни - масив.
+  example:
+    <?php
+      $array = array(
+        "foo" => "bar",
+        "bar" => "foo",
+      );
+
+      // as of PHP 5.4
+      $array = [
+        "foo" => "bar",
+        "bar" => "foo",
+      ];
+    ?>
+= slide 'Foreach' do 
+  p Обхожда последователно елементите на колекция.
+  example:
+    <?php
+      $arr = array(1, 2, 3, 4);
+      foreach ($arr as $value) {
+        echo $value;
+      }
+    ?>
+= slide 'Foreach' do 
+  example:
+    <?php
+      $a = array(
+        "one" => 1,
+        "two" => 2,
+        "three" => 3,
+        "seventeen" => 17
+      );
+
+      foreach ($a as $k => $v) {
+        echo "$k -> $v\n";
+      }
+    ?>
+= slide 'Switch' do
+  example:
+    <?php
+      switch ($i) {
+        case 0:
+          echo "i equals 0";
+          break;
+        case 1:
+          echo "i equals 1";
+          break;
+        case 2:
+          echo "i equals 2";
+          break;
+        default:
+          echo "i is not equal to 0, 1 or 2";
+      }
+    ?>
+= slide 'Среда' do
+  p <a href="http://codepad.viper-7.com/">http://codepad.viper-7.com/</a>
+= slide 'Задача 1' do
+  example:
+    $x = 10;
+    $y = 7;
+  p Използвайте двете променливи и напишете код, който да принтира следното:
+  example:
+    [lang:html]
+    10 + 7 = 17
+    10 - 7 = 3
+    10 * 7 = 70
+    10 / 7 = 1.4285714285714
+    10 % 7 = 3
+= slide 'Задача 2' do
+  p Напишете цикъл, който да визуализира следното:
+  p abc abc abc abc abc abc abc abc abc
+  p xyz xyz xyz xyz xyz xyz xyz xyz xyz
+  p 1 2 3 4 5 6 7 8 9
+  example:
+    [lang:html]
+    1. Item A
+    2. Item B
+    3. Item C
+    4. Item D
+    5. Item E
+    6. Item F
+= slide 'Задача 3' do
+  p Отпечатайте квадратите на числата от 1 до 12.
+= slide 'Задача 4' do
+  p Ползвайте вложени цикли и съставете следната талица за умножение:
+  | <table style="border-collapse: collapse; border: 1px solid black;background-color: #ffff00"><tbody><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">1</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">2</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">3</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">4</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">5</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">6</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">7</td>
+      </tr><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">2</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">4</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">6</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">8</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">10</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">12</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">14</td>
+      </tr><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">3</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">6</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">9</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">12</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">15</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">18</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">21</td>
+      </tr><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">4</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">8</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">12</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">16</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">20</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">24</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">28</td>
+      </tr><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">5</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">10</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">15</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">20</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">25</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">30</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">35</td>
+      </tr><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">6</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">12</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">18</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">24</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">30</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">36</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">42</td>
+      </tr><tr>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">7</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">14</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">21</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">28</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">35</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">42</td>
+      <td style="width: 2em; text-align:center;border: 1px solid black;">49</td>
+      </tr></tbody>
+    </table>
+= slide 'Задача 5' do
+  p Направете масив със следните стойности:
+  p Tokyo, Mexico City, New York City, Mumbai, Seoul, Shanghai, Lagos, Buenos Aires, Cairo, London
+  p Отпечатайте ги, разделени със запетая.
+= slide 'Функции' do
+  example:
+    <?php
+      function foo($arg_1, $arg_2, /* ..., */ $arg_n) {
+        echo "Example function.\n";
+        return $retval;
+      }
+    ?>
+= slide 'Функции' do
+  example:
+    <?php
+      function takes_array($input) {
+        echo "$input[0] + $input[1] = ", $input[0]+$input[1];
+      }
+    ?>
+= slide 'Функции' do
+  example:
+    <?php
+      function makecoffee($type = "cappuccino")
+      {
+        return "Making a cup of $type.\n";
+      }
+      echo makecoffee(); //Making a cup of cappuccino.
+      echo makecoffee(null); //Making a cup of . 
+      echo makecoffee("espresso"); //Making a cup of espresso.
+    ?>
+= slide 'Задача 6' do
+  p Напишете функция, която приема като аргументи дължина и ширина на правоъгълник и отпечатва "Правоъгълника с височина ... и ширина ... има лице ...".
+= slide 'Задача 7' do
+  p Напишете функция, която смята факториел, чрез рекурсия.
+= slide 'Задача 8' do
+  p Напишете функция която генерира вложени html елементи, като приема като аргументи типа на елемента и нивата на влагане.
+  p Пример: generate_nested_elements('div', 3);
+  example:
+    [lang:html]
+    <div>
+        <div>
+            <div>
+            </div>
+        </div>
+    </div>

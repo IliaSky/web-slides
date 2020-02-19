@@ -1,0 +1,33 @@
+0:
+  title: 00. За курса
+  date: 2012-10-03
+  url: http://moodle.le.tsdoit.org/pluginfile.php/846/mod_resource/content/4/Lecture_00_MP.BG.pdf
+1:
+  title: Въведение в Курса
+  date: 2014-10-6
+  slug: INTRO
+2:
+  title: HTML
+  date: 2014-10-6
+  slug: HTML
+3:
+  title: CSS Part 1
+  date: 2014-11-2
+  slug: CSS-1
+4:
+  title: CSS Part 2
+  date: 2014-11-10
+  slug: CSS-2
+5:
+  title: Javascript Part 1
+  date: 2014-11-20
+  slug: JS-1
+6:
+  title: Javascript Part 2
+  date: 2014-11-20
+  slug: JS-2
+7:
+  title: pregovor
+  date: 2017-11-11
+  slug: pregovor
+  

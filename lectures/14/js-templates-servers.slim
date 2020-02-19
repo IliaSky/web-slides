@@ -1,0 +1,313 @@
+= slide 'Какво ще разгледаме днес' do
+  p горе-долу почти всичко, което досега не сме
+  list:
+    REST
+    MVC
+    JS+-
+    SPA
+    Сървъри
+
+= slide 'REST' do
+  list:
+    Representational state transfer - Софтуерен модел ... ¿ формални дефиниции едва ли ви интересуват. Неформално:
+    Идеята е да направим сървър, който просто връща данни на клиента в чист вид (обикновено JSON).
+    Предоставяме API за управление на тези ресурси чрез HTTP. (Разглеждаме всичко като ресурс.)
+    Имаме `GET /users`, `POST /user/new`, `UPDATE /user/5`, `DELETE /user/7` и тн.
+
+  .questions
+    p Wiki: Representational state transfer (REST) is a software architectural style consisting of a coordinated set of architectural constraints applied to components, connectors, and data elements, within a distributed hypermedia system. REST ignores the details of component implementation and protocol syntax in order to focus on the roles of components, the constraints upon their interaction with other components, and their interpretation of significant data elements.
+
+= slide 'MV*' do
+  list:
+    Model View Controller (MVC)¿, Model View ViewModel (MVVM)¿ или обобщено MV*
+    Основната им идея е да си разделим модела (данните) от кода и презентацията.
+    Неформално: Model - чистите данни, View - html шаблон за визуализация, * - всичко останало
+    Вече сигурно сте се сблъсквали, ако не то скоро ще се сблъскате с такива неща.
+
+  ul.questions
+    li Model–view–controller (MVC) is a software architectural pattern for implementing user interfaces. It divides a given software application into three interconnected parts, so as to separate internal representations of information from the ways that information is presented to or accepted from the user.The central component, the model, consists of application data, business rules, logic and functions. A view can be any output representation of information, such as a chart or a diagram. Multiple views of the same information are possible, such as a bar chart for management and a tabular view for accountants. The third part, the controller, accepts input and converts it to commands for the model or view.
+    li The Model View ViewModel (MVVM) is an architectural pattern used in software engineering that originated from Microsoft as a specialization of the Presentation Model design pattern introduced by Martin Fowler. Largely based on the model–view–controller pattern (MVC), MVVM is a specific implementation targeted at UI development platforms which support the event-driven programming in Windows Presentation Foundation (WPF) and Silverlight on the .NET platforms using XAML and .NET languages. Technically different, but similar, Presentation Model design patterns are available in HTML5 through AngularJS, KnockoutJS, Vue.js, and for Java the ZK framework (Model-View-Binder).
+
+= slide 'JS - the bad' do
+  a href="https://www.destroyallsoftware.com/talks/wat" WAT - 1 min video link
+  p Следва код, който не трябва да пишете, но е добре да разбирате
+  pre.highlight.js
+    | var x = 5   // coding conventions - too many => there are none ()
+        , y = 7   // 2, 4 spaces, tabs, yes or no to semicolons and many more...
+        , z = 9;  // what the? - this is valid? // and some people even do this
+
+      !!x // casts x to boolean
+      // sometimes used syntax for siaf (Self Invoking Anonymous Function)
+      !function() { }()
+      // bitwise shift 0 - similar to parseInt - but makes invalid values 0
+      "123.342" >> 0
+      // bitwise switch
+      ~-1 === 0
+      !!~[1, 2, 3].indexOf(2) // true // may be seen instead of !== -1
+      // checking for undefined is not nice
+      if (typeof x !== "undefined") // although noone can redefine undefined anymore
+      // polyfills - some blue browsers need them
+      Array.prototype.forEach = Array.prototype.forEach || function (){...
+      // almost everything can be an expression
+      return x = doSomething(), false; // returns false. x is equal to doSomething()
+      // Too many async operations can get a little messy
+      async1(input, function(data) {
+        async2(data, function(data) {
+          async3(data, function(data) {
+            async4(data, function(data) {
+              // Don't worry - there are ways to work around this
+            });
+          });
+        });
+      })
+  p За добро или лошо в JS има прототипно базирано наследяване - <a href="https://www.youtube.com/watch?v=PMfcsYzj-9M">тук е обяснено добре</a> (но това ще го гледате вкъщи ако искате)
+
+= slide 'JS - the good' do
+  list:
+    Едно от хубавите неща на JS е скоростта, с която се развива и това как community-то влияе върху неговото развитие. Ако нещо се ползва -> влиза в стандарта.
+    `jQuery` => `querySelector` и `querySelectorAll`
+    `underscore` => Array `map`, `reduce`, `filter` и подобни
+    `Prototype` => Function `bind`
+
+  pre.highlight.js
+    | // method chaining - filter and map return a new array, so we can chain new function calls
+      [1,2,3,4,5,6,7,8,9]
+        .filter(function (e) {        // leave only even numbers
+          return e % 2 == 0;
+        })
+        .map(function (e) {           // map to second power
+          return e * e;
+        })
+        .reduce(function (el, res) {  // sum
+          return res + el;
+        }); // 120      // Sum of all second powers of all even numbers
+
+      // localStorage - object that persists trough shutdown
+      localStorage.foo = "bar"
+
+      // define dynamic properties
+      function createDynamicProperty(obj, prop, handler) {
+        var value;
+        Object.defineProperty(obj, prop, {
+          get: function () { return value; },
+          set: function (newValue) { return handler(newValue), value = newValue; },
+          enumerable: true,           //                     ^ this looks strange,
+          configurable: true          //                     | but is valid js...
+        });                           //                     | don't do this
+      }
+      // coffeescript - when javascript isn't enough
+      // in a few versions all will be natively supported
+
+= slide 'SPA', 'Single Page Application' do
+  pre.highlight.js
+    | // Because it is "Single Page" we either use the html5 history or hashchange
+      // history api breaks on refresh so we use hash
+      window.onhashchange = function () {
+        var url = location.hash.slice(1);
+        // make an ajax request for data
+        get(url, function (data){
+          // we use a front-end template to generate html
+          updateMainContent(templates[url].render(data));
+        });
+      };
+      // also call it once on initial load
+      window.onhashchange();
+      // this is the most basic idea
+      // the good thing is that the page stays the same
+      // so it's easy to use many states, events and just develop
+      // without worrying about a lot of stuff
+      // Also this makes the server's job much easier
+
+= slide 'Templates' do
+  a href="http://www.html5rocks.com/en/tutorials/webcomponents/template/" html5 template
+  a href="http://ejohn.org/blog/javascript-micro-templating/" template engine на 30 реда
+  a href="http://github.com/janl/mustache.js" mustache.js
+  a href="http://github.com/leonidas/transparency" transparency
+  a href="http://github.com/visionmedia/jade" jade
+  .multi-column
+    pre.highlight.templates
+      | &lt;table id="mustashe"&gt;
+          &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;
+          {{#people}}
+            &lt;tr&gt;&lt;td&gt;{{name}}&lt;/td&gt;&lt;td&gt;{{age}}&lt;/td&gt;&lt;/tr&gt;
+          {{/people}}
+        &lt;/table&gt;
+
+    pre.highlight.templates
+      | &lt;table id="underscore"&gt;
+          &lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;
+          &lt;% _(people).each(function (person) { %&gt;
+            &lt;tr&gt;&lt;td&gt;&lt;%- name %&gt;&lt;/td&gt;&lt;td&gt;&lt;%- age %&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;% }); %&gt;
+        &lt;/table&gt;
+
+    pre.highlight.templates
+      | table#jade
+          tr &lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;
+          - for person in people
+            tr
+              td= person.name
+              td= person.age
+
+    pre.highlight.templates
+      | // Native JS
+        &quot;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Name&lt;/th&gt;&lt;th&gt;Age&lt;/th&gt;&lt;/tr&gt;&quot; + people.map(function (person){
+          return &quot;&lt;tr&gt;&lt;td&gt;&quot; + person.name &quot;&lt;/td&gt;&lt;td&gt;&quot; + person.age + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+        }).join(&quot;&quot;) + &quot;&lt;table&gt;&quot;
+
+        // You can also write your own
+        table#sky > tr { th[Name] + th[Age] } + *tr > td[@name] + td[@age]
+
+= slide 'Прости сървъри - Sinatra (Ruby)' do
+  p Install ruby => gem install sinatra =>
+  pre.highlight.ruby
+    | require 'sinatra'
+
+      get '/hi/:name' do |name|
+        "Hello &#35;{name}"
+      end
+  p Дефиницията на просто.
+
+= slide 'Ruby & Python & CoffeeScript' do
+  p Помните сумата от квадратите на четните числа по-малки от n?
+  p Ето по една имплементация на Ruby и Python
+
+  pre.highlight.ruby
+    | def sum_of_squares do |n|
+        (0...n).select { |x| x.even? }.map { |x| x*x }.reduce(:+)
+      end
+
+  pre.highlight.python
+    | def sum_of_squares(n):
+          return sum([x*x for x in range(n) if x % 2 == 0])
+
+  pre.highlight.coffee
+    | sumOfSquares1 = (n) ->      # old way
+        result = 0
+        for x in range(n)
+          if x % 2 == 0
+            result += x * x
+        result
+
+      sumOfSquares2 = (n) ->      # ruby way
+        range(n).filter((x) -> x % 2 == 0).map((x) -> x * x).reduce (x, _) -> _ + x
+
+      sumOfSquares2 = (n) ->      # the same
+        range(n)
+          .filter (x) -> x % 2 == 0
+          .map (x) -> x * x
+          .reduce (x, _) -> _ + x
+
+      sum = -> res = 0; res += e for e in arguments; res
+
+      sumOfSquares3 = (n) ->      # python way
+        sum(x*x for x in range(n) if x % 2 == 0)
+
+= slide 'Прости сървъри - Sinatra Clones' do
+  list:
+    След <a href="http://sinatrarb.com">Sinatra</a> във всеки език се появява някакво копие
+    Python: <a href="http://flask.pocoo.org">Flask</a>¿, PHP: <a href="http://slimframework.com">Slim</a> ¿ | <a href="http://silex.sensiolabs.org">Silex</a>, Perl: <a href="http://perldancer.org">Dancer</a> ¿, C#: <a href="http://nancyfx.org">Nancy</a> ¿, Java: <a href="http://sparkjava.com">Spark</a>
+    може някое и да не е копие, но всички са достатъчно прости
+    За почти всички от тях има доста прилична и полезна документация в github
+    По-подробно разгледаме Silex(PHP) и Spark(Java) - за тях има и <a href="http://iliasky.com/www/demos">демота</a>
+  ul.questions
+    li
+      pre.highlight.python
+        | from flask import Flask
+          app = Flask(__name__)
+
+          @app.route("/")
+          def hello():
+              return "Hello World!"
+
+          if __name__ == "__main__":
+              app.run()
+    li
+      pre.highlight.php
+        | $app = new \Slim\Slim();
+          $app->get('/hello/:name', function ($name) {
+              echo "Hello, $name";
+          });
+          $app->run();
+    li
+      pre.highlight.perl
+        | use Dancer;
+
+          get '/' => sub {
+            "Hello World!"
+          };
+
+          dance;
+    li
+      pre.highlight.cs
+        | public class SampleModule : Nancy.NancyModule
+          {
+              public SampleModule()
+              {
+                  Get["/"] = _ => "Hello World!";
+              }
+          }
+
+
+= slide 'Прости сървъри - Silex (PHP)' do
+  pre.highlight.php
+    | $app = new Silex\Application();
+
+      $app->get('/hello', function() {
+        return json_encode(["name" => "Ivan", "age" => 24]);
+      });
+
+      $app->get('/hi/:name', function($name) {
+        return 'Hello $name!';
+      });
+
+      $app->get('/people', function() {
+        // {people: [{name: "Pesho", age: 25}, {name: "Penka", age: 22}]}
+        return json_encode([
+          "people" => [
+            ["name" => "Pesho", "age" => 25],
+            ["name" => "Penka", "age" => 22]
+          ]
+        ]);
+      });
+
+      $app->run();
+
+= slide 'Прости сървъри - Spark (Java)' do
+  /http://yobriefca.se/blog/2014/02/20/spas-and-enabling-cors-in-spark/
+  pre.highlight.java
+    | import static spark.Spark.*;
+      import spark.*;
+
+      public class ExampleServer {
+
+        public static void main(String[] args) {
+
+          get(new Route("/hello") {
+            public Object handle(Request request, Response response) {
+              return "It's working! It's working!"; // Star Wars Episode I reference
+            }
+          });
+
+          get(new Route("/hi/:name") {
+            public Object handle(Request request, Response response) {
+              return "Hello " + request.params("name");
+            }
+          });
+
+          get(new Route("/people") {
+            public Object handle(Request request, Response response) {
+              return "{\"people\": [{\"name\": \"Pesho\", \"age\": 25}, {\"name\": \"Penka\", \"age\": 22}]}";
+            }
+          });
+        }
+      }
+
+= slide 'Други сървъри' do
+  list:
+    JavaScript (Node.js) има connect и express, които улесняват работата, но асинхронното мислене не се преподава толкова лесно.
+    Frameworks като Rails (Ruby), Django (Python), Play (Scala) са прекалено големи и вършат прекалено много работа - за сегашните ви проекти не ви трябват.
+    По същата причина няма да се радваме и на неща като Bootstrap за front-end-а. Искаме да можем да оценим вашите знания и умения, а не тези на хората от rails, twitter и тн.
+    Не е сигурно какво ще стане с тези проекти, но затова поне има реферати и други компоненти за формиране на оценката - още преди защитата на проектите ще имате идея накъде се насочвате.
+
+

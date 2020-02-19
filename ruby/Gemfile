@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+ruby '1.9.3'
+
+gem 'slim'
+gem 'thor'
+gem 'listen'
+gem 'autorefresh'
+gem 'rouge', '2.2.1'
+
+# gem update --system

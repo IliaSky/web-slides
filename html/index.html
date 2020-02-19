@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+	<meta charset="utf-8">
+	<title>Web Slides</title>
+	<meta content="width=device-width, initial-scale=1" name="viewport">
+	<meta name="theme-color" content="#289">
+	<link rel="icon" href="icon.png">
+	<link rel="manifest" href="manifest.json">
+	<meta name="description" content="Web slides about modern web technologies. Learn about frontend - html5, css3, js (es2015+) and backend in php, ruby, node!">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="image_src" href="images/splash256.png">
+	<meta property="og:title" content="Web Slides">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://iliasky.com/www/presentations/">
+	<meta property="og:image" content="https://iliasky.com/www/presentations/images/splash256.png">
+	<meta property="twitter:image" content="https://iliasky.com/www/presentations/images/splash256.png">
+	<style>
+		html, body {margin: 0; height: 100%;}
+		body {background: #289; background: #045 linear-gradient(#289, #045) no-repeat fixed; color: #dff; }
+		main, h1 + nav {max-width: 960px; margin: auto; text-align: center; }
+		h1, h2 {text-align: center; margin: 0;}
+		h1 {font-size: 2em; padding: 1em;}
+		h2 {font-size: 1.5em; padding: .2em 0; background: rgba(0,0,0,.3); background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.05)); border-radius: 0 0 20px 20px; margin-bottom: .5em; box-shadow: 0 1px 2px #000; }
+		nav {display: flex; flex-wrap: wrap; }
+		.group {display: inline-block; vertical-align: top; width: 160px; text-align: left; flex: 1;background: rgba(0,0,0,0.2); box-sizing: border-box; padding: 0 1em 1em; margin: 0.8em;
+			border-radius: 10px; box-shadow: 0 0 10px 0px, 0 0 10px 1px black inset; min-width: 100px;}
+		.group nav {margin: 0 -0.5em; min-height: 80px;}
+		.group a {display: block; color: #cff;text-decoration: none; padding: 5px; margin: 5px; background: rgba(0,0,0,0.2); border-radius: 5px; transition: 0.4s background;}
+		.group a:hover {background: rgba(0,0,0,0.3);}
+		.php {background: rgba(26,188,156 ,.75)}
+		.html {background: rgba(46,204,113 ,.75)}
+		.css {background: rgba(52,152,219 ,.75)}
+		.js {background: rgba(155,89,182 ,.75)}
+		nav.normal {flex-direction: column}
+		nav.simple {display: flex; height: calc(100% - 3em); }
+		nav.simple a {flex: 1;text-align: center;font-size: 1.5em; display: flex; justify-content: center; align-items: center; }
+		@media screen and (max-width: 560px), screen and (orientation: portrait) and (max-width: 800px) {
+			.group {flex: 1 0 130px; flex: 1 0 calc(50% - 2em); }
+		}
+
+		main + div, script + div {display: none; pointer-events: none; height: 0; width: 0; opacity: 0; transform: scale(0);}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Web Slides</h1>
+		<nav>
+			<div class="group html">
+				<h2>HTML</h2>
+				<nav class="normal">
+					<a href="INTRO.html">Основи</a>
+					<a href="HTML.html">Подробно</a>
+					<a href="Forms.html">Форми</a>
+				</nav>
+			</div>
+			<div class="group php">
+				<h2>PHP</h2>
+				<nav class="simple">
+					<a href="PHP.html">PHP</a>
+					<a href="PHP-SQL.html">SQL</a>
+				</nav>
+			</div>
+			<div class="group css">
+				<h2>CSS</h2>
+				<nav class="simple">
+					<a href="CSS-1.html">1</a>
+					<a href="CSS-2.html">2</a>
+				</nav>
+			</div>
+			<div class="group js">
+				<h2>JS</h2>
+				<nav class="simple">
+					<a href="JS-1.html">1</a>
+					<a href="JS-2.html">2</a>
+				</nav>
+			</div>
+		</nav>
+	</main>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var flags = {};
+			location.search.slice(1).split('&').forEach(function(e) {
+			  var pair = e.split('='), key = pair[0], value = pair[1];
+			  flags[key] = /true|yes|1/.test(value);
+			});
+
+			[].forEach.call(document.querySelectorAll('nav a'), function (a) {
+				a.href += '?read=1' + (flags.home ? '&home=1' : '');
+			});
+
+			var link = document.querySelector('[target="_blank"]') || {};
+			link.rel = 'nofollow noreferrer noopener';
+		});
+		window.addEventListener('load', function() {
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('sw.js').then(function(registration) {
+					console.log('SW registered with scope: ', registration.scope);
+				}, function(err) {
+					console.log('SW registration failed: ', err);
+				});
+			} else {
+				['js/jquery-1.10.2.min.js', 'js/htmlSlides.js', 'js/sky.js',
+				 'css/styles.css', 'css/pygments.css', 'css/sky.css'].forEach(function(href) {
+					var el = document.createElement('link');
+					el.rel = 'prefetch';
+					el.href = href;
+					document.head.appendChild(el);
+				});
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+= slide 'Какво ще разгледаме днес' do
+  list:
+    Релационни бази от данни
+    Online PHP site
+    phpMyAdmin
+    Работа с SQL от PHP
+    Java time
+
+= slide 'Релационни бази от данни' do
+  img.invertable src="images/erd.png" alt="ER Diagram"
+
+= slide 'SQL' do
+  p Език за работа с данни.
+  p Той позволява:
+  list:
+    Вмъкване на данни (Insert)
+    Извличане на данни (Select)
+    Редактиране на данни (Update)
+    Изтриване на данни (Delete)
+
+= slide 'Select' do
+  p <img src="images/erd.png" alt="ER Diagram" class="invertable">
+  .center
+    pre.highlight.sql
+      | SELECT * FROM MAJORS
+        SELECT NAME, ACADEMIC_DEGREE FROM MAJORS
+        SELECT * FROM MAJORS WHERE NAME = 'Software Engineering'
+        SELECT * FROM MAJORS WHERE START_YEAR = 2011
+
+= slide 'Insert' do
+  p <img src="images/erd.png" alt="ER Diagram" class="invertable">
+  pre.highlight.sql
+    | INSERT INTO MAJORS (NAME, ACADEMIC_DEGREE) VALUES ('Software Eginnering', 'bachelor')
+
+= slide 'JOIN' do
+  .center
+    pre.highlight.sql
+      |          People                          Animals
+        ========================        =========================
+        | id | name   | pet_id |        | id | name   | species |
+        | 1  | Pesho  | 2      |        | 1  | Sisi   | cat     |
+        | 2  | Gosho  | NULL   |        | 2  | Sharo  | dog     |
+        | 3  | Ivan   | 4      |        | 3  | Mecho  | dog     |
+        | 4  | Penka  | 1      |        | 4  | Koko   | parrot  |
+        ========================        =========================
+  p Ако искаме да намерим всички хора с домашни любимци, както и самите им любимци:
+  .center
+    pre.highlight.sql style="vertical-align:middle"
+      | SELECT People.name, Animals.name
+        FROM People
+        INNER JOIN Animals
+        ON People.pet_id = Animals.id;
+    span <p style="display:inline-block; vertical-align:middle;font-size:30px;margin:7px"> => </p>
+    pre.highlight.sql style="vertical-align:middle"
+      | | People.name | Animals.name |
+        | Pesho       | Sharo        |
+        | Ivan        | Koko         |
+        | Penka       | Sisi         |
+
+= slide 'Видове JOIN' do
+  p Има повече от един вид `JOIN`. Основните са `INNER`, `LEFT`, `RIGHT`, `FULL`.
+  p За този курс сигурно ще използвате само `INNER JOIN` ако въобще ви се наложи.
+  .center
+    pre.highlight.sql
+      |           INNER JOIN¿                        FULL JOIN¿
+        ==============================      ==============================
+        | People.name | Animals.name |      | People.name | Animals.name |
+        | Pesho       | Sharo        |      | Pesho       | Sharo        |
+        | Ivan        | Koko         |      | Gosho       | NULL         |
+        | Penka       | Sisi         |      | Ivan        | Koko         |
+        ==============================      | Penka       | Sisi         |
+             хора и любимците им            | NULL        | Mecho        |
+                                            ==============================
+                                                всички хора и животни
+
+                  LEFT JOIN¿                        RIGHT JOIN¿
+        ==============================      ==============================
+        | People.name | Animals.name |      | People.name | Animals.name |
+        | Pesho       | Sharo        |      | Pesho       | Sharo        |
+        | Gosho       | NULL         |      | Ivan        | Koko         |
+        | Ivan        | Koko         |      | Penka       | Sisi         |
+        | Penka       | Sisi         |      | NULL        | Mecho        |
+        ==============================      ==============================
+                 всички хора                        всички животни
+  ol.questions
+    li INNER JOIN - Връща всички редове, за които има съвпадение и в двете таблици.
+    li FULL (OUTER) JOIN - Връща всички редове, за които има съвпадение в поне една от таблиците.
+    li LEFT (OUTER) JOIN - Връща всички редове от лявата таблица и съвпадащите редове в дясната.
+    li RIGHT (OUTER) JOIN - Връща всички редове от дясната таблица и съвпадащите редове в лявата.
+  /INNER - връща всички хора, които имат домашни любимци, както и любимците им
+  /LEFT  - връща всички хора, заедно с любимците им, за тези, които имат такива, за останалите на мястото на името на любимеца има NULL
+  /RIGHT - връща всички любимци, както и стопаните им, за тези, които имат такива, за останалите на мястото на стопанина има NULL
+  /OUTER - връща всички хора и техните любимци, но връща и хората без любимци и животните без стопани - на техните места има NULL
+= slide 'PHP - XAMPP' do
+  ol
+    li.action <a href="http://sourceforge.net/projects/xampp/files/latest/download">Download XAMPP</a> => Install
+    li.action `C:/XAMPP/xampp-control.exe` => Пускате първите 2 (Apache и MySQL)
+    li.action Вече всеки файл `C:/XAMPP/htdocs/myawesomefile.php` се достъпва чрез `localhost/myawesomefile.php` в браузъра
+  p.action Note: Ако скайп е заел порт 80 и Apache-то не се пуска: `Skype` -> `Tools` -> `Advanced` -> `Connection` -> uncheck-нете `Use port 80 and 443` ¿
+  .questions
+    p <img src="images/skype.png" alt="Skype Connection Settings">
+
+= slide 'Online PHP site' do
+  list:
+    Ако искате да си качите сайта online, тогава вместо да използвате XAMPP можете да си качвате съдържанието на истински сървър.
+    <a href="http://www.000webhost.com">www.000webhost.com</a> е един такъв сайт - има работещо PHP, MySQL, както и безплатно 1500 MB за съдържание. ¿ Инструкции за използване можете да намерите <a href="http://tkulev.com/fmi/wwwtech/2013/KN/02/#8">тук</a> (част от презентацията от миналата година - слайдове 7-23).
+    Имайте предвид обаче, че хостването просто ви дава къде да си качвате съдържанието, но ще бъде достъпно чрез url като `myawesomesite.000webhost.com`.
+    Ако искате можете да си вземете безплатен `.tk` домейн от <a href="http://www.dot.tk/">www.dot.tk</a>. Така може да вземете `myawesomesite.tk` (и той да води към сайта ви).
+    Ако искате `.com`, `.net` и подобни - те струват пари - около 15-20лв/година.
+  .questions
+    p <img src="images/000webhost.png" alt="000webhost control panel">
+
+= slide 'phpMyAdmin' do
+  p Макар и може би обикновено да е по-лесно да се прави всичко чрез писане на SQL заявки, понякога за създаване и добавяне на таблици, данни и тн е по-лесно да се прави през някакъв UI. phpMyAdmin може да ви помогне тук - има го и в xampp и в 000webhost.
+  ol
+    li.action <a href="http://localhost/phpmyadmin">localhost/phpmyadmin</a>
+    li.action `Databases` -> `Create Database` -> `[db_name, utf8_general_ci]`
+    li.action `db_name` -> `Create table` -> `[table_name, number_of_columns]`
+    li.action На първата колона задавате `name` -> `id`, `index` -> `PRIMARY`, `A_I` -> checked
+    li.action
+      span На останалите обикновено се интересувате само от `name`, `type` и `length` - type обикновено е
+      ul
+        li `INT` за цели числа
+        li `VARCHAR` за текст с променлива дължина (обикновено с дължина до 255)
+        li `TEXT` за неограничен текст
+        li `DATE` за дата.
+    /li.action
+    /  span Други табове:
+    /  ul
+    /    li На `Structure` можете да гледате колоните на таблицата и да ги променяте
+    /    li На `Insert` да добавяте данни
+    /    li На `SQL` можете да си правите произволни заявки и да видите какво ще върнат
+
+= slide 'PHPMA - Start' do
+  img.invertable src="images/PHPMA-1.png" alt="phpMyAdmin Start"
+
+= slide 'PHPMA - Create DB' do
+  img.invertable src="images/PHPMA-2.png" alt="phpMyAdmin Create DB"
+
+= slide 'PHPMA - Enter DB' do
+  img.invertable src="images/PHPMA-3.png" alt="phpMyAdmin Enter DB"
+
+= slide 'PHPMA - Create Table' do
+  img.invertable src="images/PHPMA-4.png" alt="phpMyAdmin Create Table"
+
+= slide 'PHPMA - Create Table' do
+  img.invertable src="images/PHPMA-5.png" alt="phpMyAdmin Create Table"
+
+= slide 'PHPMA - Table Actions' do
+  img.invertable src="images/PHPMA-6.png" alt="phpMyAdmin Table Actions"
+
+= slide 'PHPMA - Insert (UI)' do
+  img.invertable src="images/PHPMA-7.png" alt="phpMyAdmin Insert (UI)"
+
+= slide 'PHPMA - Insert (SQL)' do
+  img.invertable src="images/PHPMA-8.png" alt="phpMyAdmin Insert (SQL)"
+
+= slide 'PHPMA - Browse' do
+  img.invertable src="images/PHPMA-9.png" alt="phpMyAdmin Browse"
+
+= slide 'PHPMA - Structure' do
+  img.invertable src="images/PHPMA-10.png" alt="phpMyAdmin Structure"
+
+= slide 'Работа с SQL от PHP' do
+  p В момента има <a href="http://bg2.php.net/manual/en/mysqlinfo.api.choosing.php">3 начина</a> на свързване към `SQL` от `PHP` - `mysql`(deprecated), `PDO`, `mysqli`
+  p Ние ще разгледаме `PDO` - него можем да ползваме и с PostgreSQL, Oracle, SQLite и тн, а не само MySQL
+  pre.highlight.php
+    | $conn  = new PDO('mysql:host=localhost;dbname=mydbname', 'user', 'password');
+      $sql   = "SELECT * FROM MAJORS";
+      //$sql = "SELECT * FROM MAJORS WHERE START_YEAR = $year"
+                  // Now lets say $year = "''; DROP DATABASE MAJORS;"
+      $query = $conn->query($sql) or die("failed!");
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        echo $row['NAME'];
+      }
+
+= slide 'Prepared statements' do
+  ul
+    li.action Вместо да разчитаме на `mysql_real_escape_string` (deprecated) имаме алтернатива:
+    li.action Подготвяме заявката, а после я изпълняваме с желаните стойности =>
+    li.action Така повишаваме скоростта и сигурността
+  pre.action.highlight.php
+    | $conn = new PDO('mysql:host=localhost;dbname=university;charset=utf8', 'root', '');
+      $stmt = $conn->prepare("SELECT * FROM MAJORS WHERE ACADEMIC_DEGREE = '?'");
+
+      $stmt->execute(['бакалавър']) // Array of all ? values
+      $rows = $stmt->fetchALL(PDO::FETCH_NUM)
+      // type can be PDO::FETCH_ASSOC - data accessible through column names
+      //             PDO::FETCH_NUM   - data accessible through indexes
+      //             PDO::FETCH_BOTH  - data accessible through both - default
+      //             and a few <a href="http://bg2.php.net/manual/en/pdostatement.fetch.php">others</a>
+
+      $stmt = $conn->prepare("INSERT INTO MAJORS (NAME, ACADEMIC_DEGREE) VALUES ('?', '?')");
+      $stmt->execute(['Биология', 'бакалавър']);
+
+= slide 'Bind parameters' do
+  p в общия случай вариантът с масива от миналия слайд винаги ще ви върши работа
+  p Ако по някаква причина обаче не ви харесва можете да ползвате `named parameters`
+  p Даваме име и после го bind-ваме и така изпълняваме
+  ol
+    li bindParam - към референция
+    li bindValue - към стойност
+  pre.highlight.php
+    | $stmt = $conn->prepare("
+        INSERT INTO MAJORS (NAME, ACADEMIC_DEGREE)
+        VALUES (:name, :academic_degree)
+      ");
+      $stmt->bindParam(':name', $name);
+      $stmt->bindParam(':academic_degree', $academic_degree);
+
+      $academic_degree = 'бакалавър';
+      $name = 'Софтуерно Инженерство';
+      $stmt->execute();
+
+      $academic_degree = 'магистър';
+      $name = 'Софтуерни Технологии';
+      $stmt->execute();
+
+= slide 'Съвет' do
+  list:
+    Понеже за проектите ви няма да ви трябват много сложни заявки можете да си направите някакви помощни функции, които ви правят базовите заявки, които използвате.
+    Можете да си направите един `db.php` файл, който да комуникира с базата, а на останалите места да го използвате чрез `require 'db.php'`
+
+= slide 'Java time' do
+  list:
+    В крайна сметка май не е много сигурно дали накрая лекторът няма да се наложи всички проекти да са на Java.
+    Ако това се случи, то явно, че ще трябва набързо да разгледаме и някакви неща за SQL с Java.
+    Препоръката ни към вас е - понеже сървърът в момента е несигурен можете да наблегнете на front-end-a.
+    Ако сървърът ви просто връща някакви json данни при заявки на някакви url-и, то тогава няма голямо значение на какъв език е той.
+    Тогава на какъвто и език да е той ще служи само за да върне данните от базата на клиента, а клиентът ще ги обработва и прави каквото иска с тях.
+
+= slide 'Java - SQL Example' do
+  pre.highlight.java
+    | import java.sql.*;
+
+      public class SQLExample {
+
+        public static void main(String[] args) {
+          Connection conn = null;
+          Statement stmt = null;
+
+          try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/www_example", "root", "");
+            stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT name, age FROM Employees");
+
+            while(rs.next())
+              System.out.println("Name: " + rs.getString("name") + ", Age: " + rs.getInt("age"));
+
+            //System.out.println(Converter.convertToJSON(rs)); // Alternative
+            rs.close();
+          } catch (Exception e) {
+            e.printStackTrace();
+          } finally {
+            try { if(stmt != null) stmt.close(); } catch (Exception e) { e.printStackTrace(); }
+            try { if(conn != null) conn.close(); } catch (Exception e) { e.printStackTrace(); }
+          }
+        }
+      }
+
+= slide 'Java - Converter' do
+  pre.highlight.java
+    | import org.json.JSONArray;
+      import org.json.JSONObject;
+      import java.sql.ResultSet;
+      import java.sql.ResultSetMetaData;
+
+      public class Converter {
+
+        public static JSONArray convertToJSON(ResultSet rs) throws Exception{
+          JSONArray jsonArray = new JSONArray();
+          ResultSetMetaData md = rs.getMetaData();
+
+          while (rs.next()) {
+            JSONObject obj = new JSONObject();
+
+            for (int i = 1; i <= md.getColumnCount(); i++)
+              obj.put(md.getColumnLabel(i), rs.getObject(i));
+
+            jsonArray.put(obj);
+          }
+          return jsonArray;
+        }
+      }
+
+= slide 'PHP vs Java' do
+  list:
+    За разлика от PHP, където просто инсталираме XAMPP и всичко работи, при Java използваме чужди пакети и трябва да се позанимаваме малко с това те да бъдат открити.
+    Някои от IDE-тата автоматизират това до голяма степен, но понякога все пак се налага да правим нещо на ръка.
+    Това обаче е курс по WWW Технологии, а не по Java, така че няма да задълбаваме в техните възможности - а точно обратното.
+    За този курс и просто `javac MyClass.java` и после `java MyClass` ще могат да ви свършат работа.
+
+= slide 'Java - За примерите' do
+  list:
+    Можете да ги изтеглите от <a href="http://iliasky.com/www/demos/java-db.zip">тук</a>
+    `MySQL` можем да го пуснем отново през `XAMPP`.
+    Ако искаме можем да ползваме и `phpMyAdmin`.
+    За `JDBC Driver`-а и за `JSON` нещата обаче се иска да ги добавим като dependency-та.
+    Ако използваме IDE можем да ги зададем от него.
+    Ако не - можем да ги сложим в папка lib и да пускаме нещата така:
+    `javac -cp ".;.\lib\*" *.java` && `java -cp ".;.\lib\*" SQLExample`
+    Note: ако писането на `.;.\lib\*` ни дразни можем да го зададем като environment променлива CLASSPATH ¿
+  .questions
+    .wide
+      div style="background: rgba(122,122,122,.4);" `Windows Explorer` -> десен бутон на `Computer` -> `Properties` -> `Advanced System Settings` -> `Environment Variables` -> `New` -> name: `CLASSPATH`, value: `.;.\lib\*`
+      div style="background: rgba(122,122,122,.4);" Не забравяйте след това да си рестартирате конзолата.
+      img src="images/env-var.png" alt="How to set an Environment Variable in Windows"
+
+/= slide 'Syntax highlight' do
+  /link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css"
+  /script src="http://yandex.st/highlightjs/8.0/highlight.min.js"
+
+
+/= slide 'Транзакции' do
+/  p Няма да ви трябват
+/  pre.highlight.php
+/    | $conn->beginTransaction();
+/      $sth = $conn->prepare('INSERT INTO fruit (name, calories) VALUES (?, ?)');
+/
+/      foreach ($fruits as $fruit)
+/        $sth->execute([$fruit->name, $fruit->calories]);
+/
+/      $dbh->commit();
+/
+/      //===========================================================
+/
+/      $conn->beginTransaction();
+/      $sth = $conn->exec("DROP TABLE MAJORS");
+/      $conn->rollBack();

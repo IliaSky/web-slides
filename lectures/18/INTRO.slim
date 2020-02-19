@@ -1,0 +1,114 @@
+= slide 'За курса' do
+  ol
+    li Основи на HTML
+    li Динамично генериране на HTML
+    li Работа с MySQL
+    li Работа с Форми
+    li CSS част 1
+    li CSS част 2
+    li JavaScript част 1
+    li JavaScript част 2
+    li Authentication & Authorization
+    li REST & SPA
+    li Консултация за проекти
+
+= slide 'Оценяване' do
+  p 40% - реферат по време на лекции
+  p 40% - курсов проект
+  p 20% - домашни
+
+= slide 'Домашни' do
+  list:
+    Първите 8-10 седмици ще имате домашни.
+    Ще имате срок - 2 седмици - до съответната неделя вечер.
+    След това формите се затварят и не можете да предавате.
+    При преписване (работа в екип) точките от домашното се делят на броя хора.
+    На част от домашните ще получите ревю към оценката =&gt; стремете се да пишете добър код.
+
+= slide 'Проект' do
+  list:
+    Избирате си тема на проекта (или ви се дава от лектора)
+    Backend език - каквото искате
+    Без неща като rails/django/bootstrap - вършат прекалено добра работа
+    1-2 души в екип (повече хора = по-строги изисквания)
+    Трябва да имате: client, server, db, добър код, документация
+    За документацията лекторът ще ви даде шаблон
+
+= slide 'Реферат' do
+  ol
+    li.action Избирате си тема (www related)
+    li.action Пишете за нея (около десетина страници текст)
+    li.action Предавате я като html файл (семантичен, да изглежда добре)
+    li.action Каните хора и защитавате
+
+= slide 'Пример за HTML страница' do
+  p Запишете го във файл index.html и го отворете в браузъра.
+  pre.highlight.html
+    | &lt;!DOCTYPE html&gt;
+      &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt; My title &lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;h1&gt; My header &lt;/h1&gt;
+        &lt;a href="http://example.com"&gt; My Link &lt;/a&gt;
+      &lt;/body&gt;
+      &lt;/html&gt;
+
+= slide 'Заглавия' do
+  pre.highlight.html
+    | &lt;h1&gt; This is heading 1 &lt;/h1&gt;
+      &lt;h2&gt; This is heading 2 &lt;/h2&gt;
+      &lt;h3&gt; This is heading 3 &lt;/h3&gt;
+      &lt;h4&gt; This is heading 4 &lt;/h4&gt;
+      &lt;h5&gt; This is heading 5 &lt;/h5&gt;
+      &lt;h6&gt; This is heading 6 &lt;/h6&gt;
+
+= slide 'Параграф' do
+  pre.highlight.html
+    | &lt;p&gt; Paragraph with text. &lt;/p&gt;
+
+= slide 'Секции (несемантични)' do
+  pre.highlight.html
+    | &lt;span&gt; Inline text here. &lt;/span&gt;
+
+      &lt;div&gt; Block content here. &lt;/div&gt;
+
+= slide 'Списъци' do
+  p Номериран
+  pre.highlight.html
+    | &lt;ol&gt;
+          &lt;li&gt; First list item &lt;/li&gt;
+          &lt;li&gt; Second list item &lt;/li&gt;
+          &lt;li&gt; Third list item &lt;/li&gt;
+      &lt;/ol&gt;
+  p Неномериран
+  pre.highlight.html
+    | &lt;ul&gt;
+          &lt;li&gt; One list item &lt;/li&gt;
+          &lt;li&gt; Some list item &lt;/li&gt;
+          &lt;li&gt; Another list item &lt;/li&gt;
+      &lt;/ul&gt;
+
+= slide 'Други' do
+  p Линк
+  pre.highlight.html
+    | &lt;a href="http://example.com" title="Link to example.com"&gt; My Link &lt;/a&gt;
+  p Картинка
+  pre.highlight.html
+    | &lt;img src="http://example.com/image.jpg" alt="Example Image" /&gt;
+  p Метаданни
+  pre.highlight.html
+    | &lt;meta charset="UTF-8" /&gt;
+
+= slide 'Семантични елементи' do
+ img src="images/html5_structure.gif" alt="semantic tags"
+
+= slide 'Задача: Проста HTML страница' do
+  p Създайте файл с разширение .html и съдържание на <strong>български език</strong>.
+  p Създайте базовата структура (html, head, title, body) и сложете h1 таг с Вашето имe и ФН.
+  p Добавете параграф с няколко думи.
+  p Добавете номериран списък с 5 любими неща за ядене.
+  p Добавете линк към facebook, който да се отваря в нова страница
+  p
+    b Предайте файл с име в формат [FN].html (без скобите)

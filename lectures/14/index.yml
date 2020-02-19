@@ -1,0 +1,52 @@
+0:
+  title: 00. За курса
+  date: 2012-10-03
+  url: http://moodle.le.tsdoit.org/pluginfile.php/846/mod_resource/content/4/Lecture_00_MP.BG.pdf
+1:
+  title: 01. Въведение в Курса
+  date: 2014-2-25
+  slug: 01-introduction
+2:
+  title: 04. ООП с PHP
+  date: 2013-10-05
+  slug: 04-php-oop
+3:
+  title: 10. JavaScript и DOM
+  date: 2013-10-05
+  slug: 10-javascript
+4:
+  title: 5. HTML и CSS Част 1
+  date: 2013-11-03
+  slug: 05-html-css-1
+5:
+  title: 6. HTML и CSS Част 2
+  date: 2013-11-07
+  slug: 06-html-css-2
+6:
+  title: 7. XML
+  date: 2013-11-17
+  slug: 07-xml
+7:
+  title: 11. JS, jQuery, AJAX
+  date: 2013-12-8
+  slug: 11-javascript-2
+8:
+  title: 14. Advanced CSS
+  date: 2013-12-22
+  slug: 14-advanced-css
+9:
+  title: XML vs Non-XML Technologies
+  date: 2014-1-18
+  slug: xml-vs-non-xml
+10:
+  title: SQL, PHP и Java
+  date: 2014-5-2
+  slug: sql-php-java
+11:
+  title: Wrap Up
+  date: 2014-5-5
+  slug: js-templates-servers
+12:
+  title: Regex
+  date: 2014-5-20
+  slug: regex

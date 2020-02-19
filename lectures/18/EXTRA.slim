@@ -1,0 +1,252 @@
+= slide 'Extra' do
+  p Какво ще правим
+  list:
+    Преговор
+    Задачи
+    REST and GraphQL
+    Други Сървъри
+
+= slide 'Глобални променливи' do
+
+  textarea.example.php
+    | // browse.php?page=webgl
+      $_GET['page'] 
+
+      // login/register.php
+      $_POST['username']
+      $_POST['password']
+
+= slide 'Сесии и хеширане' do
+  textarea.example.php
+    | // 1. start a new session or resume the current one
+      session_start();
+
+      // 2. set and get values from $_SESSION
+      $_SESSION['user'] = 'SomeUser';
+
+      // 3. unset variables and destroy session
+      session_unset();
+      session_destroy();
+  p
+    a[href="https://www.w3schools.com/php/php_sessions.asp"] сесии в php
+
+= slide 'Хеширане на пароли' do
+  textarea.example.php
+    | // registration - create hash and store it DB
+      $hash = password_hash('10xFor@llTheFi$h', PASSWORD_DEFAULT);
+      
+      // login - check password hash
+      $isValid = password_verify('10xFor@llTheFi$h', $hash);
+
+= slide 'Връзка с базата данни' do
+  ol
+    li.action
+      ' Свързване
+      pre.highlight.php
+        | $conn = new PDO($dsn, $user, $pass, $options); // ¿
+    li.action
+      ' Заявка
+      pre.highlight.php
+        | $stmt = $conn->query($sql);                     // direct
+          $stmt = $conn->prepare($sql)->execute($values); // prepared
+    li.action
+      ' Извличане на данни (при select)
+      pre.highlight.php
+        | $row = $stmt->fetch();        // single row
+
+          while ($row = $stmt->fetch()) // iterate rows
+
+          $rows = $stmt->fetchAll();    // direct array
+
+  ol.questions
+    li В `$options` (опционално) - можем да зададем неща като `PDO::ATTR_(ERRMODE|DEFAULT_FETCH_MODE)` и други.
+
+= slide 'Видове сървъри' do
+  p Когато става въпрос за достъп до данни има няколко подхода, който един сървър може да приеме
+  ul
+    li.action Класически - users.php - връща html страница с попълнени данни
+    li.action
+      span <abbr title="REpresentational State Transfer">REST</abbr>
+      ul
+        li За всеки ресурс предоставяме <abbr title="Application Program Interface">API</abbr> за <abbr title="Create Read Update Delete">CRUD</abbr> чрез HTTP методи
+        li `GET /users`, `POST /user/new`, `PUT /user/5`, `DELETE /user/7`
+        li Обикновено работи с данните в <abbr title="JavaScript Object Notation">JSON</abbr> формат
+        li Лесно за имплементация и използване (в базовите случаи)
+    li.action
+      span GraphQL endpoint
+      ul
+        li Минусът на REST - винаги на даден адрес връща точно определени данни с (обикновено) предефинирани полета. Ако искаме комбинация от няколко ресурса и може би подмножество на техните полета ще трябва да правим няколко заявки и да получаваме излишни данни.
+        li GraphQL се опитва да реши този проблем, като въвежда един адрес, на който да можем да подаваме сложни GraphQL заявки ¿
+
+  .questions
+    pre.highlight
+      | query HeroNameAndFriends($episode: Episode) {
+          hero(episode: $episode) {
+            name
+            friends {
+              name
+            }
+          }
+        }
+
+= slide 'Задачи А - сметки' do
+  p Ако искате да пробвате някой друг език - ето малко базови задачки
+  p <a href="https://repl.it/">repl.it</a> е добро място за тестване на такива функции
+  ul
+    li.action Направете функция sumOfEvenSquares(x), която приема като аргумент горна граница и връща сумата на квадратите на всички положителни четни числа, по-малки от границата
+    li.action Направете функцията fizzBuzz(x), която приема като аргумент горна граница и принтира всички положителни цели числа до нея, като заменя кратните на 3 с fizz, кратните на 5 с buzz, кратните и на двете - с fizzbuzz.
+    li.action Може би сте го правили на няколко езика вече, но ако искате - fibonacci(x).
+
+= slide 'Задача Б - регистрация и вписване' do
+  p Ако сте ок с php - така или иначе ще имате това в проектите.
+  p Засега може да имате 3 страници:
+  ul
+    li.action register
+    li.action login
+    li.action browse (от домашно 1.2)
+
+= slide 'Други езици' do
+  p Помните сумата от квадратите на четните числа по-малки от n?
+  p ruby
+  pre.highlight.ruby
+    | def sum_of_even_squares do |n|
+        (0...n).select { |x| x.even? }.map { |x| x*x }.reduce(:+)
+      end
+
+  p python
+  pre.highlight.python
+    | def sum_of_even_squares(n):
+          return sum([x*x for x in range(n) if x % 2 == 0])
+
+  / pre.highlight.js
+  /   | let range = (n) => Array(n).fill().map((e, i) => i);
+
+  /     let sumOfSquares = (n) => (
+  /       range(n).filter(x => x % 2).map(e => x * x).reduce((a, b) => a + b))
+  /     );
+  p perl
+  pre.highlight.perl
+    | sub sumOfEvenSquares {
+        eval join '+', map {$_ * $_} grep { $_ % 2 == 0 } (0..$_[0])
+      }
+
+= slide 'Други сървърни езици' do
+  list:
+    В този курс си говорим основно за php като backend език.
+    Тази година проектите ще са само на php.
+    Ако обаче все пак ви е интересно - извън този курс има доста други сървърни езици, които може да предпочетете пред php.
+    Следват няколко слайда с подобни примерни сървъри.
+
+= slide 'Сървъри - Sinatra (Ruby)' do
+  p Ruby не е от най-простите езици, но на някои хора това им харесва.
+  p Ако обичате решенията ви да стават на 1 ред - може да е езикът за вас. 
+  p Install ruby => gem install sinatra =>
+  pre.highlight.ruby
+    | require 'sinatra'
+
+      get '/hi/:name' do |name|
+        "Hello &#35;{name}"
+      end
+  p <a href="http://sinatrarb.com">Sinatra</a>
+  p <a href="http://fmi.ruby.bg">Ruby курс във ФМИ</a>
+
+= slide 'Сървъри - Flask (Python)' do
+  p Ако обичате прости и разбираеми решения - това е езикът за вас.
+  p Един от най-нарастващите езици в популярност последните няколко години. 
+  p Install python => pip install flask =>
+  pre.highlight.python
+    | from flask import Flask
+      app = Flask(__name__)
+
+      @app.route("/")
+      def hello():
+          return "Hello World!"
+
+      if __name__ == "__main__":
+          app.run()
+  p <a href="http://flask.pocoo.org">Flask</a>
+  p <a href="http://fmi.py-bg.net">Python курс във ФМИ</a>
+
+= slide 'Сървъри - Express (NodeJS)' do
+  p Така или иначе учите javascript - node ви дава възможност да го ползвате навсякъде.
+  p С неща като PWA (progressive web apps) и electron - може би си струва да се погледне
+  p Install node => npm install express --save =>
+  pre.highlight.js
+    | const express = require('express')
+      const app = express()
+
+      app.get('/', (req, res) => res.send('Hello World!'))
+
+      app.listen(3000, () => console.log('Listening on port 3000!'))
+  p <a href="https://expressjs.com">Express</a>
+
+= slide 'Прости сървъри - други' do
+  p
+    | PHP: <a href="https://slimframework.com">Slim</a> ¿
+      Perl: <a href="http://perldancer.org">Dancer</a> ¿
+      Go: <a href="https://goji.io">Goji</a> ¿
+      C#: <a href="http://nancyfx.org">Nancy</a> ¿
+      Java: <a href="http://sparkjava.com">Spark</a> ¿
+
+  ul.questions
+    li
+      pre.highlight.php
+        | $app = new \Slim\Slim(); // Slim 2 (3 is a bit more complex)
+
+          $app->get('/hello/:name', function ($name) {
+              echo "Hello, $name";
+          });
+
+          $app->run();
+
+    li
+      pre.highlight.perl
+        | use Dancer;
+
+          get '/' => sub {
+            "Hello World!"
+          };
+
+          dance;
+    li
+      pre.highlight
+        | package main
+
+          import (
+            "fmt"
+            "net/http"
+
+            "goji.io"
+            "goji.io/pat"
+          )
+
+          func hello(w http.ResponseWriter, r *http.Request) {
+            name := pat.Param(r, "name")
+            fmt.Fprintf(w, "Hello, %s!", name)
+          }
+
+          func main() {
+            mux := goji.NewMux()
+            mux.HandleFunc(pat.Get("/hello/:name"), hello)
+
+            http.ListenAndServe("localhost:8000", mux)
+          }
+    li
+      pre.highlight.cs
+        | public class SampleModule : Nancy.NancyModule
+          {
+              public SampleModule()
+              {
+                  Get["/"] = _ => "Hello World!";
+              }
+          }
+    li
+      pre.highlight.java
+        | import static spark.Spark.*;
+
+          public class HelloWorld {
+              public static void main(String[] args) {
+                  get("/hello", (req, res) -> "Hello World");
+              }
+          }
+

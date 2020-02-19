@@ -1,0 +1,45 @@
+doctype 5
+html lang='bg'
+  head
+    meta charset='utf-8'
+    /[ if lt IE 9 ]
+      script src='js/html5shim.js'
+    link rel='stylesheet' href='css/styles.css'
+    link rel='stylesheet' href='css/pygments.css'
+    link rel='stylesheet' href='css/sky.css'
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    title = this.title
+  body
+    header
+      h1 = this.title
+      nav
+        ul
+          li
+            button id='prev-btn' title='Previous slide' Previous Slide
+          li
+            span id='slide-number'
+            .  /
+            span id='slide-total'
+          li
+            button id='next-btn' title='Next Slide' Next Slide
+
+    div#deck
+      section
+        hgroup
+          h1 = this.title
+
+      == this.slides_html
+
+      section
+        h1 Въпроси
+
+        ul
+          li
+            a href="https://learn.fmi.uni-sofia.bg/course/view.php?id=4106" Moodle
+
+    script src="js/jquery-1.10.2.min.js"
+    script src="js/htmlSlides.js"
+    javascript:
+      $(function() { htmlSlides.init({ hideToolbar: false }); });
+
+    script src="js/sky.js"

@@ -1,0 +1,58 @@
+= slide 'За курса' do
+  ul
+    li.action
+      a href="http://moodle.le.tsdoit.org/course/view.php?id=22" moodle.le.tsdoit.org
+    li.action Ключ за записване: www2014
+    li.action
+      a href="http://si14.tk" si14.tk - помощен сайт
+
+= slide 'Клиент-сървър' do
+  img src="images/client_net.jpg" style="width: 60%"
+
+= slide 'HTTP' do
+  ul
+    li.action Браузърът изпраща HTTP заявка към сървъра.
+    li.action Сървърът я обработва.
+    li.action Той може да прочете информация от база от данни.
+    li.action Накрая генерира отговор под формата на HTML документ.
+    li.action <a href="http://www.youtube.com/watch?v=PBWhzz_Gn10">Подробно демо</a>
+
+= slide 'Web накратко' do
+  list:
+    HTML (Hypertext Markup Language)- съдържание
+    CSS (Cascading StyleSheets) - стилове и ефекти
+    JS (JavaScript) - функционалност при клиента
+    PHP|Ruby|Python... - език, който се изпълнява на сървъра
+    SQL (Standard Query Language) - език, който използваме за базата данни
+
+= slide 'This is madness' do
+  list:
+    This is World Wide Web (Sparta)
+    На пръв поглед изглежда страшно, но не е.
+    Наистина в уеб се сблъскаваме с огромно количество различни езици за какво ли не.
+    Хората продължават да си правят и нови когато им скимне.
+    В този курс накратко ще разгледаме по-горе описаните езици поотделно, за да можете накрая да ги ползвате заедно.
+    За да не става хаос се спазва SRP (Single Responsibility Principle) - всичко трябва да е разделено (във файлове, модули, layer-и каквото учите по САРС) - и да прави едно нещо, но добре
+
+= slide 'Редактор' do
+  list:
+    Естествено най-логичното място да започнем е code editor-а. Състезателите:
+    <a href="http://notepad-plus-plus.org/">Notepad++</a> - прост, без много функционалност, но е бърз и върши работа
+    <a href="http://www.sublimetext.com/">Sublime Text</a> - доста хора го намират за по-приятен, има някои интересни възможности
+    <a href="http://www.vim.org/about.php">Vim</a> - по ОС ще ви учат как да работите с него - ако ви научат - поздравления!
+    <a href="http://aptana.com/">Aptana</a>, <a href="http://c9.io">Cloud9</a>, Visual Studio или каквото вие си харесвате
+    Ако работите на стационарните компютри и няма желаната програма - обикновено преносимите версии се инсталират по-лесно при липса на администраторски права. "notepad++ portable" и тн
+  / <html>
+  /   <body>
+  /     <h1>My Page</h1>
+  /   </body>
+  / </html>
+  / h1 {
+  /   color: red;
+  /   background: blue;
+  / }
+  / $('h1').click(function(){
+  /   this.style.color = "green";
+  /   alert('You clicked me!');
+  / });
+  / SELECT * FROM USERS

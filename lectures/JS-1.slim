@@ -1,0 +1,332 @@
+= slide 'JavaScript' do
+  ul
+    li.action JavaScript е скриптов език за уеб.
+    li.action Изпълнява се предимно в браузъра.
+    li.action
+      div Oбектно-ориентиран език e, но:
+      ul
+        li.action Има прототипно базирано наследяване.
+        li.action Има динамично типизиране.
+        li.action Има функционални елементи(first-class functions).
+
+= slide 'JavaScript features' do
+  ul
+    li.action EcmaScript е името на стандарта, който JS в браузърите се стремят да поддържат.
+    li.action
+      div Можем да разделим поддръжката на 3 фази:
+      ul
+        li.action Pre-ES5: стационарния компютър на баба ви
+        li.action <a href="https://kangax.github.io/compat-table/es5/">ES5</a>: IE9+
+        li.action <a href="https://kangax.github.io/compat-table/es6/">ES6 (ES2015)</a> +: Chrome + Firefox, но не и IE или мобилни
+    li.action Днес ще разгледаме първите 2, третата ще разгледаме другия път (тогава ще покажем и как да я подкарваме навсякъде).
+
+= slide 'JavaScript в HTML' do
+  | <xmp>
+      <script src="file.js"></script>
+      <script>...</script>
+    </xmp>
+  p `type="text/javascript"` е по default.
+
+= slide 'Променливи' do
+  pre.highlight.js
+    | var meaningOfLife = 42;       // typeof meaningOfLife = 'number'
+      var wantedGrade = 6.0;        // typeof wantedGrade = 'number'
+      var firstLine = "So long\n";  // typeof firstLine == 'string'
+      var secondLine = 'And thanks for all the fish!'; // no difference between ' and "
+      var happy = true;             // typeof happy = 'boolean'
+      var nothing;                  // typeof nothing = 'undefined'
+
+  p Всичко останало - масиви, обекти, функции и тн - са обекти
+
+= slide 'Масиви' do
+  p Индексирана последователност от елементи. Няма ограничение за хомогенност на елементите.
+  pre.highlight.js
+    | var fibonacci = [undefined, true, 1, 'two', 3.0, 5, 7];
+
+      alert(fibonacci[3]);          // 'two'
+      alert(fibonacci.length);      // 7
+      alert(fibonacci.indexOf(3));  // 4
+      alert(fibonacci.indexOf(4));  // -1
+      alert(fibonacci.slice(1, 3)); // [true, 1]
+
+      // push, pop, shift, unshift, sort are also available
+
+      // ES5 gives us forEach, map, filter, reduce etc
+
+      typeof fibonacci              // object
+      Array.isArray(fibonacci)      // true
+
+= slide 'Обекти (речници)' do
+  p Или още map, хешове, речници, асоциативни масиви и други. Съдържа двойки с ключ и стойност. Ключовете са низове.
+  pre.highlight.js
+    | var person = {firstName: 'Chuck', lastName: 'Norris', powerLevel: 9001};
+
+      alert(person.firstName);    // Chuck
+      alert(person['lastName']);  // Norris
+
+  p Първият начин (с точката) е за предпочитане.
+
+= slide 'Функции' do
+  pre.highlight.js
+    | function add(a, b) {
+        return a + b;
+      }
+
+      var add = function (a, b) {
+        return a + b;
+      };
+
+      // <b>ES6</b> arrow function - doesn't work in 13% of browsers
+      var add = (a, b) => a + b;
+
+      console.log(add(1, 2, 5));  // returns 3, ignores last argument
+
+= slide 'Условни оператори' do
+  pre.highlight.js
+    | if (cond) {
+        ...
+      } else if (cond) {
+        ...
+      } else {
+        ...
+      }
+
+      isHappy ? 'smile' : 'frown';
+
+      switch (n) {
+        case 1: ... break;
+        case 2: ... break;
+        default: ...
+      }
+
+= slide 'Цикли' do
+  pre.highlight.js
+    | while (condition) { ... }
+
+      do { ... } while (condition);
+
+      var cars = ['Audi', 'BMW', 'Mercedes-Benz', 'Opel', 'Porsche', 'Volkswagen'];
+
+      for (var i = 0; i < cars.length; i++) {
+        console.log(cars[i]);
+      }
+
+      cars.forEach(function(car, index){
+        console.log(car);
+      });
+
+      cars.forEach(car => console.log(car));
+
+= slide 'Обхождане на речник' do
+  pre.highlight.js
+    | var person = {firstName: 'John', lastName: 'Doe', age: 25};
+      var txt = '';
+      for (var key in person) {
+        txt += person[key] + ' ';
+      }
+
+      console.log(txt); // John Doe 25
+
+      Object.keys(person).reduce((a, key) => a + ' ' + person[key]);
+
+
+= slide 'Глобални обекти в браузъра' do
+  ul
+    li.action Имаме няколко обекта, достъпни глобално на всяка страница.
+    li.action `window` (прозорец), `screen` (екран), `history` (история), `navigator` (браузър) - неинтересни
+    li.action `location` - чрез него взимаме информация за URL адреса или го сменяме с нов.
+    li.action `console`  - чрез него извикваме `console.log`
+    li.action `document` - съдържа цялото ни DOM дърво (html) ¿
+
+  .questions
+    li
+      img src='images/htmltree.gif'
+
+= slide 'Селектиране на елементи' do
+  | <xmp>  <h1 id="page-title">Selection</h1>
+      <ul>
+        <li class="food">Pizza</li>
+        <li class="drink">Water</li>
+        <li class="drink">Wine<li>
+        <li class="food">Burger</li>
+      </ul>
+    </xmp>
+
+  pre.highlight.js
+    | var title = document.getElementById('page-title');   // HTMLElement - <b>only 1 element!</b>
+      var items = document.getElementsByTagName('li');     // HTMLCollection
+      var foods = document.getElementsByClassName('food'); // HTMLCollection
+
+      foods[0].textContent += ' Hut';         // Pizza Hut
+      title.innerHTML += ' &lt;em&gt;example&lt;/em&gt;'; // Selection &lt;em&gt;example&lt;/em&gt;
+      console.log(title.textContent);         // Selection example
+
+      // ES5 - use any CSS selector
+      var water = document.querySelector('.drink');     // only water
+      var drinks = document.querySelectorAll('.drink'); // water and wine
+
+
+= slide 'Работа с елементи' do
+  pre.highlight.js
+    | // Create
+      var text = document.createTextNode('text node content');
+      var div = document.createElement('div');
+
+      // Add
+      div.appendChild(text);
+      document.body.appendChild(div);
+
+      // Delete
+      var list = document.getElementById('myList');
+      list.removeChild(list.childNodes[0]);
+
+= slide 'Event handling' do
+  ul
+    li.action Когато работите с браузъра постоянно се emit-ват събития за това.
+    li.action `click`, `mousemove`, `keypress`, `submit`, `DOMContentLoaded`, `hashchange` etc
+    li.action Можем да зададем handler функция за тези ситуации
+    li.action
+      button[onclick="console.log(event)"] mybutton
+      pre.highlight.js
+        | // Create handler
+          var clickHandler = function(event) {
+            console.log(event);     // See what you'll get in the console
+          };
+
+          var button = document.getElementById('mybutton');
+          button.addEventListener('click', clickHandler);
+          button.removeEventListener('click', clickHandler);
+
+          // Alternative - not very recommended
+          button.onclick = clickHandler; // this way we can have only one handler
+
+
+= slide 'JSON' do
+  ul
+    li.action JSON = JavaScript Object Notation
+    li.action Тоест JSON е стринг, който изглежда почти идентично на JS обект. Има само 2 ограничения:
+    li.action Ключовете и стринговете задължително трябва да са в двойни кавички
+    li.action Стойностите могат да са само `string`, `number`, `object`, `array` или `true`, `false`, `null`
+    li.action
+      .two-columns
+        pre.highlight.js
+          | // <b>Object</b>
+            {
+              key: 'string',
+              num: 1024,
+              arr: [1, 2, 3],
+              obj: {naughty: null, nice: true},
+              func: function () { return true; }
+            }
+        pre.highlight.js
+          | // <b>JSON</b>
+            {
+              "key": "string",
+              "num": 1024,
+              "arr": [1, 2, 3],
+              "obj": {"naughty": null, "nice": true}
+            }
+    li.action `JSON.stringify(obj) => json` и `JSON.parse(json) => obj`
+/`
+
+= slide 'AJAX' do
+  list:
+    AJAX = Asynchronous JavaScript and XML (но в днешно време е JSON)
+    Дава ни възможност да получим данни от сървъра, без да презареждаме страницата.
+    Всичко става асинхронно, тоест при изпращането на заявката се задава callback функция, която да обработи данните, когато те пристигнат.
+
+= slide 'AJAX - Demo' do
+  pre.highlight.js
+    | function ajax(url, settings){
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+          if (xhr.status == 200) {
+            settings.success(xhr.responseText);
+          } else {
+            console.error(xhr.responseText);
+          }
+        };
+        xhr.open(settings.method || 'GET', url, /* async */ true);
+        xhr.send(settings.data || null);
+      }
+      var url = '../../blog/write-html-css-fast/index.html'; // same domain
+      var callback = function (text) {
+        console.log(text);                    // do something with the data
+      };
+
+      ajax(url, {success: callback});
+  / settings[xhr.status == 200 ? 'success' : 'error'](xhr.responseText);
+
+= slide 'Tricky notes' do
+  list:
+    Странностите в JS са почти неизброими
+    Scope-ът на променливите (до ES5 включително) е само на ниво функция
+    Пропуснати `;` не дават грешки, а се "самооправят"
+    Функции и други променливи могат да се ползват преди момента на декларирането си (hoisting)
+    <a href="https://www.destroyallsoftware.com/talks/wat">WAT - short video</a> <b>1:21</b>
+    Не споменахме RegExp и Date - за първото има презентация <a href="regex.html">тук</a>, а второто няма да ни трябва сега.
+    Ако в handler-a на form submit имаме `return false` или `event.preventDefault()` то формата няма да се изпрати.
+
+= slide 'Next time on W3Tech' do
+  list:
+    Scope
+    `this`
+    Patterns
+    Prototypes
+    ES6 features
+    Node & Babel
+    libs
+
+
+= slide 'Задача 1' do
+  p Направете функция validate(), която да валидира следната форма:
+
+  ul
+    li потребителско име - поне 3 символа и най-много 10 символа - букви, цифри и _
+    li парола - поне 6 символа, като трябва да има поне 1 главна, 1 малка буква и 1 цифра
+    li парола втори път - трябва да съвпадат
+    li бутон Submit изпращащ въведените данни към някакъв .php файл.
+
+  p Ако има невалидно поле, то на страницата трябва да се появи съобщение за грешката и нищо да не се праща до сървъра.
+
+  p Ако данните са валидни и се опитаме да изпратим формата, тя трябва да се изпрати (post до register.php).
+
+  p Забележки:
+  ul
+    li Popup прозорчето от alert НЕ се зачита като решение.
+    li Искаме JS решение - без PHP код.
+
+  p Полезни ресурси:
+  ul
+    li
+      a[href="https://www.w3schools.com/tags/ref_eventattributes.asp"] Списък с event-и в html5
+    li
+      a[href="https://www.w3schools.com/jsref/jsref_obj_string.asp"] Списък с property-та на String
+
+= slide 'Задача 2' do
+  /p Вече имаме форма, но не знаем дали username-ът ни е свободен.
+
+  p Използвайки ajax функцията от презентацията (или ваша модификация) искаме да изпращаме ajax request вместо нормалното изпращане на формата.
+
+  p За целта ще изпратим JSON стринг от типа {"username": "...", "password": "..."}, където сме взели съответните стойности с javascript.
+
+  p За да се уверите, че всичко работи - напишете си примерен register.php файл, където да разпакетирате данните от JSON към PHP асоциативен масив. След това можете да проверите дали масивът е наред чрез var_dump().
+
+  p Каква е идеята:
+  ul
+    li да предадем данните въведени от потребителя чрез javascript и в json формат, след което да ги извлечем като асоциативен масив в php.
+    li трябва да се научим да четем документации :(
+
+  p Неща за търсене:
+  ul
+    li json_encode и json_decode
+    li JSON.stringify и JSON.parse
+    li form events и input properties
+    li php://input и xhr Content-Type
+
+  / p Имплементирайте играта Морски шах(Tic-tac-toe) в браузъра посредством JavaScript.
+  / p Потребителският интерфейс трябва да включва игрално поле, върху което потребителят прави ходове, кликайки на празните клетки.
+  / p Срещу потребителя трябва да играе компютър, който е достатъчно поне да избира произволни валидни ходове.
+  / p Предайте [fn].html и [fn].js. Макар и да не е задължително можете да предадете и [fn].css, ако имате някакви стилове.
+  / p Ако ви покажем някаква примерна имплементация преди крайния срок, то тя ще бъде само за да получите идея какво трябва да се прави, а не нещо, което да копирате.
+  / p Трябва да има бутон за рестартиране на играта и да спира играта ако някой победи и да извежда резултатът по някакъв начин.

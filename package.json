@@ -1,0 +1,20 @@
+{
+  "name": "web-slides",
+  "version": "1.0.0",
+  "author": "Ilia Yatchev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IliaSky/web-slides.git"
+  },
+  "description": "Web based presentations for a WWW Technologies course in Sofia Univerisity",
+  "main": "index.js",
+  "dependencies": {
+    "command-exists": "^1.2.6",
+    "slm": "^2.0.0",
+    "wkhtmltopdf": "^0.3.4"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "keywords": []
+}

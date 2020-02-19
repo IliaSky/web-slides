@@ -1,0 +1,141 @@
+= slide 'Отново?' do
+  p Принципно вече сме покрили HTML формите в упражнението за <a href="HTML.html">html</a>.
+  p Сега просто ще го припомним и ще покажем как работим с данните от PHP.
+  p Ако в час сте гледали друга презентация, то ето ви линк към <a href="http://fmi.github.io/www-lectures/02-php-forms.html">старата</a>.
+
+= slide 'Форма' do
+  textarea.new-demo.html
+    | <form method="post" action="/add-course.php">
+        <label for="course-title">Course Title</label>
+        <input id="course-title" name="title">
+        ...
+        <button disabled>Submit</button>
+      </form>
+  p Изпраща POST заявка към http://localhost/rate-product.php
+  p `method` = `post` или `get` (default).
+  p Принципно HTTP има още 2 метода - `put` и `delete`, но не можем да ги използваме директно от HTML.
+  p `action` - адресът, където сървърът (php) ще обработи заявката. Ако го оставим празно, то формата ще се изпрати към текущия адрес.
+
+= slide 'Основни тагове' do
+  ul
+    li.action
+      ' `input` - поле за въвеждане. Един от малкото самозатварящи тагове. Атрибути
+      ul
+        li.action `name` - чрез него ще достъпваме данните от сървъра.
+        li.action `type` - `text password radio checkbox hidden submit ... email number date color range`
+        li.action `id` - идентификатор, който може да се използва от `label` таг
+        li.action `pattern` - regex (регулярен израз) за валидация. <a href="Regex.html">regex презентация</a>
+        li.action `required`, `disabled` и `autofocus`
+    li.action
+      p `label` - "етикет" на дадено поле - кликнете върху него и то ще се активира.
+      p Има 2 начина за използване
+      ol
+        li.action `input` тагът да се сложи вътре в `label`-a
+        li.action `for` атрибутът да има стойност равна на `id` на съответния `input`
+    li.action `textarea` - Текстово поле с много редове. <em>НЕ Е</em> самозатварящ се таг.
+
+= slide 'Основни тагове - Demo' do
+  textarea.new-demo
+    | <label> Username <input placeholder="John Smith"> </label>
+      <label> Password <input type="password">          </label>
+      <label> Email    <input type="email" placeholder="a@a.com"> </label>
+
+      Gender
+      <label><input type="radio" name="gender" value="M"> Male   </label>
+      <label><input type="radio" name="gender" value="F"> Female </label>
+
+      <fieldset>
+        <legend> Favorite things </legend>
+        <label> Number  <input type="number"> </label>
+        <label> Color   <input type="color">  </label>
+      </fieldset>
+
+= slide 'Други тагове' do
+  list:
+    `fieldset` - елемент, групиращ релевантни части от формата
+    `legend` - заглавие на parent fieldset-а си
+    `button` - бутон - НЕ Е самозатварящ се. `type` = `submit (default) reset button`
+    `select` - dropdown меню. Поддържа атрибут `multiple`.
+    `option` - опция от select (или datalist) - може да има атрибут `selected`
+    `optgroup` - Групира опции от `select`. Текстът в атрибут `label` ще се покаже.
+    `datalist` - Autocomplete стойности за даден input. Bad browser support :(
+
+= slide 'Други тагове - Demo' do
+  textarea.new-demo
+    | <label for="browser">Browser</label>
+      <input list="browsers-list" id="browser">
+
+      <datalist id="browsers-list"> <!-- autocomplete options-->
+        <option value="Firefox">
+        <option value="Chrome">
+      </datalist>
+
+      Age
+      <select>
+        <optgroup label="Young">
+          <option value="1"> Kid (0-12) </option>
+          <option value="2"> Teen (13-19) </option>
+        </optgroup>
+        <option value="3" selected> Adult (20+) </option>
+      </select>
+
+= slide 'PHP - обработка на заявки' do
+  p http://localhost/?name=World
+  textarea.example
+    | GET /index.php?name=World HTTP/1.1
+      Host: localhost
+      Connection: keep-alive
+      User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+  textarea.example.php
+    | <?php
+        echo 'Hello '. htmlentities($_GET["name"]) .'!';
+      ?>
+  list:
+    В PHP имаме глобални променливи $_GET и $_POST.
+    Асоциативни масиви съдържащи данните, подадени от HTTP заявките.
+    При GET заявките данните се виждат и в url-a като query-string.
+
+= slide 'Обработка на POST заявки' do
+  textarea.example
+    | POST /index.php HTTP/1.1
+      Host: localhost
+      Connection: keep-alive
+      User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
+      Content-Type: application/x-www-form-urlencoded
+
+      name=World&age=9001
+  textarea.example.php
+    | <?php
+        echo 'Hello '.htmlentities($_POST["name"]).'!';
+      ?>
+  p Забележете, че тялото на заявката съдържа данните този път.
+
+= slide 'Валидация на формуляр' do
+  textarea.example.php
+    | <?php
+        $valid = array();
+        $errors = array();
+
+        if ($_POST) {
+          $title = $_POST['title'];
+          if (!$title) {
+            $errors['title'] = 'Името е задължително поле.'
+          } elseif (strlen($title) > 150) {
+            $errors['title'] = 'Името има максимална дължина 150 символа.'
+          } else {
+            $valid['title'] = $title;
+          }
+        }
+      ?>
+  p Не забравяйте, че сте програмисти - ако имате повече изисквания - измислете си някоя структура и алгоритъм ;) copy-paste е лоша практика.
+
+= slide 'Задача' do
+  p Направете форма за добавяне на избираеми дисциплини и сървърна част, която да показва, валидира и записва формата. Тя трябва да съдържа:
+  ul
+    li Име на предмета - задължително, с максимална дължина - 150 символа
+    li Преподавател - задължително, с максимална дължина - 200 символа
+    li Описание - задължително, минимална дължина - 10 символа
+    li Група - една измежду М, ПМ, ОКН и ЯКН
+    li Кредити - цяло положително число
+  p Всяко поле трябва да отговаря на посочения тип и да има валидация по зададените правила.
+  p Засега е ок всичко да е в един файл за домашните. Когато понаучим още неща обръщаме по-голямо внимание на разделянето на различните действия.

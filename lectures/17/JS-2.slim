@@ -1,0 +1,463 @@
+= slide 'JavaScript Part 2' do
+  p Какво ще разгледаме днес:
+  list:
+    Scope в JavaScript
+    What is `this`?
+    Patterns
+    AJAX & JSON
+    Prototypes
+    ES6 features
+    Node & Babel
+    libs
+
+= slide 'Scope в JavaScript' do
+  p В JavaScript има функционален scope. Тоест:
+  list:
+    Променливи декларирани с `var` се ограничават до <b>функцията</b>, която ги съдържа
+    => Конструкции като `if`, `for`, `while` и подобни <b>нямат</b> собствен scope
+    Променливи декларирани с `let` (ES6) работят както сме свикнали
+    Недекларираните променливи се търсят до най-близкия по-горен scope, където са дефинирани
+    Ако не декларираме променливата никъде - тя става глобална (`window.myVar`)
+
+= slide 'Scope в JavaScript - Demo' do
+  pre.highlight.js
+    | var x = 3, y = 5;
+      function test (){
+        if (true) {
+          var y = 6;
+        }
+        console.log(y); // 6
+        z = 8;
+
+        for (var i = 0; i < 10; i++){
+          // do something
+        }
+        console.log(i); // 10
+      }
+      test();
+      console.log(i); // undefined
+      console.log(x, y, z); // 3 5 8
+
+= slide 'What is this?' do
+  ul
+    li.action Едно от странните неща за някои начинаещи javascript developer-и e `this`
+    li.action Простата версия - `this` е нещото пред точката на `obj.func()` - `obj`
+    li.action То обаче се оценява в момента на извикване - преди това можем да го сменим.
+    li.action
+      p Можем да го сменим по 4 начина:
+      ol
+        li.action `foo.func = func` - закачаме функцията и към друг обект
+        li.action `func.call(bar, arg1, arg2, arg3)` - експлицитно задаваме контекста при извикването
+        li.action `func.apply(bar, [arg1, arg2, arg3])` - същото, но аргументите са в масив
+        li.action `var bound = func.bind(b)` - фиксираме this към даден обект завинаги (ES5)
+
+/`
+= slide 'What is this? - Call and Apply' do
+  pre.highlight.js
+    | window.name = "Super Window";
+      var pesho = {age: 22, name: "Pesho"};
+      var gosho = {age: 21, name: "Gosho"};
+      var ivan = {age: 23, name: "Ivan"};
+      var sayHi = function () {
+        return "Hi, I am " + this.name;
+      };
+      pesho.sayHi = sayHi;
+      pesho.sayHi.toString();   // function () { return "Hi, I am " + this.name; }
+      sayHi();                  // Hi, I am Super Window
+      pesho.sayHi();            // Hi, I am Pesho
+      sayHi.call(gosho);        // Hi, I am Gosho
+      pesho.sayHi.call(gosho);  // the same
+      sayHi.apply(ivan);        // Hi, I am Ivan
+
+= slide 'What is this? - Bind' do
+  pre.highlight.js
+    | var id = document.getElementById;
+      id('test'); // 'TypeError: Illegal invocation' - getElementById needs a context
+      id.call(document, 'test'); // works
+
+      // Binding it to always use document
+      id = document.getElementById.bind(document);
+      id('test'); // works
+
+      // Option 2:
+      id = function (id) { return document.getElementById(id); };
+
+= slide 'Patterns' do
+  list:
+    Както във много други езици винаги е добре да не замърсявате глобалния scope с много глобални променливи и функции.
+    Namespace или модул може да се направи като просто имаме обект (хеш) и в него държим релевантни променливи и функции.
+    Друго решение на проблема е като просто направим анонимна функция и я извикаме и така тя си има собствен scope.
+    Можем и да ги комбинираме и така можем да получим нещо като обект с private променливи.
+    Още design patterns, които няма да разглеждаме, но можете да разгледате сами може да намерите <a href="http://www.addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript">тук</a>
+
+= slide 'Patterns - Demo' do
+  pre.highlight.js
+    | // Namespace
+      var ns = {
+        property: "someValue",
+        method: function () { alert("So Long, and Thanks for All the Fish"); }
+      };
+      // Self Invoking Anonymous Function (siaf)
+      (function(){
+        for (var i = 0; i < 10; i++)
+          console.log(i);
+      })();
+      // Namespace with 'private' vars
+      var basketModule = (function () {
+        var basket = []; // 'private'
+        return {
+          addItem: function (item) { basket.push(item); },
+          getItemCount: function() { return basket.length; }
+        };
+      })();
+
+/= slide 'Underscore.js - Reference' do
+  <video class="u-full-width vsc-initialized" poster="https://www.destroyallsoftware.com//assets/posters/talks/wat.poster-55045227db7a92a57047fa35040d2a929c5ff434a0270bdba653eec5d70fbf97.png" preload="none" controls="" data-vscid="5xtas6asl"><source src="https://destroyallsoftware-talks.s3.amazonaws.com/wat.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIAIKRVCECXBC4ZGHIQ%2F20171214%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20171214T183214Z&amp;X-Amz-Expires=14400&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=371e052dbfb9f4d847b7ff892431264839ecfcf39156b95662ef840818ae6292"></video>
+
+/= slide 'JS - the bad' do
+  a href="https://www.destroyallsoftware.com/talks/wat" WAT - short video 1:21
+  p Следва код, който не трябва да пишете, но е добре да разбирате
+  pre.highlight.js
+    | var x = 5   // coding conventions - too many => there are none ()
+        , y = 7   // 2, 4 spaces, tabs, yes or no to semicolons and many more...
+        , z = 9;  // what the? - this is valid? // and some people even do this
+
+      !!x // casts x to boolean
+      // sometimes used syntax for siaf (Self Invoking Anonymous Function)
+      !function() { }()
+      // bitwise shift 0 - similar to parseInt - but makes invalid values 0
+      "123.342" >> 0
+      // bitwise switch
+      ~-1 === 0
+      !!~[1, 2, 3].indexOf(2) // true // may be seen instead of !== -1
+      // checking for undefined is not nice
+      if (typeof x !== "undefined") // although noone can redefine undefined anymore
+      // polyfills - some blue browsers need them
+      Array.prototype.forEach = Array.prototype.forEach || function (){...
+      // almost everything can be an expression
+      return x = doSomething(), false; // returns false. x is equal to doSomething()
+      // Too many async operations can get a little messy
+      async1(input, function(data) {
+        async2(data, function(data) {
+          async3(data, function(data) {
+            async4(data, function(data) {
+              // Don't worry - there are ways to work around this
+            });
+          });
+        });
+      })
+  p За добро или лошо в JS има прототипно базирано наследяване - <a href="https://www.youtube.com/watch?v=PMfcsYzj-9M">тук е обяснено добре</a> (но това ще го гледате вкъщи ако искате)
+
+= slide 'ES5 Features' do
+  p Някои неща, които пропуснахме миналия път
+  pre.highlight.js
+    | // localStorage - object that persists trough shutdown
+      localStorage.setItem('foo', 'bar');
+      localStorage.getItem('foo');
+
+      // define dynamic properties since ES5
+      function createDynamicProperty(obj, prop, handler) {
+        var value;
+        Object.defineProperty(obj, prop, {
+          get: function () { return value; },
+          set: function (newValue) { return handler(newValue), value = newValue; },
+          enumerable: true,           //                     ^ this looks strange,
+          configurable: true          //                     | but is valid js...
+        });                           //                     | don't do this
+      }
+= slide 'JQuery' do
+  #my-id This is a div with id = my-id
+  pre.highlight.js
+    | $('#my-id')
+      //.val()        // returns element.value (for input tags)
+      //.text()       // returns element.textContent
+      //.html()       // returns element.innerHTML
+        .html('test') // same as element.innerHTML = value
+      //.css('font-size') // returns 10px
+        .css('font-size', '20px')
+        .css({color: 'lime', background: 'midnightblue'})
+      //.attr('class')             // gets the attribute
+        .attr('class', 'my-class') // sets the attribute
+        .hide().show()
+        .slideUp(2000).slideDown(2000)
+        .fadeOut(1000).fadeIn(1000)
+        .on('click', logMe);      // a bit shorter than addEventListener
+
+      function logMe(event) { console.log(this, event); }
+
+      // bind a handler to the root but trigger only when the selector matches
+      $(document).on('click', 'button', logMe); // will work on buttons created later
+
+= slide 'JSON' do
+  ul
+    li.action JSON = JavaScript Object Notation
+    li.action Тоест JSON е стринг, който изглежда почти идентично на JS обект. Има само малко ограничения:
+    li.action Ключовете и стринговете задължително трябва да са в double quotes
+    li.action Стойностите могат да са само `string`, `number`, `object`, `array` или `true`, `false`, `null`
+    li.action
+      .two-columns.highlight.js
+        pre
+          | // <b>Object</b>
+            {
+              key: 'string',
+              num: 1024,
+              arr: [1, 2, 3],
+              obj: {naughty: null, nice: true},
+              func: function () { return true; }
+            }
+        pre
+          | // <b>JSON</b>
+            {
+              "key": "string",
+              "num": 1024,
+              "arr": [1, 2, 3],
+              "obj": {"naughty": null, "nice": true}
+            }
+    li.action `JSON.stringify(obj) => json` и `JSON.parse(json) => obj`
+/`
+
+= slide 'AJAX' do
+  list:
+    AJAX = Asynchronous JavaScript and XML (но в днешно време е JSON)
+    Дава ни възможност да получим данни от сървъра, без да презареждаме страницата.
+    Всичко става асинхронно, тоест при изпращането на заявката се задава callback функция, която да обработи данните, когато те пристигнат.
+
+= slide 'AJAX - Demo' do
+  pre.highlight.js
+    | function ajaxGet(url, success, failure){
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+          xhr.status == 200 ? success(xhr.responseText) : failure(xhr.responseText);
+        };
+        xhr.open("GET", url, true);
+        xhr.send();
+      }
+      var log = console.log.bind(console), err = console.error.bind(console);
+
+      // Note - generally ajax calls are made to the same domain
+      ajaxGet('../../blog/write-html-css-fast/index.html', log, err);
+
+      // jQuery - $.get, $.post, $.ajax etc
+      $.ajax(url, {success: log, error: err});
+
+= slide 'JS is growing' do
+  list:
+    Едно от хубавите неща на JS е скоростта, с която се развива и това как community-то влияе върху неговото развитие. Ако нещо се ползва -> влиза в стандарта.
+    `underscore` => Array `map`, `reduce`, `filter` и подобни
+    `jQuery` => `querySelector`, `querySelectorAll`, chaining
+    `Prototype` => Function `bind`
+    `CoffeeScript` => Arrow functions (ES6) and more
+
+= slide 'ES6 Features' do
+  ol
+    li.action let + const
+    li.action Arrow functions
+    li.action Default function params
+    li.action rest param, spread operator
+    li.action Template literals
+    li.action Destructuring operations
+    li.action Native promises
+    li.action Classes
+
+= slide 'ES6 - Let, Arrows, Rest, Spread' do
+  pre.highlight.js
+    | let addTwo = (x, y) => x + y;               // yay, arrow functions!
+      let logOne = value => console.log(value);   // with a single argument
+      let logMany = (x, ...rest) => {             // with a body
+        console.log(x, ...rest);                  // we can still use return
+      };
+
+      [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        .filter(e => e % 2 == 0)    // [2, 4, 6, 8]
+        .map(e => e * e)            // [4, 16, 36, 64]
+        .reduce((a, b) => a + b)    // 120
+  p &nbsp;
+  p Забележка - в arrow функциите `this` има стойността от момента на дефиниране
+  p Като изключим това те имат същото поведение като нормални функции
+
+= slide 'ES6 - Const, Defaults, Templates' do
+  pre.highlight.js
+    | const friends = []; // we cannot change the reference, but we can mutate it
+
+      const meet = (name='partner', greeting='Howdy') => { // default params
+        friends.push({name: name, greeting: greeting});
+
+        return \`${greeting}, ${name}!\`;           // No need for + ' ' + stuff
+      };
+
+      let colors = ['#F00', '#00F']
+      let poem = `
+        Roses are ${colors[0]},
+        Violets are ${colors[1]}.
+        Homeworks are rough,
+        But at least we're tough!
+      `;
+
+= slide 'ES6 - Destructuring and Promises' do
+  .two-columns.highlight.js
+    pre
+      | // <b>ES 5</b>
+        var name = student.name;
+        var grade = student.grade;
+        var degree = student.degree;
+        var names = 'Ivan I. Petrov'.split(' ');
+        var first = names[0];
+        var last = names[2];
+
+        async1(input, function(data) {
+          async2(data, function(data2) {
+            async3(data2, function(data3) {
+              async4(data3, function(data4) {
+                // Welcome to Callback Hell
+                darthVaderNoAudio.play();
+              });
+            });
+          });
+        });
+
+    pre
+      | // <b>ES 6</b>
+        let {name, grade, degree} = student;
+
+        let [first, ,last] = 'Ivan I. Petrov'.split(' ');
+
+        let greetings = friends.map(
+          ({name, greeting}) => \`${name}: ${greeting}\`
+        ).join('\n');
+
+        let pay = new Promise((resolve, reject) => {...});
+
+        async1(input)    // many libraries use them
+          .then(async2)
+          .then(async3)
+          .then(async4)
+          .then(data => nyanCatAudio.play());
+
+/var car = {
+          start: function(){ this.running = true; },
+          wheels: 4
+        };
+        var suzuki = Object.create(car);
+        suzuki.isJapanese = true;
+
+= slide 'ES6 Classes' do
+  .two-columns.highlight.js
+    pre
+      | // <b>ES 5</b>
+        function Person(name) {
+          this.name = name;
+        }
+
+        Person.prototype.greet = function() {
+          return 'Hi, I am ' + this.name + '.';
+        };
+
+        function Student(name, fn) {
+          Person.call(name);
+          this.fn = fn;
+        }
+        Student.prototype = Object.create(Person.prototype);
+        Student.prototype.constructor = Student;
+        Student.prototype.greet = function() {
+          var old = Person.prototype.greet.call(this);
+          return old + ' My fn is ' + this.fn;
+        };
+
+    pre
+      | // <b>ES 6</b>
+        class Person {
+          constructor(name) {
+            this.name = name;
+          }
+
+          greet() {
+            return 'Hi, I am ' + this.name;
+          }
+        }
+
+        class Student extends Person {
+          constructor(name, fn) {
+            super(name);
+            this.fn = fn;
+          }
+
+          greet() {
+            return super.greet() + ' My fn is ' + this.fn;
+          }
+        }
+/23:20
+= slide 'OOP JS video' do
+  iframe.intro src="https://www.youtube.com/embed/PMfcsYzj-9M" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen="allowfullscreen"
+
+= slide 'NodeJS' do
+  ul
+    li.action Когато заобичате JS повече от PHP - има NodeJS за сървър
+    li.action UI - <a href="https://nodejs.org/en/download/">nodejs.org/en/download/</a>
+    li.action
+      span Терминал -
+      ul
+        li `choco install nodejs` (Windows)
+        li `brew install nodejs` (Mac|Linux)
+        li `sudo apt-get install nodejs` (Ubuntu)
+    li.action Server - <a href="http://expressjs.com/">Express</a>, <a href="http://hapijs.com/">Hapi</a>, other or basic ¿
+
+  .questions
+    li
+      pre.highlight.js
+        | const http = require('http');
+
+          const handler = (request, response) => {
+            console.log(request.url);
+            response.end('Node.js Rocks!');
+          };
+
+          http.createServer(handler)
+            .listen(4567, (err) => console.log(err || 'listening on :4567'));
+
+= slide 'Babel' do
+  ul
+    li.action Трансформира ES6 код до еквивалентен ES5 код - така ще работи навсякъде
+    li.action <a href="https://babeljs.io/repl">babeljs.io/repl</a> - Browser REPL
+    li.action `package.json` ¿
+    li.action `echo { "presets": ["env"] } > .babelrc`
+    li.action `npm install`
+    li.action `mkdir src && mkdir dist && echo class Person {} > src/main.js`
+    li.action `npm run build`
+    li.action `type dist\main.js`
+    li.action Сложете кавички `'` около съдържанието на `echo` ако не сте под Windows
+
+  .questions
+    li
+      pre.highlight.js
+        | {
+            "name": "Test",
+            "version": "0.1.0",
+            "scripts": {
+              "build": "babel src -d dist"
+            },
+            "devDependencies": {
+              "babel-cli": "^6.0.0",
+              "babel-preset-env": "^1.6.1"
+            }
+          }
+
+= slide 'Frameworks and Libs' do
+  list:
+    React
+    AngularJS (1.x)
+    Angular
+    Ember
+    Backbone
+    Knockout
+    Ако знаете тези думички, то пробвайте без тях за разнообразие.
+    (за react можете да поспорите с асистента си, но не е препоръчително)
+
+= slide 'Задача' do
+  list:
+    Опционална - направете игра морски шах на JS (предайте zip с html, js и css файлове)
+    Можете да добавите AI ако искате.
+    Играта трябва да може да се рестартира.
+    Не обичаме `alert` за UI.
+    Не обичаме IE за това домашно - пишете на каквото си искате.
+    За проекта обаче ES6 трябва да се transpile-ва до ES5.
+    Весели празници!

@@ -1,0 +1,194 @@
+= slide 'Клиент - Сървър' do
+  pre.highlight.sql
+    |             Browser
+                   |   ↑
+        HTTP GET   |   | HTML
+        index.php  |   | Content
+                   ↓   |
+              Server (Apache)
+                |        ↑
+                |        |
+                ↓        |
+              PHP Interpreter
+                  |    ↑
+       SELECT *   |    |
+       FROM Users |    |
+                  ↓    |
+                 DB (MySQL)
+
+/ = slide 'Клиент - Сървър' do
+/   ul
+/     li.action Браузърът изпраща HTTP заявка към сървъра.
+/     li.action Сървърът (PHP) я обработва.
+/     li.action Той може да прочете информация от база от данни.
+/     li.action Накрая генерира отговор под формата на HTML документ.
+
+= slide 'PHP - XAMPP' do
+  p Xampp съдържа Apache, PHP, MySQL и други неща
+  ol
+    li.action <a href="http://sourceforge.net/projects/xampp/files/latest/download">Download XAMPP</a> => Install *
+    li.action `C:/XAMPP/xampp-control.exe` => Пускате първите 2 (Apache и MySQL)
+    li.action При проблем с портовете - `Apache -> Config -> httpd.conf` => Сменяте `Listen 80` с друг порт
+    li.action Всеки файл `C:/XAMPP/htdocs/awesome.php` отговаря на `localhost/awesome.php` в браузъра
+  p.action * Ако нямате права да инсталирате xampp просто използвайте <a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.2.1/xampp-portable-win32-7.2.1-0-VC15.zip/download">portable версия</a>
+
+= slide 'Online website' do
+  p След време може да решите да си качите уебсайта в мрежата
+  p Тогава ще са ви нужни няколко неща
+  ol
+    li.action
+      p Domain name - име, чрез което да го достъпваме.
+      p `mywebsite.tk` - <a href="http://www.dot.tk">free</a>; `mywebsite.com` - 23лева/година
+    li.action
+      p Hosting
+      p free - <a href="http://000webhost.com">000webhost.com</a> <a href="https://www.freehosting.com/">freehosting.com</a>
+      p paid - <a href="https://web-hosting.thetop10sites.com/cheap-website-hosting.html?keyword=best%20cheapest%20web%20hosting&matchtype=b&adposition=1t1&creative=241421939688&aceid=&campaignid=259392395&device=c&network=g&tgtid=kwd-334945811&utm_ag=20617835795&utm_campaign=TT10S_Hosting_EU&pt=&au=&gclid=EAIaIQobChMI772m4aLg2QIVCowZCh0jKgD6EAAYASAAEgLlyfD_BwE">сравнение</a>
+    li.action
+      p FTP manager - онлайн от хостинга, FileZilla или дори Windows Explorer ¿
+
+  ol.questions
+    li `This PC` -> `Map Network Drive` -> `Connect to a website...` -> `Next^2` -> `ftp://username@host/` -> `Next & Finish`
+= slide 'PHP файл' do
+  textarea[style="display: none"]
+    | <body></body>
+  textarea.example.php
+    | <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Example</title>
+        </head>
+        <body>
+          <?php
+            echo "<h2>Hi, I'm a PHP script!</h2>";
+          ?>
+        </body>
+      </html>
+
+= slide 'Резултат в браузъра' do
+  textarea.example.html
+    | <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Example</title>
+        </head>
+        <body>
+          <h2>Hi, I'm a PHP script!</h2>
+        </body>
+      </html>
+
+= slide 'Променливи', 'sasa' do
+  textarea.example.php
+    | <?php
+        $myAge = 16;            // a PHP Integer
+        $yourAge = 15.5;        // a PHP Float
+        $hasHair = true;        // a PHP Boolean
+        $greeting = 'Hello';    // a PHP String
+        $name = 'Student';
+
+        $added = $myAge + $yourAge;
+        $concatenated = $greeting . ' ' . $name;
+        $interpolated = "$greeting $name";
+      ?>
+
+= slide 'Интересни Оператори' do
+  table
+    tr
+     td = '`==` и `!=`'
+     td = '"Умно" равенство (`3=="3"`)'
+    tr
+     td = '`===` и `!==`'
+     td = 'Стриктно равенство (`3 !== "3"`)'
+    tr
+     td `$a / $b`
+     td Деление (целочислено ако и двете страни са цели)
+    tr
+     td `$a % $b`
+     td Остатък при целочислено деление
+    tr
+     td `$a . $b`
+     td Конкатенация на стрингове
+
+/` fixing syntax highlight
+
+= slide 'if' do
+  textarea.example.php
+    | <?php
+        if ($a > $b) {
+         echo "a is bigger than b";
+        } elseif ($a == $b) {
+         echo "a is equal to b";
+        } else {
+          echo "a is smaller than b";
+        }
+      ?>
+
+= slide 'Функции' do
+  textarea.example.php
+    | <?php
+        function sum($first, $second) {
+          return $first + $second;
+        }
+
+        function makeCoffee($type = "cappuccino") {
+          return "Making a cup of $type.\n";
+        }
+        echo makeCoffee();        // Making a cup of cappuccino.
+        echo makeCoffee(null);    // Making a cup of .
+        echo makeCoffee("mocha"); // Making a cup of mocha.
+      ?>
+
+= slide 'Цикли' do
+  textarea.example.php
+    | <?php
+        while ($condition) { ... }
+
+        do { ... } while ($condition)
+
+        for ($i = 1; $i <= 10; $i++) { ... }
+      ?>
+
+
+= slide 'Масиви' do
+  textarea.example.php
+    | <?php
+        $arr = array(1, 2, 3, 4); // Indexed array
+        $arr = [1, 2, 3, 4];      // same
+
+        foreach ($arr as $value) {
+          echo $value;
+        }
+
+        $array = array(           // Associative array
+          "foo" => "bar",
+          "bar" => "foo",
+        );
+
+        foreach ($arr as $key => $value) {
+          echo "$key -> $value\n";
+        }
+      ?>
+
+= slide 'Зареждане на други файлове' do
+  pre.highlight.php
+    | include 'filename.php';   // основен начин
+      require 'filename.php';   // същото, но света гърми при грешка
+
+      spl_autoload_register(function($className){ // самозарежда всичко,
+        include $className . '.php';              // което ни потрябва
+      });
+
+= slide 'PHP templates' do
+  textarea.example.php
+    | <?php
+        $elements = [1, 2, 3];
+      ?>
+        ...
+      <? if (count($elements) > 0): ?>
+        <ul>
+        <? foreach($elements as $element): ?>
+          <li><?= $element ?></li>
+        <? endforeach ?>
+        </ul>
+      <? else: ?>
+        <div>No elements</div>
+      <? endif ?>

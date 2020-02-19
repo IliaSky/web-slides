@@ -1,0 +1,47 @@
+0:
+  title: Основи на HTML
+  slug: INTRO
+1:
+  title: HTML
+  date: 2018-02-23
+  slug: HTML
+2:
+  title: PHP
+  date: 2018-02-28
+  slug: PHP
+3:
+  title: Форми
+  date: 2018-03-08
+  slug: Forms
+4:
+  title: PHP-SQL
+  date: 2018-03-10
+  slug: PHP-SQL
+5:
+  title: CSS Part 1
+  date: 2014-11-2
+  slug: CSS-1
+6:
+  title: CSS Part 2
+  date: 2014-11-10
+  slug: CSS-2
+7:
+  title: Javascript Part 1
+  date: 2014-11-20
+  slug: JS-1
+8:
+  title: Javascript Part 2
+  date: 2014-11-20
+  slug: JS-2
+9:
+  title: JS-PWA
+  date: 2018-04-29
+  slug: JS-PWA
+10:
+  title: Regex
+  date: 2018-03-08
+  slug: Regex
+11:
+  title: Въведение
+  date: 2018-06-03
+  slug: 13/01-introduction

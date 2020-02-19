@@ -1,0 +1,96 @@
+= slide 'Intro to XML' do
+  list:
+    Какво ще разгледаме днес:
+    <abbr title="eXtensible Markup Language">XML</abbr> syntax
+    XML Entities
+    <abbr title="Document Type Definition">DTD</abbr>
+    XML Schema
+    <abbr title="EXtensible Stylesheet Language Transformations">XSLT</abbr>
+    Как да пишем бързо по-горе изброените
+
+
+= slide 'Video Tutorial' do
+  p В Youtube има един доста добър XML Tutorial, покриващ материала от тази прзентация и директно илюстирайки всичко в примери. <a href="http://www.youtube.com/watch?v=tAN-1xUsftg&list=PLBB413675AFBDC1F4">Плейлист</a>
+
+= slide 'XML (eXtensible Markup Language) syntax' do
+  img src="images/html_tag.png"
+
+= slide 'Example XML' do
+  img src="images/html_tag.png"
+
+= slide 'DTD (Document Type Definition)' do
+  h2 XML
+  | <xmp>
+    <recipe>
+      <category>Cakes</category>
+      <author>Ralica</author>
+      <title>Chocolate cake</title>
+      <body>
+        Products: ….
+        Way of preparation:….
+        Result: Very delicious!
+      </body>
+    </recipe></xmp>
+  h2 DTD
+  | <xmp>
+    <!DOCTYPE recipe [
+      <!ELEMENT recipe (category,author,title,body)>
+      <!ELEMENT category (#PCDATA)>
+      <!ELEMENT author (#PCDATA)>
+      <!ELEMENT title (#PCDATA)>
+      <!ELEMENT body (#PCDATA)>
+    ]></xmp>
+
+= slide 'DTD Синтаксис' do
+  xmp <!DOCTYPE root_element_tag_name [ ....... ]>
+  p В doctype-a се съдържа цялото DTD
+  xmp <!ELEMENT tag_name (contents)>
+  p Дефинираме всеки елемент, като казваме и какви директни деца може да има
+  p contents може да е #PCDATA - просто текст или (a,b+,c?,d*)*,(e|f) - изброяване на елементи в стил подобен на regex
+  xmp <!ATTLIST tag atribute_name attribute_type mode "default_value">
+  p дефинира атрибут за даден таг. типът обикновено е CDATA. mode и default_value не са задължителни. mode може да е:
+  ul
+    li #REQUIRED (Трябва да бъде зададен)
+    li #IMPLIED (Може да бъде зададен)
+    li #FIXED (Само една разрешена стойност)
+
+  xmp <!DOCTYPE root_element_tag_name [ ....... ]>
+
+= slide 'DTD' do
+    p • Декларации на документ, стилове и тип на документа
+    | <xmp><?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+      <?xml:stylesheet type="text/css" href="s.css"?>
+      <!DOCTYPE test SYSTEM "test.dtd"></xmp>
+
+    p • Елементна йерархия
+    xmp <author> Екземпляр <first>Ganyo</first> <last>Balkanski</last> </author>
+
+    p • Коментари, CDATA секции и инструкции за обработка
+    | <xmp><!-- comment -->
+      <?myApp status="draft"?>
+      <![CDATA[ Press <<<ENTER>>> ]]></xmp>
+= slide 'XML Schema' do
+  list:
+    sasa
+
+= slide 'XSLT (EXtensible Stylesheet Language Transformations)' do
+  list:
+    sasa
+
+= slide 'И ако искате' do
+  ul
+    li.action Помислете как HTML-a на първата задача може да бъде направен семантично по-коректен и приятен.
+    li.action Поиграйте си малко с HTML & CSS и си направете някакъв прототипен дизайн на проекта.
+    li.action Задавайте въпроси ако нещо не ви е ясно как да стане.
+    li.action And may the hacks be with you! (or maybe not)
+  script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"
+  javascript:
+    $('textarea.new-demo').each(function(){
+      var html = '<div class="demo-code"><textarea>' + this.value + '</textarea></div><div class="demo-result"></div>';
+      $(this).replaceWith('<div class="demo">' + html + '</div>');
+    });
+    $('.demo-code textarea').change(function(){
+      var v = this.value; $(this).parent().parent().find('.demo-result').html(v);
+    }).change()
+    $('body > header nav ul').prepend('<li id="toggle-dark-style" onclick="$(\'html\').toggleClass(\'dark\')">Toggle Dark Style</li>')
+  | <style>xmp,dl{font-size:16px} dt{font-size:20px;font-weight:bold;margin-top:5px} dd{padding-left:30px} html,body,#deck{width:100%;height:100%;margin:0;padding:0;box-sizing:border-box} #deck{position:absolute;top:0;overflow:auto} .slide{padding-top:30px} header{height:25px} header h1{line-height:25px} sub,sup{font-size:smaller} sub{vertical-align:sub} sup{vertical-align:super} .note{display:block;font-style:italic;} .demo{width:100%;height:100%;display:table} .demo-code,.demo-result{width:50%;font-size:18px;display:table-cell;vertical-align:top} .demo-code textarea{min-width:100%;box-sizing:border-box;min-height:300px} .demo-result{box-sizing:border-box;padding-left:20px} .demo-result iframe{width:100%;height:400px} fieldset{border:2px groove threedface;padding:10px} label{display:block} .dark body,.dark textarea{background-color:#222;color:#ccc;} .dark #deck *{text-shadow:none !important;} .dark #deck table th{background-color:#111;} .dark #deck code{background:#111;color:#ccc;border:1px solid #000;border-radius:10px;} #toggle-dark-style{margin-right: 20px;background: rgba(0,0,0,0.1);border-radius: 10px;height: 20px;line-height: 20px;padding: 2px;border: 1px solid;}#toggle-dark-style:hover {cursor: pointer;background: rgba(0,0,0,0.2);} .intro{width: 100%;height: 100%;position: absolute;left: 0px;top: 0;border-top: 110px solid transparent;box-sizing: border-box;-moz-box-sizing: border-box;}</style>

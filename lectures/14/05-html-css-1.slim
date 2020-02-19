@@ -1,0 +1,440 @@
+= slide 'HTML таг' do
+  img src="images/html_tag.png"
+= slide 'XHTML' do
+  ul
+    li XHTML (eXtensible HyperText Markup Language) - е фамилия от XML езици за маркиране, които копират и разширяват HTML
+    li XHTML е като HTML 4, но с по-строг синтаксис:
+    li
+      ' Задължително е наличието на:
+      ul
+        li XHTML DOCTYPE
+        li html, head, title и body тагове
+        li xmlns (XML namespace) атрибут на html тага
+    li XHTML елементите винаги трябва да бъдат затваряни
+    li link, style, script таговете задължително имат атрибут type
+    li Всеки атрибут трябва да има стойност и тя трябва да е в кавички
+    li Както и други ограничения
+= slide 'HTML 5' do
+  ul
+    li Най-новата версия на HTML
+    li Има по-свободен и приятен синтаксис от XHTML, както и много нови feature-и
+    li Стандартът още не е завършен, но въпреки това има добър съпорт за някои неща в модерните браузъри (това не включва много версии на IE)
+    li За да видите кой feature къде се съпортва има www.caniuse.com
+    li HTML 5 има много нови неща - част от тях могат да се видят на www.html5rocks.com
+= slide 'Примерен XHTML документ' do
+  | <xmp><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <title>Register</title>
+        <link href="style.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="script.js" defer="defer"></script>
+        <style type="text/css"> /* CSS Comment */ </style>
+      </head>
+      <body>
+        <h1>Register</h1>
+        <label for="username">Username</label>
+        <input name="username" id="username" type="text" required="required" autofocus="autofocus" />
+        <!-- HTML Comment -->
+      </body>
+    </html>
+    </xmp>
+= slide 'Eквивалентен HTML 5' do
+  | <xmp><!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Register</title>
+        <link href="style.css" rel="stylesheet">
+        <script src="script.js" defer></script>
+        <style> /* CSS Comment */ </style>
+      </head>
+      <body>
+        <h1>Register</h1>
+        <label for="username">Username</label>
+        <input name="username" id="username" type="text" required autofocus>
+        <!-- HTML Comment -->
+      </body>
+    </html>
+    </xmp>
+= slide 'Самозатварящи се тагове' do
+  list:
+    Както виждате <em>почти</em> всички тагове имат затварящ таг
+    Някои обаче вместо да имат &lt;tag&gt;съдържание&lt;/tag&gt; са просто:
+    &lt;tag /&gt; в XHTML или &lt;tag&gt; в HTML - в HTML 5 &lt;tag /&gt; е еквивалентно на &lt;tag&gt;
+    Тези тагове се наричат самозатварящи се (self-closing). Те са следните тагове:
+    `area`, `base`, `basefont`, `br`, `col`, `frame`, `hr`, `img`, `input`, `link`, `meta`, `param`
+    И макар и този синтаксис да изглежда, че работи и при други елементи - <em>не го използвайте</em> на такива
+= slide 'Булеви атрибути' do
+  list:
+    Както таговете така и някои атрибути може да бъдат изключение от правилото
+    Към момента те са около 20, но само към десет се ползват по-често:
+    script: `async`, `defer`
+    input: `autofocus`, `checked`, `disabled`, `required`, `selected`
+    select:  `multiple`
+    А защо като ги пишем обикновено пишем `checked="checked"`, а не `checked="true/false"`?
+    Защото реално самото <em>наличие</em> на атрибута го задава да е истина - тоест каквото и да пишем, стига да го има ще се приеме за истина - дори `checked="false"` реално е истина. Затова пишейки "checked" е по-малко вероятно да се объркаме. Или ако не пишем xhtml просто не задаваме стойност - и без това е по-красиво.
+= slide 'Основни HTML тагове' do
+  dl
+    dt Системни
+    dd html, body, head, title, script, style, meta, link
+    dt Структурни
+    dd div, p, span, object, param
+    dt Форматиращи
+    dd del, ins, strong, em, sub, sup, wbr, br
+    dt Списъци
+    dd ul, ol, li, dl, dt, dd
+    dt Форми
+    dd form, fieldset, legend, label, input, textarea, button, select, option, optgroup
+    dt Таблици
+    dd table, thead, tfoot, tbody, tr, td, th
+    dt Други
+    dd img, iframe, a
+= slide 'Системни тагове' do
+  list:
+    doctype - не е таг, но все едно - задава doctype на документа и се пише в началото - за HTML 5 пишете &lt;!DOCTYPE html&gt;, за останалите ги google-вате
+    `html` - root елемента на документа
+    `head` - елемент, съдържащ неща нужни на браузъра - метаинформация, стилове, скриптове и тн
+    `body` - елемент, съдържащ информацията, коята се визуализира
+    `title` - заглавието на дадения прозорец/таб
+    `script` - обикновено съдържа javascript код, но ако се зададе друга стойност на типа може да се използва и като обикновен контейнер на каквото решите
+    `style` - съдържа стиловете ви
+    `meta` - метаинформация като encoding, author, summary и тн
+    `link` - връзка към друг файл - css, favicon...
+= slide 'Основни тагове' do
+  list:
+    `div` - обикновен правоъгълник без семантичен смисъл - непосредствено преди идването на HTML 5 това беше основният начин за правене на layout - div в div в div в div в div ...
+    `p` - параграф
+    `span` - обикновен таг за обграждане на фраза/текст, обикновено с цел добавяне на стилове върху него
+    `img` - картинка - url-a се подава като атрибут `src`, по стандарт задължително трябва да има и атрибут `alt` - алтернативен текст в случай, че картинката е недостъпна или не може да се визуализира по друга причина
+    `a` - обърнете внимание - когато казваме линк обикновено имаме предвид този таг - a(anchor). url-a към който води се задава чрез атрибута `href`
+    `object` и `param` - някакъв обект обикновено flash, съответно някакво видео или игра (и някакви параметри за обекта)
+= slide 'Форматиращи тагове' do
+  list:
+    `del` - deleted - <del>Премахнат текст</del>
+    `ins` - inserted - <ins>Добавен</ins>
+    `em` - emphasis - <em>Наблегнат текст</em>
+    `strong` - strong emphasis - <strong>Важен текст</strong>
+    `sub` - H<sub>1</sub>
+    `sup` - x<sup>n</sup>
+    `br` -  break row - \n в html - нов ред
+    `wbr` - word break - Потенциално място за пренасяне на дума
+= slide 'Списъци' do
+  list:
+    `ul` - Unordered List - този с bullet point-ите
+    `ol` - Ordered List - 1, 2, 3, I, II, III, A, B, C
+    `li` - List Item - елемент от горните 2 списъка
+    `dl` - Definition List - съдържа термини и описания
+    `dt` - Definition Term - термин
+    `dd` - Definition Description - описание
+= slide 'Списъци - Демо' do
+  textarea.new-demo
+    | <h4>Unordered List:</h4>
+      <ul>
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+      </ul>
+
+      <h4>Ordered List:</h4>
+      <ol>
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+      </ol>
+
+      <h4>Definition List:</h4>
+      <dl>
+        <dt>Cola</dt>
+        <dt>Coffee</dt>
+        <dd>Both Contain caffeine<dd>
+
+        <dt>Tea</dt>
+        <dd>Relaxes you<dd>
+
+        <dt>Milk</dt>
+        <dd>Is important for young kids</dd>
+        <dd>Contains Calcium</dd>
+      </dl>
+= slide 'Форми' do
+  list:
+    `form` - web форма - важни са атрибутите и `method="post/get"` и `action="url"`
+    `fieldset` - елемент, групиращ релевантни части от формата
+    `legend` - заглавие на parent fieldset-а си
+    `input` - поле за въвеждане. За важен атрибут се счита `name` - при подаване на данните после се достъпва стойността чрез него. Един от малкото самозатварящи тагове.
+    `label` - "етикет" на даден input - тоест пише за какво е. Може или да обгради input тага или да има атрибут "for" и тогава кликвайки върху текста от label-a фокуса на клавиатухата ще се прихване от дадения input
+    `textarea` - Правоъгълник с много редове за попълване на данни - като голям input. За разлика от него обаче textarea <em>НЕ Е</em> самозатварящ се таг.
+    `button` - бутон - при натискането му се изпраща дадената форма или се изпълнява някакъв javascript код, който сте задали
+    `select` - dropdown меню или нещо друго когато има атрибут multi
+    `option` - опция от select
+    `optgroup` - група от опции - не е задължително да се групират. Ако се групират обаче може да зададете и label атрибута - име на групата
+= slide 'Форми - Demo' do
+  textarea.new-demo
+    form
+      fieldset
+        legend Register
+        label
+          span Username
+          input placeholder="John Smith"
+        label
+          span Password
+          input type="password"
+        label
+          input type="email" placeholder="john@smith.com" pattern="\w+@\w+\.\w{1,4}"
+        span Gender
+        label
+          span Male
+          input name="gender" type="radio" value="male"
+        label
+          span Female
+          input name="gender" type="radio" value="female"
+        select
+          optgroup label="Age Category"
+            option 0-12
+            option 13-19
+            option 20-50
+            option 50+
+= slide 'Таблици' do
+  list:
+    `table` - таблица
+    `thead` - заглавна част на таблицата
+    `tbody` - основна част на таблицата
+    `tfoot` - долна част на таблицата
+    `tr` - table row - ред
+    `td` - table data - клетка
+    `th` - table header - заглавна клетка (обикновено съдържа име на ред, колона)
+= slide 'Таблици - Demo' do
+  textarea.new-demo
+    | <table border="1">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td>Sum</td>
+            <td>$180</td>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr>
+            <td>January</td>
+            <td>$100</td>
+          </tr>
+          <tr>
+            <td>February</td>
+            <td>$80</td>
+          </tr>
+        </tbody>
+      </table>
+= slide 'Frames (Фреймове / Рамки)' do
+  list:
+    `frame`, `frameset`, `noframes`
+    <blockquote>An elegant weapon for a more civilised age<blockquote> - Obi Wan</blockquote></blockquote>
+    Или нещо което много хора мразеха и накрая се оттърваха - <a href="http://www.apptools.com/rants/framesevil.php">Why Frames Are Evil</a> - премахнати са в HTML 5
+    Преди много много години в един далечен web не беше нужно php за някои от нещата, нямаше и ajax, но имаше фреймове. Разделяха сайта на парчета - меню, съдържание и други и ги зареждаха в фреймове, намиращи се във frameset.
+    Това време отмина. Остана само Люк (наречен iframe) - последният джедай.
+    `iframe` - "рамка" съдържаща друга страница - остана в стандарта може би основно заради security причини
+= slide 'Frames Demo' do
+  textarea.new-demo
+    iframe src='http://www.quackit.com/html/templates/frames/frames_example_6.html'
+    ' <!-- also try http://kn14.tk -->
+= slide 'HTML5' do
+  dl
+    dt Премахнати елементи в HTML 5
+    dd acronym, applet, basefont, big, center, dir, font, frame, frameset, noframes, strike, tt
+    dt Непрепоръчителни елементи
+    dd b, i, small
+    dt Нови семантични структурни елементи - доста препоръчителни
+    dd
+      ' header, footer, aside, hgroup, nav, article, section, figure, figcaption, mark
+      span.note тази група се води, че не работи под IE<9, но има лесен polyfill
+    dt Нови media елементи
+    dd embed, video, source, audio, track
+    dt Нов canvas елемент
+    dd използва се за чертаене на графики или като платно за рисуване на игри и други
+    dt Нов datalist елемент
+    dd дефинира опции за html5 autocomplete на даден input
+    dt Много нови типове за input
+    dd email, number, tel, color, range, search, url, time, date, datetime, datetime-local, month, week
+= slide 'Semantics' do
+  table
+    tr
+      th HTML 4
+      th HTML 5
+    tr
+      td
+        img src="images/html4.png"
+      td
+        img src="images/html5_structure.png"
+= slide 'CSS', 'Cascading Style Sheets' do
+  p HTML-a описва съдържанието, CSS описва визуализацията. Тоест:
+  ul
+    li Как да са подредени нещата на екрана.
+    li Кое колко да е голямо.
+    li Какъв цвят да е даден текст, фон и тн.
+= slide 'Как работи CSS' do
+  p За да можем лесно да стилизираме дадена страница избираме компонентите, които искаме да стилизираме (чрез някакъв селектор) и задаваме стойности на property-тата, които искаме да променим. Съответно браузъра ще ги промени на всички елементи, които е match-нал даденият селектор.
+= slide 'CSS Syntax' do
+  img src="images/css.jpg"
+= slide 'Използване на CSS' do
+  p Има 3 начина на използване на CSS:
+  list:
+    като стойност на style атрибута на html елемент <xmp><a href="//google.com" style="color:red">Click Here</a></xmp>
+    като добавим style tag в HTML-a (обикновено в head-а) <xmp><style> a { color: red } </style></xmp>
+    като го линк-нете като външен файл <xmp><link href="style.css" rel="stylesheet"></xmp>
+    използвайте предимно 3тия
+= slide 'Основни CSS селектори' do
+  dl
+    dt *
+    dd Избира всички елементи - не се препоръчва.
+    dt foo
+    dd Избира елементи с таг foo
+    dt .bar
+    dd Избира елементи с атрибут клас = bar
+    dt #baz
+    dd Избира елементи с атрибут id = baz
+    dt foo bar
+    dd Избира елементи bar, наследници на елементи foo
+    dt foo, bar
+    dd Може да се изброят няколко селектора и ще избере обединението им
+= slide 'tag#id.class' do
+  p можете да комбинирате няколко селектора в един
+  img src="images/selector_weight.jpg"
+= slide 'Още малко селектори' do
+  p Има много, но като за начало ще споменем само тези
+  dl
+    dt foo > bar
+    dd Избира елементи bar, директни наследници на елементи foo
+    dt foo + bar
+    dd Избира елементи bar, които следват непосредствено след елементи foo
+    dt E:first-child
+    dd Избира само елементи избрани от селектора E, които са първите наследници (ако има ul със 5 li-та в него ще избере само първото).
+    dt E:hover
+    dd Избира елементи докато сте си сложили мишката върху тях (обикновено се ползва за линкове - не работи за други неща в стари браузъри)
+  p Следващия път ще споменем и още някои. Ако ви е интересно <a href="http://www.w3.org/TR/css3-selectors/">ето ги всички (w3 ref)</a>
+= slide 'Категории property-та' do
+  p Както казахме може да разделим CSS property-тата в няколко категории. Можем да ги обобщим до 2 такива:
+  ul
+    li Layout property-та - позициониране, размери и тн
+    li Decoration property-та - фон, шрифт, цветове и ефекти
+= slide 'Цветове' do
+  p Като най-лесни ще започнем с цветовете. Има 4 стандартни начина за дефиниране на цвят:
+  list:
+    Име - `red`
+    RGB - `rgb(255, 0, 0)`
+    HEX - `#ff0000`
+    HSL - `hsl(0, 100%, 50%)`
+= slide 'Имена, RGB и HEX' do
+  list:
+    Списък с имена на цветове можете да видите <a href="http://www.tagindex.net/color/color_name.html">тук</a>
+    RGB (Red Green Blue) задава стойности на всеки от трите цвята от 0 до 255 в десетичен вид
+    HEX е просто по-кратка версия за писане като се пише '#' и после от 00 до FF за всеки от трите цвята
+    HEX има и съкратен вариант, където се пише само по 1 шестнайсетична цифра за всеки цвят, и за стойност се взима 17 пъти по-голяма стойност (все едно е била написана 2 пъти). Тоест #c93 = #cc9933, което го прави най-минималистичен и бърз за писане вариант
+    Както и във истинския свят цветовете са като светлина - тоест по-големите стойности са по-светлите (#fff = white,  #000 = black)
+= slide 'RGB и HEX' do
+  img src='images/colors.png' width='600px'
+= slide 'Малка таблица с цветове' do
+  img src='images/hex.png'
+= slide 'HSL' do
+  p От всички формати този печели странен #1
+  p HSL (Hue Saturation Lighness) задава цвят (тоест ъгъл от цветовия кръг), наситеност 0-100% и осветеност 0-100%
+  img src='images/hsl-color-wheel.png' width='600px'
+= slide 'HSL' do
+  img src='images/hsl.jpg'
+= slide 'CSS Метрики' do
+  list:
+    Pixels (px): px са фиксирана мерна единица. Всеки екран има точно определен брой пиксели на дадена резолюция.
+    Points (pt): pt е мерна единица обикновено използвана при неща за принтиране - тя се използва например за размер на шрифта в word.
+    “Ems” (em): em e мерна единица с променлив размер. 1em = конкретния размер на шрифта за дадения елемент. Използването и дава възможност за лесно оразмеряване на целия layout с лекота като просто се смени размера на шрифта. Така лесно се постигат добри резултати за мобилни устройства, както и за по-големи екрани.
+    Percent (%): % има различен смисъл за различен контекст. Когато се задава размер на шрифта тя е подобна на em - 100% = 1em = конкретния размер на шрифта. В останалите случаи 100% се пада съответния размер на даден родител, когато размер с проценти въобще е валиден.
+= slide 'Текст' do
+  list:
+    `color` - цвят на текста
+    `text-decoration` - none / underline / overline / line-through
+    `text-align` - left / right / center / justify
+    `text-transform` - none / uppercase / lowercase / capitalize
+= slide 'Font stuff' do
+  list:
+    `font-style` - normal / italic
+    `font-weight` - normal / bold - има и доста други потенциални стойностти, но на почти всички браузъри изглеждат като едното от тези двете
+    `font-size` - размера на шрифта
+    `line-height` - височина на реда, но понеже самия шрифт не се разтяга реално отговаря за разстоянията между редовете
+    `font-family` - кой точно шрифт да се използва ("Times New Roman", Verdana, Consolas, Lucida Console, Arial и тн) - позволява изреждането на много такива. Тогава ще се избере първия наличен на дадената платформа/browser. Позволява и още 2 стойности - serif и sans-serif.
+    `font` - кратка версия на последователността `font-style font-weight font-size/line-height font-family` - от всички тези задължителни са само font-size и font-family - примерно използване:
+    `font: italic bold 16px/30px Verdana, Consolas, sans-serif;` или пък просто `font: 16px Verdana;`
+= slide 'Background' do
+  list:
+    `background-color` - цвят на фона
+    `background-position` - x и у позициониране на картинка ако има такава - става чрез думи като top left center или проценти за позиция на центъра или пиксели отместване <a href="http://www.w3schools.com/cssref/playit.asp?filename=playcss_background-position">demo</a>
+    `background-repeat` - repeat-x, repeat-y, repeat, no-repeat, fixed
+    `background-attachment` - fixed / scroll
+    `background-image` - `url("...")`
+    `background: color position repeat attachment image`
+= slide 'Display' do
+  list:
+    `display:none` - елементът е скрит и страницата се рендерира все едно той въобще не съществува
+    `display:inline` - елементът се разглежда като обикновен текст и следващите го елементи продължават непосредствено след него (вдясно от последния символ)
+    `display:block` - елементът се разглежда като правоъгълник - той има width и height property-та и елементите след него продължават на долния ред
+    `display:inline-block` - средно аритметично между първите 2. Елементът има височина и ширина, но откъм гледна точка на следващите елементи е все едно, че е бил inline и те продължават вдясно от него
+    `display:table`, `display:table-row`, `display:table-cell` - показват се както биха се показвали съответните елементи на таблица
+    Последните не работят на стари IE-та
+= slide 'Box Model' do
+  img src="images/boxmodel.png"
+= slide 'CSS Box Model elements' do
+  list:
+    width и height: ширина и височина на <strong>съдържането</strong>
+    border-width: дебелина на border-a
+    padding: разстояние между border-a и съдържанието
+    margin: разстояние между дадения елемент и другите такива
+= slide 'А ако искам различни разстояния от различните страни?' do
+  list:
+    за последните 3 има и изричен синтаксис от сорта на border-top-width, padding-right, margin-bottom и съответно left
+    пишейки директно само margin, padding и тн задаваме всички стойности, като как се задават може да варира в зависимост от бройката стойности, които са подадени
+    като цяло винаги при подобни изброявания се следва последователността top right bottom left (часовниковата стрелка)
+    margin: top right bottom left
+    margin: top left/right bottom
+    margin: top/bottom left/right
+    margin: all
+= slide 'Position' do
+  list:
+    `position` - static / relative / absolute / fixed
+    `position: static` - Това е default-a - всичко се рендерира както браузъра счита за нормално - понякога това не е достатъчно флексибилно. Обикновено го задаваме като просто премахване на конкретния position.
+    В останалите 3 имаме и бонус property-та (които вършат нещо) - top, right, bottom, left - накратко trbl
+    `position: relative` - Позволява отместване спрямо съответната позиция в дадената посока
+    `position: absolute` - Абсолютно позициониране спрямо най-близкия родител със зададен position (!=static). Всяка от стойностите trbl задава, че е на такова разстояние от съответния край на избраният родител контейнер
+    `position: fixed` - Фиксира елемента на дадената позиция на екрана. При зададени trbl застава на такова разстояние от дадения край на екрана (viewport-a) - не е особено добре поддържан от някои мобилни браузъри
+= slide 'Float' do
+  list:
+    `float` - left / right / none
+    Кара блоковия (или какъвто е) елемент да 'плава' измежду текста - ефект, познат от вестници и доста Word документи като text-wrap на картинки
+    <img src='images/float.png'>
+= slide 'Clear' do
+  list:
+    Понякога обаче нещата могат да станат странни когато се използва float - нещо, което искате да е на свой ред продължава и вдясно и контейнерите стават с неочакван за вас размер и съответно фона също се омазва ако е наличен такъв.
+    Както и при position:absolute, така и при float откъм гледна точка на контейнера има височина 0, в следствие от което контейнера може да свърши прекалено рано. Допълнително обяснение за position и float  може да видите <a href="http://www.barelyfitz.com/screencast/html-training/css/positioning/">тук</a>
+    Затова има `clear` - left / right / both / none - започва на чисто по отношение на дадената посока - тоест при float:left и тн и clear на следващ елемент новия елемент и тези след него няма да се залепят, а ще започнат под него. Така продължавайки отдолу се гарантира правилно поведение на контейнера.
+    За повече информация за float можете да погледнете <a href="http://css-tricks.com/all-about-floats/">тук</a>
+= slide 'Други' do
+  list:
+    `z-index` - Ако z е 3тата координата тоест от екрана към нас z-index задава колко по-близо до нас се намира дадения елемент.
+    <strong>Сравнението обаче става само при <em>position != static</em></strong>
+    Също така сравнението става отгоре надолу - тоест гледайки xml йерархията се сравняват първо родители и после деца.
+    `opacity` - 'непрозрачност' - от 0(прозрачно) до 1(непрозрачно);
+    `visibility` - видимост - visible / hidden може да прави елементите невидими, но въпреки това да влияят на layout-a - идентично все едно сме задали opacity: 0;
+    `overflow` (и `overflow-x` и `overflow-y`) - visible / hidden / scroll / auto - задава какво се случва с елементи излизащи от контейнера - дали се виждат, са скрити или има скролбар. auto добавя скролбар само при нужда.
+= slide 'Задача' do
+  img src="images/demo.jpg"
+  /script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"
+  /javascript:
+  /  $('textarea.new-demo').each(function(){
+  /    var html = '<div class="demo-code"><textarea>' + this.value + '</textarea></div><div class="demo-result"></div>';
+  /    $(this).replaceWith('<div class="demo">' + html + '</div>');
+  /  });
+  /  $('.demo-code textarea').change(function(){
+  /    var v = this.value; $(this).parent().parent().find('.demo-result').html(v);
+  /  }).change()
+  /  $('body > header nav ul').prepend('<li id="toggle-dark-style" onclick="$(\'html\').toggleClass(\'dark\')">Toggle Dark Style</li>')
+  /| <style>xmp,dl{font-size:16px} dt{font-size:20px;font-weight:bold;margin-top:5px} dd{padding-left:30px} html,body,#deck{width:100%;height:100%;margin:0;padding:0;box-sizing:border-box} #deck{position:absolute;top:0;overflow:auto} .slide{padding-top:30px} header{height:25px} header h1{line-height:25px} sub,sup{font-size:smaller} sub{vertical-align:sub} sup{vertical-align:super} .note{display:block;font-style:italic;} .demo{width:100%;height:100%;display:table} .demo-code,.demo-result{width:50%;font-size:18px;display:table-cell;vertical-align:top} .demo-code textarea{min-width:100%;box-sizing:border-box;min-height:300px} .demo-result{box-sizing:border-box;padding-left:20px} .demo-result iframe{width:100%;height:400px} fieldset{border:2px groove threedface;padding:10px} label{display:block} .dark body,.dark textarea{background-color:#222;color:#ccc;} .dark #deck *{text-shadow:none !important;} .dark #deck table th{background-color:#111;} .dark #deck code{background:#111;color:#ccc;border:1px solid #000;border-radius:10px;} #toggle-dark-style{margin-right: 20px;background: rgba(0,0,0,0.1);border-radius: 10px;height: 20px;line-height: 20px;padding: 2px;border: 1px solid;}#toggle-dark-style:hover {cursor: pointer;background: rgba(0,0,0,0.2);} </style>

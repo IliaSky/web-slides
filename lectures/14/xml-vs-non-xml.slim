@@ -1,0 +1,162 @@
+= slide 'Въведение - Защо XML не е silver bullet' do
+  p Защо наистина?
+
+= slide 'XML при обмен на данни (алтернативи - CSV, JSON, YAML)' do
+  ul
+    li.action Недостатъци на XML в тази област
+    li.action
+      p Алтернативи в тази област
+      ol
+        li.action JSON и XML
+        li.action CSV
+        li.action YAML
+
+= slide 'XML и JSON' do
+  xmp
+    | <!-- XML -->
+      <ns:element attr="val" xmlns:ns="http:/www.this.is/aUniqueID">
+        <ns:element1 attr1="val1">
+          ...
+        </ns:element1>
+        <ns:element2 attr2="val2">
+          <ns:element3 attr4="val4" attr5="val5" />
+        </ns:element2>
+      </ns:element>
+  xmp
+    | {
+        "key": "val",
+        "arr" : [
+          "key1": "val1",
+          "key2": {
+            "value": "val2",
+            "key3": {"key4": "val4", "key5": "val5"}
+          }
+        ]
+      }
+
+= slide 'XML и JSON' do
+  xmp
+    | <colors>
+        <color value="333"/>
+        <color value="666"/>
+        <color value="225"/>
+        <color value="eee"/>
+      </colors>
+
+      или просто
+      ["333", "666", "225", "eee"]
+
+= slide 'CSV' do
+  xmp
+    | Year,Make,Model
+      1997,Ford,E350
+      2000,Mercury,Cougar
+
+= slide 'YAML' do
+  iframe.intro src="http://www.yaml.org/"
+
+= slide 'XML vs алтернативи', 'общо сравнение на качествата' do
+  list:
+    Простота
+    Разширяемост
+    Оперативна съвместимост (Interoperability)
+    Четимост (Human readable)
+    Откритост
+    Лесна обработка от страна на програмите
+    Преизползваемост (Reusability)
+    Разделяне на презентацията от самите данни
+    Известен формат за обмен на информация
+
+= slide 'XML при съхранение на данни' do
+  list:
+    Досегашните алтернативи
+    SQL Database
+    NoSQL Database
+
+= slide 'XML Schema срещу DTD при валидиране на XML' do
+  list:
+    Това е още един добър пример за XML и не XML решение
+
+= slide 'XML като template engine' do
+  ul
+    li.action
+      p Jade, slim и други
+      xmp
+        | doctype html
+          html(lang="en")
+            head
+              title= pageTitle
+            body
+              h1 Jade - node template engine
+              #awesome.container
+                if youAreUsingJade
+                  p You are amazing
+                else
+                  p Get on it!
+
+= slide 'XML като template engine' do
+  ul
+    li.action
+      p XSLT
+      xmp
+        | <xsl:for-each select="catalog/cd">
+          <tr>
+            <td><xsl:value-of select="title"/></td>
+            <td><xsl:value-of select="artist"/></td>
+          </tr>
+          </xsl:for-each>
+    li.action
+      p Angular template
+      xmp
+        | <ul>
+            <li ng-repeat="item in items" content="item"></li>
+          </ul>
+    li.action
+      p JSONT
+      xmp
+        | //{ "line": { "p1": {"x": 2, "y": 3}, "p2": {"x": 4, "y": 5} }}
+          { "self": "<svg>{line}</svg>",
+            "line": "<line x1=\"{$.p1.x}\" y1=\"{$.p1.y}\" x2=\"{$.p2.x}\" y2=\"{$.p2.y}\" />" }"
+    li.action
+      p Minimal coding
+      xmp
+        | * tr > td[@title] + td[@artist]
+          ul > * li[@@]
+
+= slide 'XML базирани технологии (HTML, XAML) при визуализация' do
+  xmp
+    | <UserControl.Resources>
+          <Stylе x:Key="ButtonStyle" TargetType="Button">
+              <Setter Property="Background">
+                  <Setter.Value>
+                      <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                          <GradientStop Color="Black" Offset="0.75"/>
+                          <GradientStop Color="Orchid"/>
+                      </LinearGradientBrush>
+                  </Setter.Value>
+              </Setter>
+          </Stylе>
+      </UserControl.Resources>
+      <StackPanel>
+          <Button Content="Submit" Width="150" Height="60" Style="{StaticResource ButtonStyle}" x:Name="b1"/>
+      </StackPanel>
+
+      или просто:
+
+      button#b1 {
+        width: 160px;
+        height: 60px;
+        background: linear-gradient(black, orchid);
+      }
+
+= slide 'Заключение и очаквано бъдеще' do
+  list:
+    "Just because you can do something (with XML) doesn't mean you should."
+    За всяко нещо си има правилните технологии - някъде XML е добра технология за работата, но не и навсякъде.
+    Ако XML е най-добрата технология в момента за нещо, може би наистина е добра за него, но може и просто все още да не е направена по-добра.
+    XML is going nowhere. It came and it's here to stay.
+
+= slide 'Въпроси?' do
+  p style="font-size:500px;line-height:80%;font-style: italic; text-shadow: 10px 10px 10px gray;margin: 0 auto;text-align: center;" ?
+
+

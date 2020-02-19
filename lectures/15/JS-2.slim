@@ -1,0 +1,511 @@
+= slide 'JavaScript Part 2' do
+  p Какво ще разгледаме днес:
+  list:
+    Scope в JavaScript
+    What is `this`?
+    Patterns
+    Underscore.js
+    JQuery
+    AJAX
+    proto?
+
+= slide 'Scope в JavaScript' do
+  p В JavaScript има функционален scope. Тоест:
+  list:
+    Видимостта на променливите се ограничава до <b>функцията</b>, която я съдържа
+    => Конструкции като `if`, `for`, `while` и подобни <b>нямат</b> собствен scope
+    Променливи се декларират с ключовата дума `var`
+    Ако пропуснем `var` използваме променливата с това име в най-близкия по-горен scope, където е дефинирана
+    Променлива, която е декларирана извън функция или пък не е дефинирана никъде е глобална
+
+= slide 'Scope в JavaScript - Demo' do
+  pre.highlight.js
+    | var x=5, y=7;
+      function test (){
+        var y;
+        console.log(x, y); // 5 undefined
+        x = 8;
+        y = 10;
+        console.log(x, y); // 8 10
+        {
+          var z = 11;
+          console.log(z); // 11
+        }
+        console.log(z); // 11 - in normal languages we cannot do this
+
+        for (var i = 0; i < 5; i++){
+          // do something
+        }
+        console.log(i); // 5 - i was not inside a function so it's still visible
+      }
+      test();
+      console.log(i); // undefined
+      console.log(x, window.x); // 8 8
+
+= slide 'What is this?' do
+  ul
+    li.action Едно от странните неща за някои начинаещи javascript developer-и e `this`
+    li.action За целта трябва да се замислим за това какво въобще е функция / метод и как ги викаме
+    li.action В Javascript функциите могат да се изпълняват в контекста на различни обекти. this е референция към обекта, от който се извиква функцията при самото изпълнение.
+    li.action Затова нищо не ни пречи да дефинираме функция за един обект, а после да я закачим за друг и тя ще работи нормално.
+    li.action
+      p Можем да сменим какво е this в една функция по 3 начина:
+      ol
+        li.action Като просто закачим функцията към друг обект `a.func = b.func`
+        li.action Като я извикаме с call `a.call(b, arg1, arg2, arg3)` - подаваме кое ще е this и после всички аргументи
+        li.action Като я извикаме с apply `a.apply(b, [arg1, arg2, arg3])` - пак подаваме контекста и после масив със всички аргументи
+
+= slide 'What is this? - Demo' do
+  pre.highlight.js
+    | window.name = "Super Window";
+      var pesho = {age: 22, name: "Pesho"};
+      var gosho = {age: 21, name: "Gosho"};
+      var ivan = {age: 23, name: "Ivan"};
+      var sayHi = function () {
+        return "Hi, I am " + this.name;
+      };
+      pesho.sayHi = sayHi;
+      pesho.sayHi.toString();   // function () { return "Hi, I am " + this.name; }
+      sayHi();                  // Hi, I am Super Window
+      pesho.sayHi();            // Hi, I am Pesho
+      sayHi.call(gosho);        // Hi, I am Gosho
+      pesho.sayHi.call(gosho);  // the same
+      sayHi.apply(ivan);        // Hi, I am Ivan
+
+= slide 'What is this? - Real Example' do
+  pre.highlight.js
+    | var id = document.getElementById;
+      id('test'); // 'TypeError: Illegal invocation' - getElementById needs a context
+      id.call(document, 'test'); // works
+      // But how can we bind the id function to the object we want?
+      // ES 5:
+      id = document.getElementById.bind(document);
+      id('test'); // works
+      // Hard way:
+      id = function (id) { return document.getElementById(id); };
+      // With unknown number of args
+      var f = function () {
+        // arguments is a keyword for the arguments with which the function is called,
+        // but unfortunately they are not an array, so we call an empty array's
+        // method slice on it so that it returns an array and pass it to f.apply
+        return obj.func.apply(obj, [].slice.call(arguments));
+      }
+      // If you don't know what array#slice is:
+      [1,2,3,4].slice(2);    // [3, 4]
+
+= slide 'Patterns' do
+  list:
+    Както във много други езици винаги е добре да не замърсявате глобалния scope с много глобални променливи и функции.
+    Namespace или модул може да се направи като просто имаме обект (хеш) и в него държим релевантни променливи и функции.
+    Друго решение на проблема е като просто направим анонимна функция и я извикаме и така тя си има собствен scope.
+    Можем и да ги комбинираме и така можем да получим нещо като обект с private променливи.
+    Още design patterns, които няма да разглеждаме, но можете да разгледате сами може да намерите <a href="http://www.addyosmani.com/resources/essentialjsdesignpatterns/book/#designpatternsjavascript">тук</a>
+
+= slide 'Patterns - Demo' do
+  pre.highlight.js
+    | // Namespace
+      var ns = {
+        property: "someValue",
+        method: function () { alert("So Long, and Thanks for All the Fish"); }
+      };
+      // Self Invoking Anonymous Function (siaf)
+      (function(){
+        for (var i = 0; i < 10; i++)
+          console.log(i);
+      })();
+      // Namespace with 'private' vars
+      var basketModule = (function () {
+        var basket = []; // 'private'
+        return {
+          addItem: function (item) { basket.push(item); },
+          getItemCount: function() { return basket.length; }
+        };
+      })();
+
+= slide 'Automatic Semicolon Insertion (ASI)' do
+  list:
+    Една от най-дискутираните теми в javascript community-то е ASI.
+    Наличието на `;` е задължително, но в доста от ситуациите браузъра го добавя автоматично преди изпълнение.
+    Дори и най-старите и браузъри са задължени по стандарт да го поддържат, поради което доста хора се възползват от него. Обаче навсякъде се препоръчва да не се разчита на него. Има ситуации в които поради това, че не е била добавена `;` може даден код да се окаже невалиден.
+    За проверка за спазването на стилови конвенции има два сайта, който ви валидират кода според тях - <a href="http://jslint.com/">jslint.com</a> (по-строг) и <a href="http://jshint.com/">jshint.com</a> (по-приятен).
+    ASI се случва: Преди края на скрипта, преди '}' или нов ред <strong>само когато кодът иначе би бил невалиден</strong>
+    ASI <strong>не</strong> се случва когато кодът би бил валиден без добавена `;`. Например имаме нещо в кръгли скоби и нямаме `;` преди това - това е напълно валиден javascipt - браузърът вижда, че се опитвате да изпълните последния expression като функция с тези параметри.
+    Ако разчитате на ASI при минифициране може да имате проблеми при tool-ове - <a href="https://github.com/twbs/bootstrap/issues/3057">bootstrap vs jsmin</a>
+    Ако се чувствате уверени пробвайте <a href="http://asi.qfox.nl/">този тест</a>
+  /Докато тези два сайта са само за javascript в <a href="http://jsbin.com/">jsbin.com</a> освен това можете и по доста удобен начин да редактирате html, css, js и резултантната страница.
+
+= slide 'ASI Demo' do
+  pre.highlight.js
+    | // Why ASI is not that great
+      // sometimes it doesn't work where you expect it
+      var a = {}
+      (5)
+      // is the same as
+      var a = {}(5) // TypeError: object is not a function
+
+      // sometimes it works when you don't want it to
+      function test () {
+        return //;
+        {
+          age: 22 //;
+        } //;
+      }
+      test() // undefined
+
+    // still it's not like you can disable it, so you might as well use it
+
+= slide 'Underscore.js' do
+  list:
+    Хора, идващи от функционални езици биха могли да кажат, че на javascript му липсват някои базови функции от сорта на map, reduce, filter и подобни.
+    Допреди ES 5 в javascript дори нямаше forEach.
+    С цел да могат хората да пишат функционално и бързо _.js ни дава така нужните ни функции, както и други, които могат да се окажат доста полезни и приятни за използване. Всички тези функции са атрибути на променливата _ откъдето идва и името.
+    Начин на използване - `&lt;script src="http://underscorejs.org/underscore-min.js"&gt;&lt;/script&gt;` и после `_.func(params)`
+
+= slide 'Underscore.js - Demo' do
+  pre.highlight.js
+    | _.each([1, 2, 3], alert); // alerts each of the numbers
+      _.map([1, 2, 3], function(e) { return e * e; }); // [1, 4, 9]
+      _([1, 2, 3]).map(function(e) { return e * e; }); // [1, 4, 9]
+
+      function accumulate (sum, el){ return sum + el; }
+      var sum = _.reduce([1, 2, 3], accumulate , 0); // 6
+
+      var isEven = function(el){ return el % 2 == 0; };
+      var even  = _.find([1, 2, 3, 4, 5, 6],   isEven); // 2
+      var evens = _.filter([1, 2, 3, 4, 5, 6], isEven); // [2, 4, 6]
+
+      _.any([1, 2, 3], function(el){ return el < 2; }); // true
+      _.all([1, 2, 3], function(el){ return el < 2; }); // false
+      _.contains([1,2,3,4], 3); // true
+      _.uniq([1, 2, 1, 3, 1, 4]); // [1, 2, 3, 4]
+
+      (function(){ return _.toArray(arguments); })(1, 2, 3, 4); // [1, 2, 3, 4]
+
+      var compiled = _.template("hello: <%= name %>");
+      compiled({name: 'moe'}); //hello: moe
+      _.template("&lt;b&gt;<%- value %>&lt;/b&gt;")({value: '&lt;script&gt;'}); // &lt;b&gt;&amp;lt;script&amp;gt;&lt;/b&gt;
+
+      _.templateSettings = { interpolate: /\{\{(.+?)\}\}/g };
+      _.template("Hello {{ name }}!")({name: "Mustache"}); // Hello Mustashe!
+
+= slide 'Underscore.js - Reference' do
+  iframe.demo src='underscore.html'
+
+= slide 'JS - the bad' do
+  a href="https://www.destroyallsoftware.com/talks/wat" WAT - short video 1:21
+  p Следва код, който не трябва да пишете, но е добре да разбирате
+  pre.highlight.js
+    | var x = 5   // coding conventions - too many => there are none ()
+        , y = 7   // 2, 4 spaces, tabs, yes or no to semicolons and many more...
+        , z = 9;  // what the? - this is valid? // and some people even do this
+
+      !!x // casts x to boolean
+      // sometimes used syntax for siaf (Self Invoking Anonymous Function)
+      !function() { }()
+      // bitwise shift 0 - similar to parseInt - but makes invalid values 0
+      "123.342" >> 0
+      // bitwise switch
+      ~-1 === 0
+      !!~[1, 2, 3].indexOf(2) // true // may be seen instead of !== -1
+      // checking for undefined is not nice
+      if (typeof x !== "undefined") // although noone can redefine undefined anymore
+      // polyfills - some blue browsers need them
+      Array.prototype.forEach = Array.prototype.forEach || function (){...
+      // almost everything can be an expression
+      return x = doSomething(), false; // returns false. x is equal to doSomething()
+      // Too many async operations can get a little messy
+      async1(input, function(data) {
+        async2(data, function(data) {
+          async3(data, function(data) {
+            async4(data, function(data) {
+              // Don't worry - there are ways to work around this
+            });
+          });
+        });
+      })
+  p За добро или лошо в JS има прототипно базирано наследяване - <a href="https://www.youtube.com/watch?v=PMfcsYzj-9M">тук е обяснено добре</a> (но това ще го гледате вкъщи ако искате)
+
+= slide 'JS - the good' do
+  list:
+    Едно от хубавите неща на JS е скоростта, с която се развива и това как community-то влияе върху неговото развитие. Ако нещо се ползва -> влиза в стандарта.
+    `underscore` => Array `map`, `reduce`, `filter` и подобни
+    `jQuery` => `querySelector` и `querySelectorAll`
+    `Prototype` => Function `bind`
+
+  pre.highlight.js
+    | // method chaining - filter and map return a new array, so we can chain new function calls
+      [1,2,3,4,5,6,7,8,9]
+        .filter(function (e) {        // leave only even numbers
+          return e % 2 == 0;
+        })
+        .map(function (e) {           // map to second power
+          return e * e;
+        })
+        .reduce(function (el, res) {  // sum
+          return res + el;
+        }); // 120      // Sum of all second powers of all even numbers
+
+      // localStorage - object that persists trough shutdown
+      localStorage.foo = "bar"
+
+      // define dynamic properties
+      function createDynamicProperty(obj, prop, handler) {
+        var value;
+        Object.defineProperty(obj, prop, {
+          get: function () { return value; },
+          set: function (newValue) { return handler(newValue), value = newValue; },
+          enumerable: true,           //                     ^ this looks strange,
+          configurable: true          //                     | but is valid js...
+        });                           //                     | don't do this
+      }
+
+= slide 'JQuery ($)' do
+  list:
+    Underscore ни предоставя доста полезни функции, от които има полза в почти всеки език.
+    JQuery взима елементи от _, но акцентира върху: DOM селекции и манипулации, event-и, AJAX и други
+    Освен това JQuery има доста приятно API. С него доста бързо и лесно можем да напишем доста приятен код.
+    Идеята за chaining от underscore е доразширена и е de facto стандрарт за начин на писане. Почти всеки метод прави нещо и после връща самия обект.
+    Освен това JQuery 1.x работи на всички браузъри (IE 6+) с пълната си функционалност, където съответно иначе би било трудно да се пише нормален код.
+    Съвсем наскоро се появи JQuery 2.0, за което е обявено, че се drop-ва съпорта на IE 6-8, но засега 1.10.2 е основната версия.
+
+= slide 'JQuery - Selector Demo' do
+  pre.highlight.js
+    | // Native JavaScript DOM selection
+      document.getElementById('my-id');             // by id - HTMLElement
+      document.getElementsByTagName('p');           // by tag - HTMLCollection
+      document.getElementsByClassName('my-class');  // by class - HTMLCollection
+      // New in ES 5
+      document.querySelector('.module #something'); // by selector - HTMLElement
+      document.querySelectorAll('.module');         // by selector - HTMLCollection
+      // JQuery Example
+      $('#my-id');            // by id
+      $('p');                 // by tag
+      $('.my-class');         // by class
+      $('.module #something');// by selector
+      // JQuery has a few other selectors, which are not implemented in css selectors
+      $(':text, :password, :radio, :checkbox, :reset, :button, :submit'); // same as [type="text"], ...
+      $(':checked, :selected, :enabled, :disabled, :hidden, :visible');
+      $(':contains(random string)'); // quotes are optional unless string contains ')'
+
+= slide 'JQuery - API Demo' do
+  #my-id This is a div with id = my-id
+  pre.highlight.js
+    | $('header').find('h1') // finds h1 in header - same as $('header h1')
+      // but this could be faster if $('header') is saved and reused
+
+      $('.slide').each(function(){ console.log(this); });
+      $('.slide').map(function(){ return $(this).find(':header'); });
+
+      $('#my-id')
+      //.val()        // returns element.value (for input tags)
+      //.text()       // returns element.<a href="http://clubajax.org/plain-text-vs-innertext-vs-textcontent/">innerText or textContent</a>
+      //.html()       // returns element.innerHTML
+        .html('test') // same as element.innerHTML = value
+      //.css('font-size') // returns 10px
+        .css('font-size', '20px')
+        .css({color: 'lime', background: 'midnightblue'})
+      //.attr('class')             // gets the attribute
+        .attr('class', 'my-class') // sets the attribute
+        .hide().show()
+        .slideUp(2000).slideDown(2000)
+        .fadeOut(1000).fadeIn(1000)
+
+      $('html').addClass('dark').removeClass('dark').toggleClass('dark')
+        .toggleClass('dark', 2 > 3) // on if true, off if false, otherwise switch
+        .hasClass('dark') // true
+
+= slide 'JQuery - Traversing and DOM Demo' do
+  pre.highlight.js
+    | // dom selection methods - `parent|children`, `prev|next`, `prevAll|nextAll|prevUntil|nextUntil`...
+      // result selection methods - `first|last`, `eq(id)` // eq works even with negative numbers
+
+      // JQuery
+      $('&lt;script&gt;console.log("do stuff");&lt;/script&gt;').appendTo($('body'));
+      $('script').last().parent().append('&lt;script&gt;console.log("do stuff");&lt;/script&gt;');
+      $('pre.js:contains("appendTo"):first').prepend('"I will be inserted at the beginning";\n')
+
+      // Native JS
+      document.body.innerHTML += '&lt;script&gt;console.log("do stuff");&lt;/script&gt;';
+
+      (function(){
+        var scripts = document.getElementsByTagName('script');
+        scripts[scripts.length].parentNode.innerHTML += '&lt;script&gt;console.log("do stuff");&lt;/script&gt;';
+      }());
+
+      (function(){
+        var nodes = document.querySelectorAll('pre.js'); // HTMLCollection not Array!
+        for (var i = 0; i < nodes.length; i++)
+          if (nodes[i].innerHTML.indexOf('appendTo') !== 1)
+            return (nodes[i].innerHTML = '"I will be inserted at the beginning";\n' + nodes[i].innerHTML);
+      }());
+
+= slide 'JQuery - Events Demo' do
+  #other-id this is #other-id
+  pre.highlight.js
+    | // some events have default actions that happen when they trigger
+      // form is sent on submit, page goes to id on clicked a link with #id
+      // the following functions prevent them
+      var no = function(){ return false; };         // currently works everywhere
+      var no2 = function(e){ e.preventDefault(); }; // standard (doesn't work under old IE)
+
+      var logMe = function() { console.log(this); };// 'this' is the clicked element
+
+      $('#other-id').on('click', logMe); // onclick event - adds an event listener
+
+      // hashchange, mouseenter, mouseexit, keypress and many others have aliases
+      // that can be called directly $(selector).eventname(function)
+      $('a[href="#"]').click(no); // same as $('a[href="#"]').on('click', no);
+      $('form').submit(no);       // same as $('form').on('submit', no);<span type="hidden">'</span>
+
+      // we can bind a handler to the root that activates only when selector is the target
+      $(document).on('click', 'button', logMe); // will work even on buttons created later
+
+= slide 'JQuery - Animations' do
+  list:
+    Имаме възможност да правим анимации чрез JQuery
+    Освен ако работодателят ви не ви изнудва да подкарате анимация под IE - не го правете с JQuery - за това си има CSS.
+    На тази презентация менюто горе е фиксирано, но на други виждате че то изчезва - пробвайте да си минете с мишката няколко пъти бързо през него и гледайте колко пъти се анимира.
+    Този проблем може да се заобиколи, но въпреки това по-добре не разчитайте много на JQuery за такива неща - нека дизайнера си прави анимациите със CSS ако иска.
+    <a href="http://api.jquery.com/animate/">http://api.jquery.com/animate/</a>
+
+= slide 'AJAX' do
+  list:
+    Следва малко отклонение от JQuery:
+    AJAX = Asynchronous JavaScript and XML
+    Под ajax се разбира правенето на XML HTTP Request чрез JavaScript.
+    Или просто - възможността с js да получим данни от сървъра, без да се налага да се презарежда самата страница.
+    Изпращането на заявката и обработването на данните става асинхронно, тоест при изпращането на заявката се задава callback функция, която да обработи данните, когато те пристигнат.
+
+= slide 'JSON' do
+  ul
+    li.action JSON = JavaScript Object Notation
+    li.action Тоест JSON е стринг, който изглежда почти идентично на JS обект. Има само малко ограничения:
+    li.action Ключовете и стринговете задължително трябва да са в double quotes
+    li.action Стойностите могат да са само `string`, `number`, `object`, `array` или `true`, `false`, `null`
+    li.action
+      .two-columns.highlight.js
+        pre
+          | // <b>Object</b>
+            {
+              key: 'string',
+              num: 1024,
+              arr: [1, 2, 3],
+              obj: {naughty: null, nice: true},
+              func: function () { return true; }
+            }
+        pre
+          | // <b>JSON</b>
+            {
+              "key": "string",
+              "num": 1024,
+              "arr": [1, 2, 3],
+              "obj": {"naughty": null, "nice": true}
+            }
+    li.action `JSON.stringify(obj) => json` и `JSON.parse(json) => obj`
+
+= slide 'AJAX - Demo' do
+  pre.highlight.js
+    | // Normal JS
+      function ajax_get(url, success, failure){
+        var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xhr.onreadystatechange = function(){
+          if (xhr.readyState == 4)
+            xhr.status == 200 ? success(xhr.responseText) : failure(xhr.responseText);
+        };
+        xhr.open("GET", url, true);
+        xhr.send();
+      }
+      // One has to configure his server in order to make a cross site request
+      // So usually you will be making requests to the current server
+      var log = console.log.bind(console), err = console.error.bind(console);
+      ajax_get('../../blog/write-html-css-fast/index.html', log, err);
+
+= slide 'JQuery - AJAX' do
+  ul
+    li.action Вместо да се занимаваме с трикове за IE и неговите подобни, както и с недотам удобното API на window.XMLHttpRequest можем и просто да използваме JQuery
+    li.action `$.ajax` - това е великият метод, който прави всичко - останалите само го използват `:(`
+    li.action `$.ajax(url)`, `$.ajax(url, settings)` и `$.ajax(settings)`
+    li.action `$.get|$.post(url, data, successCallback)` - wrapper-и за първия метод - еквивалентни на:
+    li.action
+      pre.highlight.js
+        | $.ajax({
+            type: "GET" || "POST",    // каквото използвате
+            url: url,                 // url-a към който пращате request-a
+            data: data,               // данните, които вие изпращате
+            success: successCallback, // функция, която обработва резултата от сървъра
+          });
+
+= slide 'JQuery - още AJAX' do
+  ul
+    li.action `$.getJSON` - подава данните след като са парснати
+    li.action `$.getScript` - зарежда самия скрипт след получаването му (лесен начин за асинхронно зареждане навсякъде)
+    li.action `$('#main').load(url)` - използва се когато правите заявка за html - зарежда html-a в `#main`
+    li.action `$('form').serialize()` - взима всички попълнени полета от формата и ги прави на стринг от типа `name1=value1&name2=value2&name2=value2&name3=value3`
+    li.action `$('form').serializeArray()` - подобно на миналото, но ги прави на JS обект (лесно можем да го направим после на JSON) - `[ {name: "a", value: "1"}, {name: "b",value: "2"} ]`
+    li.action `$.ajaxSetup` - задава default-ни настройки на следващите request-и (не се препоръчва)
+    li.action има и <a href="http://api.jquery.com/category/ajax/">още</a> ако ви е интересно
+
+= slide 'JQuery - AJAX Demo' do
+  #ajax-content #ajax-content
+  pre.highlight.js
+    | var url = '../../blog/write-html-css-fast/index.html';
+      var log = function (data, status, _){ console.log(data); };
+      var err = function (_, status, error){ console.error(error); };
+      // the _ here is a jqXHR object - we currently don't need it
+      $.ajax({
+        url: url,
+        success: log,
+        failure: err
+      });
+      $.get(url, log);
+
+      $('#ajax-content').load(url);
+
+      $('form').on('submit', function(){
+        $.post(url, $(this).serrializeArray(), function (data){
+          // do something with data
+        });
+      });
+
+  / $.ajax(url, {
+  /   statusCode: {
+  /     200: function() { alert("great success!"); },
+  /     404: function() { alert("page not found"); },
+  /     500: function() { alert("internal server error"); }
+  /   }
+  / });
+= slide 'JQuery - AJAX Promise & Debug Demo' do
+  pre.highlight.js
+    | // alternative way of setting callbacks
+      // It's called a promise
+      $.ajax(url)
+        .done(log)
+        .fail(err)
+        .always(function(){ log('ajax request'); })
+
+      $.ajax(url).then(log, err);
+
+      // How to debug ajax with JQuery:
+      var f = function(){ log('test'); };
+
+      $(document)         // Execute:
+        .ajaxStart(f)     //    when the first ajax request begins
+        .ajaxSend(f)      //    before an ajax request is sent
+        .ajaxComplete(f)  //    whenever an ajax request completes
+        .ajaxSuccess(f)   //    whenever an ajax request completes successfully
+        .ajaxError(f)     //    whenever an ajax request completes with an error
+        .ajaxStop(f)      //    when the last ajax call completes*
+                          //      *and all the others so far are completed
+
+= slide 'Задача' do
+  /http://api.jquery.com/Types/
+  list:
+    В <a href="http://moodle.openfmi.net/course/view.php?id=989" target="_blank">moodle</a>
+  / Този път презентацията беше малко по-сложна.
+  / Затова засега нямате домашно, но следващият път ще се упражняваме върху този материал.
+  / Тогава сигурно ще имате домашно ;)
+  /Най-вероятно вече ви е писнало от задачи, а и вече идва края на годината. Затова този път задачата не е задължителна, а само ако искате да се поупражните можете да я направите.
+  /Можете да преправите формите за регистрация, логин, коментари и подобни от миналите задачи да правят AJAX request-и.
+  /Можете и да пробвате да изтеглите с ajax някоя съседна страница от този сайт.
+  /Можете да направите часовник, който се update-ва всяка секунда, като взима часа от сървъра.
+  /Сега няма задължителна задача по този материал, но при представянето на проектите ще изискваме заявките да се правят с AJAX.

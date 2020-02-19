@@ -1,0 +1,342 @@
+= slide 'HTML CSS 2' do
+  list:
+    Какво ще разгледаме днес:
+    Някои детайли около HTML, както и някои атрибути, специални за някои тагове
+    Още малко CSS селектори
+    Как да пишем бързо HTML и CSS с Emmet
+    Още някои особености за CSS
+    CSS Hacks - ще има много
+= slide 'XHTML 2' do
+  list:
+    Всъщност има и XHTML 2 и макар и едва ли скоро ще ви се наложите да пишете на него, е добре поне да знаете за съществуването му.
+    <a href="http://xhtml.com/en/future/x-html-5-versus-xhtml-2/">XHTML 2 vs HTML 5</a>
+    Някои интересни особености около него:
+    `nl` таг - Navigation List. Освен `li`-та съдържа и един `label` в началото.
+    `di` таг, който да групира термини (`dt`) и описания (`dd`) в definition list-a (`dl`)
+    `href` атрибутът е валиден за всеки елемент (всеки елемент може да е линк)
+    `h` таг, който да описва заглавие на секция - по-удобно и семантично от /h[1-6]/
+    `role` атрибут, който също има потенциал
+    Между другото CSS може да се прилага и на HTML и XHTML и на какъвто и да е XML
+= slide 'HTML Entities' do
+  ul
+    li.action Както видяхме &lt; и &gt; се използват за синтаксиса на таговете. Как тогава да ги изпишем?
+    li.action Има голяма група от кодове, отговаряща на някои специални символи. Вместо символите пишем кодовете и браузъра ще ги визуализира адикватно.
+    li.action Синтаксисът е <code>&amp;entity_name;</code> (или <code>&amp;#entity_number;</code>)
+    li.action
+      | <table class="small-wide">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Entity Name</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>&nbsp;</td><td>&amp;nbsp;</td><td>Non-breaking space</td></tr>
+            <tr><td>&lt;</td><td>&amp;lt;</td><td>Less-than</td></tr>
+            <tr><td>&gt;</td><td>&amp;gt;</td><td>Greater than</td></tr>
+            <tr><td>&amp;</td><td>&amp;amp;</td><td>Ampersand</td></tr>
+            <tr><td>&copy;</td><td>&amp;copy;</td><td>Copyright</td></tr>
+            <tr><td>&trade;</td><td>&amp;trade;</td><td>Trademark</td></tr>
+            <tr><td>&larr;</td><td>&amp;larr;</td><td>Left arrow</td></tr>
+            <tr><td>&uarr;</td><td>&amp;uarr;</td><td>Up arrow</td></tr>
+            <tr><td>&rarr;</td><td>&amp;rarr;</td><td>Right arrow</td></tr>
+            <tr><td>&darr;</td><td>&amp;darr;</td><td>Down arrow</td></tr>
+            <tr><td>&harr;</td><td>&amp;harr;</td><td>Left right arrow</td></tr>
+            <tr><td>&spades;</td><td>&amp;spades;</td><td>Spade</td></tr>
+            <tr><td>&clubs;</td><td>&amp;clubs;</td><td>Club</td></tr>
+            <tr><td>&hearts;</td><td>&amp;hearts;</td><td>Heart</td></tr>
+            <tr><td>&diams;</td><td>&amp;diams;</td><td>Diamond</td></tr>
+          </tbody>
+        </table>
+    li.action <a href="http://www.freeformatter.com/html-entities.html">Пълен списък</a>
+= slide 'Data URI Base64' do
+  list:
+    Засега знаем, че img тага има src атрибут и и background-image има url(...)
+    Обикновено очакваме и на двете места стои url на картинката, но има и друг начин
+    Синтаксисът е `data:image/jpeg;base64,ENCODED_STRING`
+    Поддържа се навсякъде... без стари IE-та.
+    IE 8 има ограничение от 32kb
+    <a href="http://www.phpied.com/mhtml-when-you-need-data-uris-in-ie7-and-under/">линк за хак за IE 6-7</a>
+= slide 'Защо да го използваме?' do
+  list:
+    Base64 encode-ването не е особено ефективно от гледна точка само на размер (около 30% по-неефективно), но в момента по-проблемно е времето за връзка, а не прехвърлянето на данните. Затова намаляването на бройката request-и е от особено значение.
+    Ами кеширане?
+    Когато е част от HTML-a не се кешира, но ако е част от CSS-a се кешира.
+= slide 'CSS Sprites' do
+  list:
+    Има и още един начин за намаляване на request-ите за картинки.
+    <img src="images/css_sprite.png">
+    Много картинки се сливат в една. После чрез background-position се достъпва оригиналната картинка.
+= slide 'CSS Sprites Demo' do
+  textarea.new-demo
+    | <div id="sprite-example"></div>
+      <style>
+        #sprite-example {
+          background-position: -444px -69px;
+          height: 33px;
+          width: 92px;
+          background-image:url(images/css_sprite.png);
+        }
+      </style>
+= slide 'css:background-image vs tag:img' do
+  list:
+    Когато добавяте картинка за това какво е тя семантично - част от съдържанието ли е или просто някакъв фон?
+    Стремете се да ги избирате правилно. Не ползвайте картинка за фон или обратното.
+= slide 'Новите HTML5 елементи подробно' do
+  list:
+    `header` - заглавна част, обикновено съдържа лого и евентуално навигация
+    `hgroup` - група от заглавие, подзаглавие и тн
+    `footer` - завършваща част, обикновено съдържа &copy;
+     и други
+    `aside` - странична част, съдържаща реклами и неща, свързани с основния материал
+    `nav` - навигация
+    `article` - елемент, съдържащ информация, самостоятелно обособена, която може да бъде извадена от контекста на страницата и да не губи своя смисъл. Обикновено има header и евентуално footer
+    `section` - елемент, който обособява секция от страницата. По стандарт се счита, че трябва всяка секция трябва да има заглавие
+    `figure` - контейнер за картинка (още позната като фигура), очаква се да съдържа figcaption
+    `figcaption` - име или коментар към картинката
+    `mark` - новият span - използва се за маркиране на даден текст - в някои браузъри има default-ни стойности за цвят на текста и фона
+= slide 'Как да ги подкарам на IE 6-8?' do
+  ul
+    li За тези елементи, както и много други HTML5/CSS3 related неща - <a href="http://modernizr.com/docs/">modernizr</a>
+    li
+      | Само за тези елементи - html5shiv
+        <xmp><!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--></xmp>
+    li
+      | Или можете да си напишете набързо своя версия - не сме учили още js, но не е сложно:
+        <xmp><!--[if lt IE 9]><script>(function(){
+        var HTML5_ELEMENTS = ['header', 'hgroup', 'footer', 'aside', 'nav', 'article', 'section', 'figure', 'figcaption', 'mark'];
+        for (var i = HTML5_ELEMENTS.length; i >= 0; i--) document.createElement(HTML5_ELEMENTS[i]);
+        })()</script><![endif]--></xmp>
+    li Сложете го някъде в началото на страницата (head)
+    li Задайте и CSS-a за всеки случай:
+    li <code>header, hgroup, footer, aside, nav, article, section, figure, figcaption {display: block}</code>
+= slide 'HTML5 media demo' do
+  p embed, video, source, audio, track, canvas, svg
+  p browser support за тях, както и всичко останало - <a href="http://caniuse.com">caniuse.com</a>
+  textarea.new-demo
+    | <h4>Audio</h4>
+      <audio controls>
+        <source src="http://w3schools.com/html/horse.ogg" type="audio/ogg">
+        <source src="http://w3schools.com/html/horse.mp3" type="audio/mpeg">
+        Text here will be displayed only if the tag is not supported by your browser.
+      </audio>
+
+      <h4>Video</h4>
+      <video width="320" height="240" controls>
+        <source src="http://w3schools.com/html/movie.mp4" type="video/mp4">
+        <source src="http://w3schools.com/html/movie.ogg" type="video/ogg">
+      </video>
+
+      <h4>Canvas</h4>
+      <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+        You can draw on this canvas with javascript
+      </canvas>
+
+      <h4>SVG (Scalable Vector Graphics)</h4>
+      <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+        <polygon points="100,10 40,180 190,60 10,60 160,180"
+        style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;">
+      </svg>
+= slide 'HTML5 forms demo' do
+  textarea.new-demo
+    | <h4>HTML5 Autocomplete with datalist</h4>
+      <input list="browsers">
+
+      <datalist id="browsers">
+        <option value="Internet Explorer">
+        <option value="Firefox">
+        <option value="Chrome">
+        <option value="Opera">
+        <option value="Safari">
+      </datalist>
+
+      <h4>New input types</h4>
+      <label> Range
+        <input type="range" min="0" max="100">
+      </label>
+      <label> Search
+        <input type="search">
+      </label>
+      <label> Color
+        <input type="color">
+      </label>
+      <label> Date
+        <input type="date">
+      </label>
+= slide 'Малко селектори' do
+  list:
+    `foo~bar` - елементи bar, предшествани от елементи foo
+    `[src]` - елементи, които <strong>имат</strong> атрибут src
+    `[src="//ssl.gstatic.com/gb/images/v1_3fc5b988.png"]` - елементи, чийто src е <strong>равен</strong> на "//..."
+    `[src^="https"]` - елементи, чийто src <strong>започва</strong> с https
+    `[src$=".png"]` - елементи, чийто src <strong>завършва</strong> с .png
+    `[src*="html5"]` - елементи, чийто src <strong>съдържа</strong> в себе си html5
+= slide 'Pseudo селектори' do
+  list:
+    `:not(some_selector)` - много удобен селектор - мачва отрицанието на some_selector
+    `:before` и `:after` - вмъкват съдържание преди или след дадения селектор
+    често се използват за clear след float-ове:
+    .clearfix:after {<br>&nbsp;&nbsp;&nbsp;&nbsp;content: ".";<br>&nbsp;&nbsp;&nbsp;&nbsp;visibility: hidden;<br>&nbsp;&nbsp;&nbsp;&nbsp;display: block;<br>&nbsp;&nbsp;&nbsp;&nbsp;height: 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;clear: both;<br>}
+    `#sasa:target` - много интересен селектор - когато кликнем върху `&lt;a href="#sasa"&gt;Sasa&lt;/a&gt;` браузърът скролва до дадения елемент с id = sasa. Докато url-a в address bar-a завършва на #sasa този елемент е бива хващан от селектора и може да се зададе някакъв css за него
+= slide 'Скъпи Деца' do
+  list:
+    `:empty` - абсолютно празен елемент, който няма нито деца, нито дори textNode
+    `:first-child` и `:last-child` - първи и последен поделемент на своя родител
+    `:first-of-type` и `:last-of-type` - първи и последен поделемент на своя родител от съответния тип
+    `:only-child` и `:only-of-type` - единствено дете или единствено дете от дадения тип
+    `:nth-child(n)`, `:nth-of-type(n)` - n-то дете и тн - <strong>Внимание - броенето започва от 1, а <em>НЕ</em> от 0</strong>
+    `:nth-last-child(n)`, `:nth-last-of-type(n)` - като последното, но броенето започва отдолу нагоре
+    При nth-child и тн интересно е, че можете да избирате деца, отговарящи на дадена проста формула, от типа `a<em>n</em>+b`. Тоест имате:
+    `:nth-child(3)` - 3то дете
+    `:nth-child(2n+3)` - 3, 5, 7, 9...
+= slide 'Render Engines' do
+  list:
+    Защо се говори, че някои неща не са еднакви под различните браузъри?
+    Защото различните браузъри имат различни render engine-и и възпроизвеждат html & css по различен начин.
+    Както винаги за съпорт на дадено property - <a href="http://caniuse.com">caniuse.com</a>
+    Trident - Internet Explorer
+    Gecko - Firefox
+    KHTML - Konqueror
+    WebKit - fork на KHTML - Chrome до v27, Safari
+    Presto - Opera до v14
+    Blink - fork на WebKit - Chrome v28-30, Opera v15-17
+= slide 'With many render engines come many prefixes' do
+  list:
+    Тъй като стандартите все още се определят още преди те да са готови различните браузъри започват да ги имплементират. Понякога дори може дадена имплементация да повлияе на стандарта.
+    Обикновено тези екпериментални feature-и се добавят с някакъв префикс. Префиксите са следните:
+    `-ms` - Internet Explorer
+    `-moz` - Firefox
+    `-webkit` - Chrome, Safari
+    `-o` - Opera
+    След като обаче Chrome реши да се отдели в Blink, Opera реши да го последва. Като цяло в blink ще се старае да поддържа директно стандартите, но дотогава, за да спестят поне малко ядове на developer-ите се реши, че blink ще продължава да ползва -webkit префикса. <a href="http://www.theverge.com/2013/4/3/4180260/google-forks-webkit-with-new-blink-rendering-engine-for-chrome">Review 1</a> <a href="http://www.sitepoint.com/blink-rendering-engine-google-chrome/">Review 2</a> <a href="http://prng.net/blink-faq.html">Fun Faq</a>
+= slide 'Ами стари IE?' do
+  ul
+    li.action Ами не. Обикновено нещо, което ни прави най-големи проблеми е някоя версия на IE, която няма property с нужния префикс и тн. Затова има доста хакове специално за IE. За щастие имаме лесни хакове за да target-ваме точно определени от проблемните версии на IE (По конкретно 6, 7, 8):
+    li.action
+      | <xmp>body {
+          color: red; /* all browsers, of course */
+          color : green\9; /* IE10 and below */
+          *color : yellow; /* IE7 and below */
+          _color : orange; /* IE6 */
+        }</xmp>
+    li.action Всъщност всяко IE може да работи в 2 режима - standards или quirks mode. Докато е в quirks mode горните хакове го разглеждат като ie6.
+= slide 'IE conditional comments' do
+  list:
+    `-x` префиксите обикновено се използват за използване на някои нови и несигурни feature-и. *_\9 хаковете обикновено са поради простата некомпетентност на съответните браузъри. За последния случай имаме и алтернатива:
+    `&lt;!&dash;&dash;[if CONDITION]&gt; code here &lt;![endif]&dash;&dash;&gt;`
+    CONDITION може да е:
+    `!IE`, `IE`, `IE X` (X може да е 6, 7, 8, 9 и тн)
+    `gt`, `lt`, `gte`, `lte` - Пример `[if lt IE 8]`
+= slide 'Bye bye Old IE' do
+  list:
+    За щастие в днешно време все повече фирми решават да drop-нат съпорт на старите IE-та и дори и Microsoft се води, че прави някакъв опит да накара потребителите си да ъпдейтнат. Но не мога да обвиня много тези особено компетентни потребители - и аз на една стара машина ползвам Firefox 3.6.
+    Все пак ще споменем съвсем накратко още малко old ie support-a:
+    opacity-hack - `{opacity:0.7; *filter: alpha(opacity=70);}`
+    inline-block-hack - `{display:inline-block; *zoom:1; *display:inline;}`
+    Ако се чудите защо за бога има zoom:1 - то включва едно магическо <a href="http://www.satzansatz.de/cssd/onhavinglayout.html">hasLayout property</a> за старите IE-та, което подобрява доста неща.
+= slide 'Box Model Again' do
+  ul
+    li.action Помните ли box модела?<br>Има и още един. Една от причините, поради които може да сте чували front-ender-и да плюят по ie6 e точно неговото разбиране за box-model-а
+    li.action style="float:left; margin-right:30px;" <img src="images/boxmodel.gif" alt="boxmodel">
+    li.action След като вгорчи живота на много хора обаче, на някои хора им хрумна, че идеята не е лоша. На доста хора това би им изглеждало по-интуитивно и определено по-лесно за поддържане в някои ситуации.
+    li.action Резултатът: `box-sizing` - `content-box` (стария начин) / `padding-box` (не се поддържа почти никъде) / `border-box` (начина на IE).
+    li.action border-box работи навсякъде като за firefox изисква -moz-box-sizing и само за IE=7 под standards mode изисква <a href="https://github.com/Schepp/box-sizing-polyfill">хак</a> (под останалите IEта работи без хак, както и под IE7 в quirks mode)
+= slide 'I Can Has RGBA' do
+  list:
+    Както помните opacity прави елемента полу-прозрачен. Това обаче важи за целия елемент (фон + съдържание). Често искаме само фонът да бъде прозрачен. Затова в CSS3 има още 2 начина за дефиниция за цвят:
+    rgba(red, green, blue, alpha) - като в случая alpha е като opacity, но само за дадения цвят
+    hsla(hue, saturation, lighness, alpha) - аналогично
+    За съжаление на някои developer-и няма 16тичен синтаксис, съдържащ прозрачност по стандарта
+    Естествено отново IE има свое мнение за всичко - стандартите не работят на IE < 9, но затова пък има:
+    <code>filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#880000ff',EndColorStr='#880000ff',GradientType=0);background-color:transparent\9;</code> - форматът на цветовете е AARRGGBB тоест за разлика от останалите места, където прозрачността варира между 0-100 или 0-1 тук варира 00-FF (0-255)
+= slide 'CSS3 Backgrounds' do
+  list:
+    `background-size` -  размер на картинката - length / percentage / cover / contain
+    `background-clip` -  може да бъде отрязано само парче от фона да се показва
+    `background-origin` - content-box / padding-box / border-box - в коя част на елемента да се визуализира фона
+    CSS3: `background: color position size repeat origin clip attachment image` - очевидно работят и в други последователности, но понякога може да е съмнително
+    може дори да има няколко фона стакнати един върху друг (естествено не и под IE без js)
+    <code>background: url(back.png) settings;/* Fallback for IE<9 & other old browsers */<br>background: url(top.png) settings, url(middle.png) settings, url(back.png) settings;</code>
+    Помислете иначе как вие бихте реализирали background-size и multiple backgrounds на стари IEта, ако нямате достъп до външни библиотеки и скриптове.
+= slide 'CSS3 FTW', 'Нови яки ефекти' do
+  list:
+    `text-transform` - uppercase / lowercase / capitalize
+    `text-shadow` - x-offset y-offset blur color
+    `box-shadow` - x-offset y-offset blur spread color inset. Може да се изредят няколко чрез запепайка, подобно на background.
+    `border-radius` - top-left-radius top-right bottom-right bottom-left
+= slide 'CSS3 Demo' do
+  textarea.new-demo
+    |
+      <div style="box-shadow: 2px 2px 10px 4px #225">
+        <h1>Box with box-shadow</h1>
+        <p style="text-transform:uppercase">this will be uppercase text</p>
+        <p style="text-shadow: 1px 1px gold">this text has a shadow</p>
+        <div style="padding:10px;margin:5px;border-radius:10px;background:gray;">I can has rounded corners</div>
+      </div>
+= slide 'CSS3 Gradients' do
+  list:
+    И така:
+    `background: -moz-linear-gradient(black, white); /* FF 3.6+ */`
+    `background: -webkit-linear-gradient(black, white); /* Safari 5.1+, Chrome 10+ */`
+    `background: -o-linear-gradient(black, white); /* Opera 11.10 */`
+    `filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#ffffff'); /* IE6 - IE9 */`
+    `background: linear-gradient(black, white); /* the standard */`
+    <a href="http://www.impressivewebs.com/css3-linear-gradient-syntax/">linear gradient syntax</a>
+= slide 'CSS3 Gradients Intro' do
+  iframe.intro src="http://css-tricks.com/examples/CSS3Gradient/"
+= slide 'Всички тези хакове и префикси са грозни - какви алтернативи има?' do
+  list:
+    <a href="http://modernizr.com/">Modernizr</a> - изисква да знаете поне малко js
+    <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills">Всички известни polyfills</a> - вземете каквото ви трябва
+    <a href="http://imsky.github.io/cssFx/">cssFx</a> - просто и лесно за употреба, оправя почти всичко без gradient със полу-прозрачен фон
+    <a href="http://css3pie.com/">PIE</a> - border-radius, box-shadow (black), gradient (не-полу-прозрачен ако не се лъжа)
+    Или CSS препроцесор - вие пишете нормален код, а получавате грозния css, който да работи навсякъде - Less || Sass
+= slide 'Как да оптимизираме писането на HTML и CSS' do
+  list:
+    Ами има няколко неща, които е добре да направим:
+    Да си изберем редактор, в който се чувстваме комфортно и да допълним с плъгини функционалности, които ни липсват ако има такива.
+    Например: Ако ползвате Notepad++ и сте решили да пишете html ръчно можете да си включите автоматичното затваряне от TextFX -> Settings
+    От тези плъгини Emmet ще ни бъде от основно значение.
+    Можем да помислим и за някакъв HTML и/или CSS препроцесор
+    Можете да разгледате <a href="http://iliasky.com/blog/write-html-css-fast/">този линк</a>, който е точно на тази тема
+= slide 'Emmet Intro' do
+  iframe.intro src="http://docs.emmet.io/"
+= slide 'Emmet Tips' do
+  iframe.intro src="http://designshack.net/articles/css/6-awesome-emmet-css-time-saving-tips/"
+= slide 'Debug' do
+  list:
+    Вече сте започнали проекта си и трябва да видите защо нещо се чупи?
+    F12 е командата във всички браузъри без Opera за отварянето на съответния инспектор
+    Chrome -> Chrome DevTools, Firefox -> Firebug, IE -> F12, Opera -> Dragonfly
+    Навсякъде без IE имате и Right Click -> Inspect Element
+    Можете да си пишете CSS-a на място и да виждате как се променя резултатът и после да го копирате.
+= slide 'Stylebot Chrome Extension' do
+  list:
+    При инспектора обаче рискувате да не успеете да пропуснете нещо и да трябва да повтаряте действието.
+    За такива ситуации има chrome extension на име <a href="http://chrome.google.com/webstore/detail/stylebot/oiaejidbmkiecgbjeifoejpgmdaleoha" target="_blank">stylebot</a> - дава ви възможност да пишете директно в неговия панел и промените да се запазват. След инсталиране трябва да check-нете "Allow access to file URLs" от chrome://extensions/
+    Бонус: Чрез него можете и да си правите или добавяте ваши стилове към уебсайтове, които посещавате често (например нощни теми).
+    Примери:
+    <a href="http://stylebot.me/styles/3970">Dark & Wide YouTube</a>
+    <a href="http://stylebot.me/styles/3971">Dark & Optimized Execute PHP online</a>
+    <a href="http://stylebot.me/styles/666">ReDesign Stylebot... With Stylebot</a>
+= slide 'Задача' do
+  p Превърнете <a href="homework/">този html</a> в страница, която изглежда така:
+  img src="homework/site.png"
+= slide 'И ако искате' do
+  ul
+    li.action Помислете как HTML-a на първата задача може да бъде направен семантично по-коректен и приятен.
+    li.action Поиграйте си малко с HTML & CSS и си направете някакъв прототипен дизайн на проекта.
+    li.action Задавайте въпроси ако нещо не ви е ясно как да стане.
+    li.action And may the hacks be with you! (or maybe not)
+  /script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"
+  /javascript:
+  /  $('textarea.new-demo').each(function(){
+  /    var html = '<div class="demo-code"><textarea>' + this.value + '</textarea></div><div class="demo-result"></div>';
+  /    $(this).replaceWith('<div class="demo">' + html + '</div>');
+  /  });
+  /  $('.demo-code textarea').change(function(){
+  /    var v = this.value; $(this).parent().parent().find('.demo-result').html(v);
+  /  }).change()
+  /  $('body > header nav ul').prepend('<li id="toggle-dark-style" onclick="$(\'html\').toggleClass(\'dark\')">Toggle Dark Style</li>')
+  /| <style>xmp,dl{font-size:16px} dt{font-size:20px;font-weight:bold;margin-top:5px} dd{padding-left:30px} html,body,#deck{width:100%;height:100%;margin:0;padding:0;box-sizing:border-box} #deck{position:absolute;top:0;overflow:auto} .slide{padding-top:30px} header{height:25px} header h1{line-height:25px} sub,sup{font-size:smaller} sub{vertical-align:sub} sup{vertical-align:super} .note{display:block;font-style:italic;} .demo{width:100%;height:100%;display:table} .demo-code,.demo-result{width:50%;font-size:18px;display:table-cell;vertical-align:top} .demo-code textarea{min-width:100%;box-sizing:border-box;min-height:300px} .demo-result{box-sizing:border-box;padding-left:20px} .demo-result iframe{width:100%;height:400px} fieldset{border:2px groove threedface;padding:10px} label{display:block} .dark body,.dark textarea{background-color:#222;color:#ccc;} .dark #deck *{text-shadow:none !important;} .dark #deck table th{background-color:#111;} .dark #deck code{background:#111;color:#ccc;border:1px solid #000;border-radius:10px;} #toggle-dark-style{margin-right: 20px;background: rgba(0,0,0,0.1);border-radius: 10px;height: 20px;line-height: 20px;padding: 2px;border: 1px solid;}#toggle-dark-style:hover {cursor: pointer;background: rgba(0,0,0,0.2);} .intro{width: 100%;height: 100%;position: absolute;left: 0px;top: 0;border-top: 110px solid transparent;box-sizing: border-box;-moz-box-sizing: border-box;}</style>

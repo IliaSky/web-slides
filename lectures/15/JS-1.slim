@@ -1,0 +1,190 @@
+= slide 'JavaScript' do
+  list:
+    JavaScript е скриптов език за уеб.
+    Изпълнява се предимно в браузъра.
+    Oбектно-ориентиран език e, но:
+    Има прототипно базирано наследяване.
+    Има динамично типизиране.
+    Има функционални елементи(first-class functions).
+
+= slide 'JavaScript в HTML' do
+  | <xmp>
+      <script type="text/javascript" src="file.js"></script>
+      <script type="text/javascript">...</script>
+    </xmp>
+
+= slide 'Променливи' do
+  pre.highlight.js
+    | var intValue = 1; // typeof intValue == 'number'
+      var floatValue = 3.0; // typeof floatValue == 'number'
+      var stringValue = "This is a string\n"; // typeof stringValue == 'string'
+      var sqString = 'Also a string' // no difference between single and double quotes;
+
+= slide 'Масиви' do
+  p Последователност от елементи. Индексирана и поредна колекция.
+  pre.highlight.js
+    | var emptyList = [];
+      var homogenousList = [1, 2, 3];
+      var heterogenousList = ['one', 2, 3.0];
+      alert(heterogenousList[0]); //'one'
+      alert(heterogenousList[1]); //2
+      alert(heterogenousList[2]); //3.0
+
+= slide 'Обекти(речници)' do
+  p Или още map, хешове, речници, асоциативни масиви и други. Съдържа двойки с ключ и стойност. Ключовете са низове.
+  pre.highlight.js
+    | var emptyMap = {};
+      var homogenousMap = {'one': 1, 'two': 2, 'three': 3};
+      var heterogenousMap = {'one': 1,'two': 'two','three': 3.0};
+      alert(homogenousMap.one);    //1
+      alert(homogenousMap['one']); //1
+  p Първият (с точката) е за предпочитане.
+
+= slide 'Условни оператори' do
+  pre.highlight.js
+    | if (cond) {
+        ...
+      } else if (cond) {
+        ...
+      } else {
+        ...
+      }
+
+      isHappy == true ? 'smile' : 'frown'
+
+= slide 'Switch' do
+  pre.highlight.js
+    | switch (n) {
+        case 1:
+          //execute code block 1
+          break;
+        case 2:
+          //execute code block 2
+          break;
+        default:
+          //code to be executed if n is different from case 1 and 2
+      }
+
+= slide 'Цикли' do
+  pre.highlight.js
+    | while (condition) {
+        ...
+      }
+
+      do {
+        ...
+      } while (condition);
+
+      var cars = ['Audi', 'BMW', 'Mercedes-Benz', 'Opel', 'Porsche', 'Volkswagen'];
+      for (var i = 0; i < cars.length; i++) {
+        document.write(cars[i] + '&lt;br&gt;');
+      }
+
+= slide 'Обхождане на речник' do
+  pre.highlight.js
+    | var person = {first_name: 'John', last_name: 'Doe', age: 25};
+      var txt = '';
+      for (var key in person) {
+        txt += person[key] + ' ';
+      }
+
+      document.write(txt); //John Doe 25
+
+= slide 'Функции' do
+  pre.highlight.js
+    | var callable = function (message) {
+        alert('Callable called with message = ' + message);
+      };
+
+      function callable(message) {
+        alert('Callable called with message = ' + message);
+      }
+
+      callable('Hello World');
+
+= slide 'Глобални обекти в браузъра' do
+  list:
+    window (self, top, parent) - window обекта съдържа методи и свойства за прозореца за браузъра
+    screen - обект, чрез който може да се вземе информация за екрана - размери, отстояния и т.н.
+    history - обекта, който контролира история. Чрез него може да се връщаме в предишни страници.
+    location - обекта, който се грижи за текущия адрес. С него може да достъпим информация за адреса или да сменим с нов.
+    navigator - обект който съдържа свойста и методи, описващи браузъра
+    document - съдържа методи и свойства за работа с елементите в html документа.
+
+= slide 'DOM' do
+  p HTML-a се описва в дървовидна структура. Тя се нарича DOM дърво.
+  img src='images/htmltree.gif'
+
+= slide 'Селектиране на елементи' do
+  | <xmp>
+      <h1 id="page-title">Get element(s) by _____ <em>example</em></h1>
+      <h2>First article</h2>
+      <p id="content">Article Content</p>
+      <ul>
+        <li class="food">Pizza</li>
+        <li class="drink">Water</li>
+        <li class="drink">Wine<li>
+        <li class="food">Burger</li>
+      </ul>
+    </xmp>
+
+  pre.highlight.js
+    | var title = document.getElementById('page-title');   // HTMLElement - <b>only 1 element!</b>
+      var items = document.getElementsByTagName('li');     // HTMLCollection
+      var foods = document.getElementsByClassName('food'); // HTMLCollection
+
+      element.innerHTML += '&lt;em&gt;example&lt;/em&gt;';
+      console.log(element.innerHTML); // Get element(s) by _____ &lt;em&gt;example&lt;/em&gt;
+      console.log(element.textContent); // Get element(s) by _____  example
+      console.log(foods[0].textContent); // Pizza
+      foods[0].textContent += 'Hut'; // Pizza Hut
+
+= slide 'Работа с елементи' do
+  pre.highlight.js
+    | // Create
+      var text = document.createTextNode('text node content');
+      var div = document.createElement('div');
+
+      // Add
+      div.appendChild(text);
+      document.body.appendChild(div);
+
+      // Delete
+      var list = document.getElementById('myList');
+      list.removeChild(list.childNodes[0]);
+
+= slide 'Events' do
+  ul
+    li В клиентския JavaScript има асинхронен event-driven програмен модел.
+    li При него браузърът генерира събитие когато:
+    li
+      ul
+        li.action Приключи зареждането на страницата
+        li.action Потребителят кликне с мишката някъде
+        li.action Потребителят натисне копче на клавиатурата
+        li.action И много още...
+    li.action Ако някои събития за интересни за нас, може да имплементираме JavaScript код, който да реагира като извика функция при определено събитие.
+
+= slide 'Event handling' do
+  pre.highlight.js
+    | // Create handler
+      var handleMouseClick = function(event) {
+        console.log(event);     // See what you get in the console
+        alert('Thanks again!');
+      };
+
+      var button = document.getElementById('mybutton');
+      button.addEventListener('click', handleMouseClick);
+      button.removeEventListener('click', handleMouseClick);
+
+      // Alternative - not very recommended
+      button.onclick = handleMouseClick; // this way we can have only one handler
+
+
+= slide 'Задача' do
+  p Имплементирайте играта Морски шах(Tic-tac-toe) в браузъра посредством JavaScript.
+  p Потребителският интерфейс трябва да включва игрално поле, върху което потребителят прави ходове, кликайки на празните клетки.
+  p Срещу потребителя трябва да играе компютър, който е достатъчно поне да избира произволни валидни ходове.
+  p Предайте [fn].html и [fn].js. Макар и да не е задължително можете да предадете и [fn].css, ако имате някакви стилове.
+  p Ако ви покажем някаква примерна имплементация преди крайния срок, то тя ще бъде само за да получите идея какво трябва да се прави, а не нещо, което да копирате.
+  p Трябва да има бутон за рестартиране на играта и да спира играта ако някой победи и да извежда резултатът по някакъв начин.
