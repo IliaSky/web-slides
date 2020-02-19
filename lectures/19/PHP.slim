@@ -1,0 +1,444 @@
+= slide 'Клиент - Сървър' do
+  pre.highlight.sql
+    |             Browser
+                   |   ↑
+        HTTP GET   |   | HTML
+        index.php  |   | Content
+                   ↓   |
+              Server (Apache)
+                |        ↑
+                |        |
+                ↓        |
+              PHP Interpreter
+                  |    ↑
+       SELECT *   |    |
+       FROM Users |    |
+                  ↓    |
+                 DB (MySQL)
+
+/ = slide 'Клиент - Сървър' do
+/   ul
+/     li.action Браузърът изпраща HTTP заявка към сървъра.
+/     li.action Сървърът (PHP) я обработва.
+/     li.action Той може да прочете информация от база от данни.
+/     li.action Накрая генерира отговор под формата на HTML документ.
+
+= slide 'PHP - XAMPP' do
+  p Xampp съдържа Apache, PHP, MySQL и други неща
+  ol
+    li.action <a href="http://sourceforge.net/projects/xampp/files/latest/download">Download XAMPP</a> => Install *
+    li.action `C:/XAMPP/xampp-control.exe` => Пускате първите 2 (Apache и MySQL)
+    li.action При проблем с портовете - `Apache -> Config -> httpd.conf` => Сменяте `Listen 80` с друг порт
+    li.action Всеки файл `C:/XAMPP/htdocs/awesome.php` отговаря на `localhost/awesome.php` в браузъра
+  p.action * Ако нямате права да инсталирате xampp просто използвайте <a href="https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/7.2.1/xampp-portable-win32-7.2.1-0-VC15.zip/download">portable версия</a>
+
+= slide 'Online website' do
+  p След време може да решите да си качите уебсайта в мрежата
+  p Тогава ще са ви нужни няколко неща
+  ol
+    li.action
+      p Domain name - име, чрез което да го достъпваме.
+      p `mywebsite.tk` - <a href="http://www.dot.tk">free</a>; `mywebsite.com` - 23лева/година
+    li.action
+      p Hosting
+      p free - <a href="http://000webhost.com">000webhost.com</a> <a href="https://www.freehosting.com/">freehosting.com</a>
+      p paid - сравнения <a href="https://hostingfacts.com/cheap-web-hosting/">1</a> и  <a href="https://www.hostingadvice.com/reviews/cheap/">2</a>
+    li.action
+      p FTP manager - онлайн от хостинга, FileZilla или дори Windows Explorer ¿
+
+  ol.questions
+    li `This PC` -> `Map Network Drive` -> `Connect to a website...` -> `Next^2` -> `ftp://username@host/` -> `Next & Finish`
+= slide 'PHP файл' do
+  textarea[style="display: none"]
+    | <body></body>
+  textarea.example.php
+    | <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Example</title>
+        </head>
+        <body>
+          <?php
+            echo "<h2>Hi, I'm a PHP script!</h2>";
+          ?>
+        </body>
+      </html>
+
+= slide 'Резултат в браузъра' do
+  textarea.example.html
+    | <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Example</title>
+        </head>
+        <body>
+          <h2>Hi, I'm a PHP script!</h2>
+        </body>
+      </html>
+
+= slide 'Променливи' do
+  textarea.example.php
+    | <?php
+        $myAge = 16;            // a PHP Integer
+        $yourAge = 15.5;        // a PHP Float
+        $hasHair = true;        // a PHP Boolean
+        $greeting = 'Hello';    // a PHP String
+        $name = 'Student';
+
+        $added = $myAge + $yourAge;
+        $concatenated = $greeting . ' ' . $name;
+        $interpolated = "$greeting $name";
+      ?>
+
+= slide 'Интересни Оператори' do
+  table
+    tr
+     td = '`==` и `!=`'
+     td = '"Умно" равенство (`3 == "3"`)'
+    tr
+     td = '`===` и `!==`'
+     td = 'Стриктно равенство (`3 !== "3"`)'
+    tr
+     td `$a / $b`
+     td Деление
+    tr
+     td `$a % $b`
+     td Остатък при целочислено деление
+    tr
+     td `$a . $b`
+     td Конкатенация на стрингове
+
+/` fixing syntax highlight
+
+= slide 'if' do
+  textarea.example.php
+    | <?php
+        if ($a > $b) {
+         echo "a is bigger than b";
+        } elseif ($a == $b) {
+         echo "a is equal to b";
+        } else {
+          echo "a is smaller than b";
+        }
+      ?>
+
+= slide 'Функции' do
+  textarea.example.php
+    | <?php
+        function sum($first, $second) {
+          return $first + $second;
+        }
+
+        function makeCoffee($type = "cappuccino") {
+          return "Making a cup of $type.\n";
+        }
+        echo makeCoffee();        // Making a cup of cappuccino.
+        echo makeCoffee(null);    // Making a cup of .
+        echo makeCoffee("mocha"); // Making a cup of mocha.
+      ?>
+
+= slide 'Цикли' do
+  textarea.example.php
+    | <?php
+        while ($condition) { ... }
+
+        do { ... } while ($condition)
+
+        for ($i = 1; $i <= 10; $i++) { ... }
+      ?>
+
+
+= slide 'Масиви' do
+  textarea.example.php
+    | <?php
+        $arr = array(1, 2, 3, 4); // Indexed array
+        $arr = [1, 2, 3, 4];      // same
+
+        foreach ($arr as $value) {
+          echo $value;
+        }
+
+        $array = array(           // Associative array
+          "foo" => "bar",
+          "bar" => "foo",
+        );
+
+        foreach ($arr as $key => $value) {
+          echo "$key -> $value\n";
+        }
+      ?>
+
+= slide 'Зареждане на други файлове' do
+  pre.highlight.php
+    | include 'filename.php';   // основен начин
+      require 'filename.php';   // същото, но света гърми при грешка
+
+      spl_autoload_register(function($className){ // самозарежда всичко,
+        include $className . '.php';              // което ни потрябва
+      });
+
+= slide 'PHP templates' do
+  p Показваме ви това просто, за да знаете, че съществува. Не го правете - оставете PHP да връща данните на FE, а с JS ще генерирате съдържанието.
+  textarea.example.php
+    | <?php
+        $elements = [1, 2, 3];
+      ?>
+        ...
+      <? if (count($elements) > 0): ?>
+        <ul>
+        <? foreach($elements as $element): ?>
+          <li><?= $element ?></li>
+        <? endforeach ?>
+        </ul>
+      <? else: ?>
+        <div>No elements</div>
+      <? endif ?>
+
+= slide 'Сесии' do
+  textarea.example.php
+    | <?php
+        // 1. start a new session or resume the current one
+        session_start();
+
+        // 2. set and get values from $_SESSION
+        $_SESSION['user'] = 'SomeUser'
+        $_SESSION['session_start'] = time();
+
+        // 3. unset variables and destroy session
+        session_unset();
+        session_destroy();
+  p По default сесията важи докато не затворите браузъра.
+  p Добра идея е да refresh-вате или унищожавате сесиите след определено време.
+  p
+    a[href="https://www.w3schools.com/php/php_sessions.asp"] Повече информация за сесиите в php
+
+= slide 'Бисквитки' do
+  p Това, което всеки уебсайт ни спами, че използва.
+  textarea.example.php
+    | setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+      setcookie('key', 'value', time() + 24 * 3600, '/');
+      setcookie('user', 'john', time() + 3600, '/', '', true, true); // more secure
+      echo $_COOKIE['key'];
+  p Всяка бисквитка има expiration date - ако искате да премахнете бисквитка - просто я задайте наново с дата в миналото.
+  p `$secure` казва да е само за https връзки, а `$httponly` казва да не е достъпна от javascript.
+
+= slide 'Хеширане' do
+  p Ако работите с пароли - никога не ги съхранявайте в plain text - след хеширане ще е малко по-сигурно.
+  p Хеширането взима вашата парола и след известни операции ви връща "хеш" - дълъг gibberish string, отговарящ на вашия input. Мислете за хеширането като за странна математическа функция.
+  textarea.example.php
+    | $hash = password_hash('10xFor@llTheFi$h', PASSWORD_DEFAULT);
+      // $2a$10$vPltHp7x.4Y/H13xQ6mTGew8MHNVS4R/GN7ujSiiB4IYw.bdUj35y
+      $isValid = password_verify('10xFor@llTheFi$h', $hash);
+  p `PASSWORD_DEFAULT` в момента е bcrypt алгоритъма - след време може да се смени. Ако сте виждали примери с md5, sha1 etc - забравете ги - отдавна не са сигурни.
+  p При хеширането се добавя и "сол" - допълнителен стринг към паролата за алгоритъма за по-добра сигурност.
+  p PHP 7+ генерира сол по default, така няма нужда да се занимаваме с това.
+
+= slide 'Други неща' do
+  pre.highlight.php
+    | echo $x, $y;            // basic print
+      print_r($x);            // readable recursive print
+      var_dump($x, $y...);    // complex recursive print
+
+      exit()/die()            // best way to connect to db - connect() or die()
+
+      array_map("cube",$arr); // returns array of cubes
+      implode(", ", $arr);    // joins the array values with the delimeter
+
+      $_SERVER;               // available everywhere
+      $_GET; $_POST;          // contain data from get/post requests
+
+      $text = &lt;&lt;&lt;EOF
+        Roses are {$colors['roses']},
+        Violets are {$colors['violets']}.
+        I know it is sad,
+        but you have homework to do.
+      EOF;
+
+= slide 'ООП в PHP' do
+  textarea.example.php
+    | <?php
+        class Person {
+          public $name;
+
+          public function __construct($name) {
+             $this->name = $name;
+          }
+          public function greet() {
+            return 'Hi, my name is ' . $this->name;
+          }
+        }
+
+        $gosho = new Person('Pesho');
+        echo $gosho->name;
+        echo $gosho->greet();
+      ?>
+
+= slide 'Наследяване и Полиморфизъм' do
+  p `A extends B`
+  p Няма множествено наследяване.
+  textarea.example.php
+    | <?php
+        class NicePerson extends Person {
+          public function greet() {
+            return parent::greet() . ". Pleased to meet you.";
+          }
+        }
+
+        $gosho = new NicePerson('Gosho');
+        echo $gosho->greet();
+      ?>
+
+= slide 'Енкапсулация' do
+  textarea.example.php
+    | <?php
+        class ExamplePerson {
+          public    $name = 'Ivan';         // anywhere
+          private   $crush = 'Penka';       // in class
+          protected $inheritance = 'House'; // in class and descendants
+
+          function showInfo() {             // public by default, don't omit it
+            echo $this->name .', '. $this->crush .' '. $this->inheritance;
+          }
+        }
+
+        $obj = new ExamplePerson();
+        echo $obj->name;        // Ivan
+        echo $obj->crush;       // Fatal Error
+        echo $obj->inheritance; // Fatal Error
+        $obj->showInfo();       // Ivan, Penka, House
+      ?>
+
+= slide 'Namespaces' do
+  textarea.example.php
+    | <?php // file libs/User.php
+        namespace libs;
+
+        class User {
+          public function __construct() {
+            echo 1;
+          }
+        }
+      ?>
+
+      <?php // file index.php
+        include 'libs/User.php' или spl_autoload_register(...);
+
+        use libs\User;
+
+        $user = new User();
+      ?>
+
+= slide 'Задача за упражнение' do
+  p Направете таблица за умножение (1-9) използвайки PHP
+  p Клетките от първия ред и колона трябва да са заглавни (`th`)
+  p Не сме учили css, така че стиловете са по желание
+  table#hw1
+  style
+    | #hw1 td, #hw1 th { width: 20px; height: 20px; text-align: center }
+  script
+    | var numbers = '123456789'.split('');
+
+      var html = numbers.map(function (x){
+        return '<tr>' + numbers.map(function(y){
+          var tag = x == 1 || y == 1 ? 'th' : 'td';
+          return '<' + tag + '>' + (x * y) + '</' + tag + '>';
+        }).join('') + '</tr>';
+      }).join('');
+
+      document.getElementById('hw1').innerHTML = html;
+
+
+= slide 'Задача за домашно' do
+
+  p Да се напише форма за нанасяне на оценки и сървърна част, която да валидира формата, да извежда съобщения за грешки, ако има такива, и да изведе списък със студенти и техните оценки, сортиран в низходящ ред по оценка и във възходящ ред по факултетен номер на студент.
+
+  p Формата трябва да съдържа следните полета:
+
+  ul
+    li Име на студент - задължително, с максимална дължина 200 символа
+    li Факултетен номер на студент - задължително, число между 62000 и 62999
+    li Оценка на студент - задължително, число между 2.00 и 6.00
+
+  p Всяко поле трябва да отговаря на посочения тип и да има валидация по зададените правила. След като бъдат валидирани, данните от формата трябва да бъдат добавени към следния масив:
+
+  textarea.example.php
+    | $students = [
+        [ 'name' => 'Мария Георгиева', 'fn' => 62543, 'mark' => 5.25 ],
+        [ 'name' => 'Иван Иванов', 'fn' => 62555, 'mark' => 6.00 ],
+        [ 'name' => 'Петър Петров', 'fn' => 62549, 'mark' => 5.00 ],
+        [ 'name' => 'Петя Димитрова', 'fn' => 62559, 'mark' => 6.00 ]
+      ];
+
+  p Накрая сортирайте масива по посочения по-горе начин и изведете резултата (сортирания масив или съобщенията с грешки при валидация) в JSON формат.
+
+  p Бонус:
+  ol
+    li
+      p Вместо нормалното изпращане на формата, изпратете JSON стринг от типа:
+      code {"name": "...", "fn": ..., "mark": ...}
+      p където сме взели съответните стойности с JavaScript, използвайки AJAX.
+    
+    li Създайте с JavaScript таблица с 3 колони (ФН, Име на студент, Оценка), които да съдържат данните от върнатия от сървъра отговор на заявката.
+
+    li При наличие на грешки при валидация, изведете съобщение със съответните грешки във формата.
+
+/ = slide 'Задача 2 (advanced)' do
+/   ul
+/     li.action Система за събиране на мнения за избираеми дисциплини.
+/     li.action Всяка избираема дисциплина си има страница.
+/     li.action На страницата има информация за дисциплината и коментари за нея.
+/     li.action През семестъра ще създадем такава система от начало до край.
+/     li.action Всяко упражнение ще подобрява системата.
+
+/ = slide 'Задача 2' do
+/   p Имплементирайте функциите
+/   ul
+/     li `showPage($data, $pageId)`
+/     li `showNav($data, $pageId)`
+/   p Където `$data` ще е асоциативен масив от следния вид
+/   textarea.example.php
+/     | $data = [
+/         'webgl' => [
+/           'title' => 'Компютърна графика с WebGL',
+/           'description' => '...',
+/           'lecturer' => 'доц. П. Бойчев',
+/         ],
+/         'go' => [
+/           'title' => 'Програмиране с Go',
+/           'description' => '...',
+/           'lecturer' => 'Николай Бачийски',
+/         ]
+/       ];
+/   p А пък `$pageId` ще е стринг като `'webgl'`
+
+/ = slide 'Задача 2' do
+/   p Например `showPage($data, 'webgl')` трябва да върне (не да изпринтира) следния низ:
+/   textarea.example.html
+/     | <h1>Компютърна графика с WebGL</h1>
+/       <h2>доц. П. Бойчев</h2>
+/       <p>...</p>
+/   p А пък `showNav($data, 'webgl')` трябва да върне (не да изпринтира) следния низ:
+/   textarea.example.html
+/     | <nav>
+/         <a href="?page=webgl" class="selected">Компютърна графика с WebGL</a>
+/         <a href="?page=go">Програмиране с Go</a>
+/       </nav>
+/   p Хиперлинковете към кусовете трябва да се съдържат в `nav` секция. Всеки хиперлинк трябва да води към съответната страница на курс и за текст на хиперлинка трябва да се изписва името на курса.
+/   p Ако адресът на хиперлинка съвпада с текущо отворения курс (`$pageId`), то към хиперлинка трябва да се добави клас `selected`, както е показано в примера.
+
+/ = slide 'Задача 3 (bonus)' do
+/   p Напишете клас `Request`, улесняващ работата с <a href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html" target="_blank">HTTP заявки</a>.
+/   p Неговият конструктор трябва да приема единствен аргумент - масив като <a href="http://php.net/manual/en/reserved.variables.server.php" target="_blank">`$_SERVER`</a>, от който да прочете необходимите данни.
+/   p Класът трябва да има следните методи:
+/   ul
+/     li `getMethod()` - връща като низ, състоящ се само от малки букви, метода на завката - get, post, put и т.н.
+/     li `getPath()` - връща като низ path часта на адреса на заявката.
+/     li `getURL()` - връща като низ целия адрес на заявката.
+/     li `getUserAgent()` - връща като низ съдържанието на HTTP Header полето User-Agent.
+/   p Имплементирайте клас `GetRequest`, наследяващ `Request`, който да има допълнителен метод `getData`. Този метод трябва да прочита <a href="https://en.wikipedia.org/wiki/Query_string" target="_blank">query string</a> параметрите върне асоциативен масив с тях.
+/   p Например ако имаме query string `а=1&b=2`, то `getData()` трябва да върне:
+/   pre.highlight.php
+/     | array(
+/         "a" => "1",
+/         "b" => "2"
+/       )

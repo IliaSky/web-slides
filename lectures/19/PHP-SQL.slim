@@ -1,0 +1,260 @@
+= slide 'Какво ще разгледаме днес' do
+  ul
+    li.action Релационни бази от данни
+    li.action Работа с phpMyAdmin
+    li.action Работа с SQL от PHP
+
+= slide 'Релационни бази от данни' do
+  img.invertable src="images/erd.png" alt="ER Diagram"
+  a[href="http://fmi.github.io/www-lectures/03-php-myslq.html"] стара презентация
+
+= slide 'SQL' do
+  p Език за работа с данни.
+  p Той позволява:
+  list:
+    Вмъкване на данни (Insert)
+    Извличане на данни (Select)
+    Редактиране на данни (Update)
+    Изтриване на данни (Delete)
+
+= slide 'Select' do
+  p <img src="images/erd.png" alt="ER Diagram" class="invertable">
+  .center
+    pre.highlight.sql
+      | SELECT * FROM MAJORS
+        SELECT NAME, ACADEMIC_DEGREE FROM MAJORS
+        SELECT * FROM MAJORS WHERE NAME = 'Software Engineering'
+        SELECT * FROM MAJORS WHERE START_YEAR = 2011
+
+= slide 'Insert' do
+  p <img src="images/erd.png" alt="ER Diagram" class="invertable">
+  pre.highlight.sql
+    | INSERT INTO MAJORS (NAME, ACADEMIC_DEGREE) VALUES ('Software Eginnering', 'bachelor')
+
+= slide 'JOIN' do
+  .center
+    pre.highlight.sql
+      |          People                          Animals
+        ========================        =========================
+        | id | name   | pet_id |        | id | name   | species |
+        | 1  | Pesho  | 2      |        | 1  | Sisi   | cat     |
+        | 2  | Gosho  | NULL   |        | 2  | Sharo  | dog     |
+        | 3  | Ivan   | 4      |        | 3  | Mecho  | dog     |
+        | 4  | Penka  | 1      |        | 4  | Koko   | parrot  |
+        ========================        =========================
+  p Ако искаме да намерим всички хора с домашни любимци, както и самите им любимци:
+  .center
+    pre.highlight.sql style="vertical-align:middle"
+      | SELECT People.name, Animals.name
+        FROM People
+        INNER JOIN Animals
+        ON People.pet_id = Animals.id;
+    span <p style="display:inline-block; vertical-align:middle;font-size:30px;margin:7px"> => </p>
+    pre.highlight.sql style="vertical-align:middle"
+      | | People.name | Animals.name |
+        | Pesho       | Sharo        |
+        | Ivan        | Koko         |
+        | Penka       | Sisi         |
+
+= slide 'Видове JOIN' do
+  p Има няколко вида `JOIN`. Основните са `INNER`, `LEFT`, `RIGHT`, `FULL`.
+  p За този курс сигурно ще използвате само `INNER JOIN` ако въобще ви се наложи.
+  .center
+    pre.highlight.sql
+      |           INNER JOIN¿                        FULL JOIN¿
+        ==============================      ==============================
+        | People.name | Animals.name |      | People.name | Animals.name |
+        | Pesho       | Sharo        |      | Pesho       | Sharo        |
+        | Ivan        | Koko         |      | Gosho       | NULL         |
+        | Penka       | Sisi         |      | Ivan        | Koko         |
+        ==============================      | Penka       | Sisi         |
+             хора и любимците им            | NULL        | Mecho        |
+                                            ==============================
+                                                всички хора и животни
+
+                  LEFT JOIN¿                        RIGHT JOIN¿
+        ==============================      ==============================
+        | People.name | Animals.name |      | People.name | Animals.name |
+        | Pesho       | Sharo        |      | Pesho       | Sharo        |
+        | Gosho       | NULL         |      | Ivan        | Koko         |
+        | Ivan        | Koko         |      | Penka       | Sisi         |
+        | Penka       | Sisi         |      | NULL        | Mecho        |
+        ==============================      ==============================
+                 всички хора                        всички животни
+  ol.questions
+    li INNER JOIN - Връща всички редове, за които има съвпадение и в двете таблици.
+    li FULL (OUTER) JOIN - Връща всички редове, за които има съвпадение в поне една от таблиците.
+    li LEFT (OUTER) JOIN - Връща всички редове от лявата таблица и съвпадащите редове в дясната.
+    li RIGHT (OUTER) JOIN - Връща всички редове от дясната таблица и съвпадащите редове в лявата.
+  /INNER - връща всички хора, които имат домашни любимци, както и любимците им
+  /LEFT  - връща всички хора, заедно с любимците им, за тези, които имат такива, за останалите на мястото на името на любимеца има NULL
+  /RIGHT - връща всички любимци, както и стопаните им, за тези, които имат такива, за останалите на мястото на стопанина има NULL
+  /OUTER - връща всички хора и техните любимци, но връща и хората без любимци и животните без стопани - на техните места има NULL
+
+= slide 'phpMyAdmin' do
+  p За създаване на базата phpMyAdmin е прост UI, който може да ви е полезен.
+  p Има го и в xampp, в 000webhost и най-вероятно на всеки друг хостинг.
+  p Следват 10тина слайда за него - ако искате ги пропуснете.
+  ol
+    li.action <a href="http://localhost/phpmyadmin">localhost/phpmyadmin</a>
+    li.action `Databases` -> `Create Database` -> `[db_name, utf8_general_ci]`
+    li.action `db_name` -> `Create table` -> `[table_name, number_of_columns]`
+    li.action На първата колона задавате `name` -> `id`, `index` -> `PRIMARY`, `A_I` -> checked
+    li.action
+      span На останалите обикновено се интересувате само от `name`, `type` и `length` - type обикновено е
+      ul
+        li `INT` за цели числа
+        li `VARCHAR` за текст с променлива дължина (обикновено с дължина до 255)
+        li `TEXT` за неограничен текст
+        li `DATE` за дата.
+    /li.action
+    /  span Други табове:
+    /  ul
+    /    li На `Structure` можете да гледате колоните на таблицата и да ги променяте
+    /    li На `Insert` да добавяте данни
+    /    li На `SQL` можете да си правите произволни заявки и да видите какво ще върнат
+
+= slide 'PHPMA - Start' do
+  img.invertable src="images/PHPMA-1.gif" alt="phpMyAdmin Start"
+
+= slide 'PHPMA - Create DB' do
+  img.invertable src="images/PHPMA-2.gif" alt="phpMyAdmin Create DB"
+
+= slide 'PHPMA - Enter DB' do
+  img.invertable src="images/PHPMA-3.gif" alt="phpMyAdmin Enter DB"
+
+= slide 'PHPMA - Create Table' do
+  img.invertable src="images/PHPMA-4.gif" alt="phpMyAdmin Create Table"
+
+= slide 'PHPMA - Create Table' do
+  img.invertable src="images/PHPMA-5.gif" alt="phpMyAdmin Create Table"
+
+= slide 'PHPMA - Table Actions' do
+  img.invertable src="images/PHPMA-6.gif" alt="phpMyAdmin Table Actions"
+
+= slide 'PHPMA - Insert (UI)' do
+  img.invertable src="images/PHPMA-7.gif" alt="phpMyAdmin Insert (UI)"
+
+= slide 'PHPMA - Insert (SQL)' do
+  img.invertable src="images/PHPMA-8.gif" alt="phpMyAdmin Insert (SQL)"
+
+= slide 'PHPMA - Browse' do
+  img.invertable src="images/PHPMA-9.gif" alt="phpMyAdmin Browse"
+
+= slide 'PHPMA - Structure' do
+  img.invertable src="images/PHPMA-10.gif" alt="phpMyAdmin Structure"
+
+= slide 'Работа с SQL от PHP' do
+  p Макар и да има 3 начина за свързване към `SQL` от `PHP` - `mysql`(deprecated), `PDO`, `mysqli`, много силно ви препоръчваме да използвате `PDO`
+  pre.highlight.php
+    | $conn  = new PDO('mysql:host=localhost;dbname=mydbname', 'user', 'password');
+      $sql   = "SELECT * FROM MAJORS";
+      //$sql = "SELECT * FROM MAJORS WHERE START_YEAR = $year"
+                  // Now lets say $year = "''; DROP DATABASE MAJORS;"
+
+      $query = $conn->query($sql) or die("failed!");
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        echo $row['NAME'];
+      }
+= slide 'Стъпки' do
+  ol
+    li.action
+      ' Свързване
+      pre.highlight.php
+        | $conn = new PDO($dsn, $user, $pass, $options); // ¿
+    li.action
+      ' Заявка
+      pre.highlight.php
+        | $stmt = $conn->query($sql);                     // direct
+          $stmt = $conn->prepare($sql)->execute($values); // prepared
+    li.action
+      ' Извличане на данни (при select)
+      pre.highlight.php
+        | $row = $stmt->fetch();        // single row
+
+          while ($row = $stmt->fetch()) // iterate rows
+
+          $rows = $stmt->fetchAll();    // direct array
+
+  ol.questions
+    li В `$options` (опционално) - можем да зададем неща като `PDO::ATTR_(ERRMODE|DEFAULT_FETCH_MODE)` и други.
+
+
+= slide 'Prepared statements (indexed)' do
+  ul
+    li.action Вместо да разчитаме на `mysql_real_escape_string` (deprecated) имаме алтернатива:
+    li.action Подготвяме заявката, а после я изпълняваме с желаните стойности =>
+    li.action Така повишаваме скоростта и сигурността
+  pre.action.highlight.php
+    | $conn = new PDO('mysql:host=localhost;dbname=university;charset=utf8', 'root', '');
+      $stmt = $conn->prepare("SELECT * FROM MAJORS WHERE ACADEMIC_DEGREE = '?'");
+
+      $stmt->execute(['бакалавър']) // Array of all ? values
+      $rows = $stmt->fetchALL(PDO::FETCH_NUM)
+      // type is PDO::FETCH_(NUM|ASSOC|BOTH|OBJ|LAZY)
+      //         NUM ($r[0]), ASSOC ($r['key']), BOTH (default)
+      //         OBJ ($r->key), LAZY (BOTH + OBJ) and others
+
+      $stmt = $conn->prepare("INSERT INTO MAJORS (NAME, ACADEMIC_DEGREE) VALUES ('?', '?')");
+      $stmt->execute(['Биология', 'бакалавър']);
+
+= slide 'Prepared statements (named)' do
+  p Както видяхте при резултатите имаме и обикновени и асоциативни масиви за резултати
+  p По същия начин можем да задаваме и параметрите като асоциативен масив
+  pre.highlight.php
+    | $stmt = $conn->prepare("SELECT * FROM MAJORS
+                              WHERE ACADEMIC_DEGREE = :degree");
+
+      $stmt->execute(['degree' => 'бакалавър']);
+
+      $stmt = $conn->prepare("
+        INSERT INTO MAJORS (NAME, ACADEMIC_DEGREE)
+        VALUES (:name, :degree)
+      ");
+      $stmt->execute(['name' => 'Софтуерно Инженерство', 'degree' => 'бакалавър']);
+
+      $stmt->execute(['name' => 'Софтуерни Технологии', 'degree' => 'магистър']);
+
+= slide 'Съвет' do
+  list:
+    За проектите няма да са нужни сложни заявки -> направете си някакви помощни функции/клас(ове), които ви правят базовите заявки.
+    Можете да си направите един `db.php` файл, който да комуникира с базата, а на останалите места използвайте него - утре може да решите, че предпочитате `mongo`.
+    Когато пишете код - ако забелязвате, че copy-paste-вате, то може би правите нещо грешно.
+    Coding style - (`camelCase|snake_case`), (spaces|tabs), (same|new line `{`) - choose one and stick with it.
+
+= slide 'Други неща' do
+  p Транзакции, bind-ване на параметри - няма да ви трябват
+  pre.highlight.php
+    | $conn->beginTransaction();
+      ...
+      $dbh->commit(); // or $conn->rollBack();
+
+      $stmt->bindParam(':name', $name);     // bind to variable
+      $stmt->bindValue(':degree', $degree); // bind to value
+      $stmt->execute();
+
+= slide 'Задача 1' do
+  p Имате база от данни със следната таблица и данни:
+  pre.highlight.sql
+    | CREATE TABLE electives (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(128),
+        description VARCHAR(1024),
+        lecturer VARCHAR(128)
+      );
+
+      INSERT INTO electives (title, description, lecturer)
+      VALUES
+        ("Programming with Go", "Let's learn Go", "Nikolay Batchiyski"),
+        ("AKDU", "Let's Graduate", "Svetlin Ivanov"),
+        ("Web technologies", "Let's learn the web", "Milen Petrov");
+
+  p Имплементирайте php страница с форма и валидация за добавяне на избираема дисциплина.
+
+  p Добавете колона created_at на таблицата electives, коята да сочи момента на добавяне на реда.
+
+= slide 'Задача 2' do
+  p Добавете функционалност за редактиране на избираема дисциплина.
+  p HTTP GET на /electives.php/1 трябва да върне формата с попълнени текущи стойности.
+  p HTTP POST на /electives.php/1 със съответните параметри трябва да промени избираемата с id 1.
+  p Забележка - последното би трябвало да е PUT, а не POST, но с чист HTML без JS това не е възможно. Когато вземем JS ще видите правилния начин.

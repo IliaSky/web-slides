@@ -1,0 +1,176 @@
+= slide 'CSS', 'Cascading Style Sheets' do
+  p HTML описва съдържанието, CSS описва визуализацията. Тоест:
+  ul
+    li Как да са подредени нещата на екрана.
+    li Кое колко да е голямо.
+    li Какъв цвят да е даден текст, фон и тн.
+= slide 'Как работи CSS' do
+  p За да можем лесно да стилизираме дадена страница избираме компонентите, които искаме да стилизираме (чрез някакъв селектор) и задаваме стойности на property-тата, които искаме да променим. Съответно браузъра ще ги промени на всички елементи, които е match-нал даденият селектор.
+= slide 'CSS Syntax' do
+  picture
+    source srcset="images/css.webp" type="image/webp"
+    source srcset="images/css.gif" type="image/gif"
+    img src="images/css.gif" alt="CSS syntax"
+= slide 'Използване на CSS' do
+  p Има 3 начина на използване на CSS:
+  list:
+    като стойност на style атрибута на html елемент (very bad) <xmp><a href="//google.com" style="color:red">Click Here</a></xmp>
+    като добавим style tag в HTML-a (обикновено в head-а) (not good) <xmp><style> a { color: red } </style></xmp>
+    като го линк-нете като външен файл (good) <xmp><link href="style.css" rel="stylesheet"></xmp>
+= slide 'Основни CSS селектори' do
+  dl
+    dt *
+    dd Избира всички елементи - не се препоръчва.
+    dt foo
+    dd Избира елементи с таг foo
+    dt .bar
+    dd Избира елементи с атрибут клас = bar
+    dt #baz
+    dd Избира елементи с атрибут id = baz
+    dt foo bar
+    dd Избира елементи bar, наследници на елементи foo
+    dt foo, bar
+    dd Може да се изброят няколко селектора и ще избере обединението им
+= slide 'tag#id.class' do
+  p можете да комбинирате няколко селектора в един
+  picture
+    source srcset="images/selector_weight.webp" type="image/webp"
+    source srcset="images/selector_weight.gif" type="image/gif"
+    img src="images/selector_weight.gif"
+= slide 'Още малко селектори' do
+  p Има много, но като за начало ще споменем само тези
+  dl
+    dt foo > bar
+    dd Избира елементи bar, директни наследници на елементи foo
+    dt foo + bar
+    dd Избира елементи bar, които следват непосредствено след елементи foo
+    dt E:first-child
+    dd Избира само елементи избрани от селектора E, които са първите наследници (ако има ul със 5 li-та в него ще избере само първото).
+    dt E:hover
+    dd Избира елементи докато сте си сложили мишката върху тях (обикновено се ползва за линкове - не работи за други неща в стари браузъри)
+  p Следващия път ще споменем и още някои. Ако ви е интересно <a href="http://www.w3.org/TR/css3-selectors/">ето ги всички (w3 ref)</a>
+
+= slide 'Цветове' do
+  p Като най-лесни ще започнем с цветовете. Има 4 стандартни начина за дефиниране на цвят:
+  dl
+    dt Име - `red`
+    dt RGB - `rgb(255, 0, 0)`
+    dd red, green, blue със стойности 0-255
+    dt HEX - `#ff0000`, `#f00`
+    dd аналогично, но в 16тичен запис. второто е кратък запис когато 2те цифри на всеки цвят съвпадат
+    dt HSL - `hsl(0, 100%, 50%)`
+    dd Hue, Saturation, Lightness - задава цвят (тоест ъгъл от цветовия кръг), наситеност 0-100% и осветеност 0-100% ¿
+    dt RGBA, HSLA - `rgba(255, 0, 0, 0.3)` `hsla(0, 100%, 50%, 0.3)`
+    dd последното се нарича алфа канал - стойността задава "непрозрачност" на цвета (0 = transparent, 1 = нормален цвят)
+
+    .questions
+      p
+        img src='images/hsl-color-wheel.jpg' width='600px'
+
+
+    / (#fff = white,  #000 = black)
+= slide 'CSS Метрики' do
+  ul
+    li.action `px` (pixel) - няма нужда от обяснение
+    li.action `pt` (point) - мерната единица за размер на шрифта в word (не се препоръчва).
+    li.action `em` - 1em = текущия размер на шрифта за съответния елемент. Ако работите с em, то можете да resize-нете всичко лесно просто като промените font-size на html/body.
+    li.action
+      | `%` - процентите зависят от контекста.
+      ul
+        li при шрифтове: 100% = 1em = конкретния размер на шрифта
+        li в останалите случаи: 100% = съответния размер на даден родител (width, height) ¿
+
+  .questions
+    p Внимавайте ако използвате проценти при височини - ако родителя няма зададена височина и използвате проценти може да има лоши последствия.
+= slide 'Текст' do
+  list:
+    `color` - цвят на текста
+    `text-decoration` - none / underline / overline / line-through
+    `text-align` - left / right / center / justify
+    `text-transform` - none / uppercase / lowercase / capitalize
+= slide 'Font stuff' do
+  list:
+    `font-style` - normal / italic
+    `font-weight` - normal / bold - има и други стойностти, но при повечето шрифтове те са равни на една от тези
+    `font-size` - размер на шрифта
+    `line-height` - височина на реда
+    `font-family` - кой точно шрифт да се използва ("Times New Roman", Verdana, Consolas, Lucida Console, Arial и тн) - ако изредите няколко ще се използва първия наличен.  Позволява и още 2 стойности - `serif` и `sans-serif`.
+    `font` - кратка версия на последователността `font-style font-weight font-size/line-height font-family` - задължителни са само font-size и font-family
+    `font: italic bold 16px/30px Verdana, Consolas, sans-serif;` или пък просто `font: 16px Verdana;`
+= slide 'Background' do
+  list:
+    `background-color` - цвят на фона
+    `background-position` - x и у позициониране на картинка ако има такава - става чрез думи като `top left center` или проценти за позиция на центъра или пиксели отместване <a href="http://www.w3schools.com/cssref/playit.asp?filename=playcss_background-position">demo</a>
+    `background-repeat` - repeat-x, repeat-y, repeat, no-repeat, fixed
+    `background-attachment` - fixed / scroll
+    `background-image` - `url("...")`
+    `background: color position repeat attachment image`
+= slide 'Display' do
+  list:
+    `display:none` - елементът е скрит и страницата се рендерира все едно той въобще не съществува
+    `display:inline` - елементът се разглежда като обикновен текст и следващите го елементи продължават непосредствено след него (вдясно от последния символ)
+    `display:block` - елементът се разглежда като правоъгълник - той има width и height property-та и елементите след него продължават на долния ред
+    `display:inline-block` - средно аритметично между първите 2. Елементът има височина и ширина, но откъм гледна точка на следващите елементи е все едно, че е бил inline и те продължават вдясно от него
+    `display:table`, `display:table-row`, `display:table-cell` - показват се както биха се показвали съответните елементи на таблица
+    `display: flex`, `display: grid` - ще обясним следващия път - не ги използвайте за домашно CSS 1
+= slide 'Box Model' do
+  img.invertable src="images/boxmodel-content.gif"
+  list:
+    width и height: ширина и височина на <strong>съдържането</strong>
+    border-width: дебелина на border-a
+    padding: разстояние между border-a и съдържанието
+    margin: разстояние между дадения елемент и другите такива
+= slide 'Shorthand properties' do
+  list:
+    Имаме `border-top-width`, `padding-right`, `margin-bottom` etc.
+    Можем обаче и да зададем всички стойности на един ред, задавайки 1-4 стойности.
+    Ето какво задаваме в зависимост от броя изброени стойности.
+    `margin: top right bottom left` (часовникова стрелка, trbl като trouble)
+    `margin: top left/right bottom`
+    `margin: top/bottom left/right`
+    `margin: all`
+= slide 'Position' do
+  list:
+    `position` - static / relative / absolute / fixed
+    `position: static` - Това е по default. Не позволява отместване.
+    Ако зададем друго получаваме и property-тата - top, right, bottom, left.
+    `position: relative` - Позволява отместване (транслация) спрямо текущата позиция в дадената посока
+    `position: absolute` - Абсолютно позициониране спрямо най-близкия родител със зададен position (!=static). Стойностите trbl задават разстоянието до съответния край на родителя
+    `position: fixed` - Фиксира елемента на дадената позиция на екрана. Стойностите trbl задават разстояние до съответния край на екрана (viewport-a) - не работи добре в някои мобилни браузъри
+    <a href="http://www.barelyfitz.com/screencast/html-training/css/positioning/">Демо</a>
+    При последните 2 родителят не се стреми да обхваща съответното дете.
+
+= slide 'Float + Clear' do
+  ul
+    li.action `float` - left / right / none - познато като text-wrap в Word.
+    li.action <img src='images/float.png'>
+    li.action Както при position: absolute така и при float родителят може да свърши прекалено рано.
+    li.action Затова има `clear` - left / right / both / none. Елемент с clear ще започне на нов ред и така ще оправи размера на родителя си. <a href="http://css-tricks.com/all-about-floats/">(подробно обяснено)</a>
+    li.action
+      pre.highlight.css
+        | .clearfix:after {
+            content: "";
+            visibility: hidden;
+            display: block;
+            height: 0;
+            clear: both;
+          }
+
+= slide 'Други' do
+  ul
+    li.action
+      | `z-index`
+      ul
+        li 3та координатна ос - от екрана към нас. По-голям z-index = по-близък елемент.
+        li <strong>Работи само на елементи с <em>position != static</em></strong>
+        li Също така сравнението става отгоре надолу спрямо html йерархията - сравняват се първо родители и после деца.
+    li.action `opacity` - 'непрозрачност' - от 0(прозрачно) до 1(непрозрачно);
+    li.action `visibility` - видимост - visible / hidden може да прави елементите невидими, но пак заемат място в layout-a.
+    li.action `overflow` (и `overflow-x` и `overflow-y`) - visible / hidden / scroll / auto - задава какво става с деца излезли от контейнера - дали се виждат, са скрити или има скролбар. auto добавя скролбар само при нужда.
+    li.action
+      | `vertical-align` - top, bottom, middle, стойност
+      ul
+        li На клетка на таблица - позиционира съдържанието.
+        li На елемент с `display: inline-block` - позиционира го спрямо съседите му.
+= slide 'Задача' do
+  img src="images/sign-up-form.gif"

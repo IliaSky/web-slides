@@ -1,0 +1,370 @@
+= slide 'HTML таг' do
+  img src="images/html_tag.png"
+
+= slide 'HTML' do
+  ul
+    li HyperText Markup Language
+    li XHTML vs HTML 5
+    li HTML има по-свободен и приятен синтаксис от XHTML, както и много нови feature-и
+    li XHTML ви задължава документа да бъде и валиден xml, както и други неща
+    li В този курс ще използваме HTML 5
+= slide 'Примерен XHTML документ' do
+  textarea[style="display: none"]
+    | <body></body>
+  / first one is to clear the extra div
+  textarea.single-demo
+    | <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          <title>Register</title>
+          <link href="style.css" rel="stylesheet" type="text/css" />
+          <script type="text/javascript" src="script.js" defer="defer"></script>
+          <style type="text/css"> /* CSS Comment */ </style>
+        </head>
+        <body>
+          <h1>Register</h1>
+          <label for="username">Username</label>
+          <input name="username" id="username" type="text" required="required" autofocus="autofocus" />
+          <!-- HTML Comment -->
+        </body>
+      </html>
+= slide 'Eквивалентен HTML 5' do
+  textarea.single-demo
+    | <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>Register</title>
+          <link href="style.css" rel="stylesheet">
+          <script src="script.js" defer></script>
+          <style> /* CSS Comment */ </style>
+        </head>
+        <body>
+          <h1>Register</h1>
+          <label for="username">Username</label>
+          <input name="username" id="username" type="text" required autofocus>
+          <!-- HTML Comment -->
+        </body>
+      </html>
+= slide 'Самозатварящи се тагове' do
+  list:
+    Както виждате <em>почти</em> всички тагове имат затварящ таг
+    Някои обаче вместо да имат `&lt;tag&gt;съдържание&lt;/tag&gt;` са просто:
+    `&lt;tag /&gt;` в XHTML или `&lt;tag&gt;` в HTML (в HTML 5 и двете са ок)
+    Тези тагове се наричат самозатварящи се (self-closing). Такива тагова са:
+    `br`, `hr`, `img`, `input`, `link`, `meta`, `param`
+    И макар и този синтаксис да изглежда, че работи и при други елементи - <em>не го използвайте</em> на такива
+= slide 'Булеви атрибути' do
+  p Има някои "булеви" атрибути, за които ни интересува само наличието им.
+  ul
+    li.action script: `async`, `defer`
+    li.action input: `autofocus`, `checked`, `disabled`, `required`, `selected`
+    li.action select:  `multiple`
+    li.action media: `autoplay`, `loop`, `muted`, `controls`
+    li.action А защо пишем `checked="checked"`, а не `checked="true/false"` ¿
+
+  .questions
+    li Защото реално самото <em>наличие</em> на атрибута го задава да е истина - тоест каквото и да пишем, стига да го има ще се приеме за истина - дори `checked="false"` реално е истина. Затова пишейки "checked" е по-малко вероятно да се объркаме. В html5 можем и просто да не пишем стойност.
+= slide 'HTML Entities' do
+  ul
+    li.action Както видяхме `&lt;` и `&gt;` се използват за синтаксиса на таговете. Как тогава да ги изпишем?
+    li.action Има голяма група от кодове, отговаряща на някои специални символи. Вместо символите пишем кодовете и браузърът ги визуализира адекватно.
+    li.action Синтаксисът е <code>&amp;entity_name;</code> (или <code>&amp;#entity_number;</code>)
+    li.action Браузърите са умни, но все пак не пропускайте <code>;</code>
+    li.action
+      | <table>
+          <tbody>
+            <tr><th>Символ</th><td>`&nbsp;`</td><td>`&lt;`</td><td>`&gt;`</td><td>`&amp;`</td><td>`&larr;`</td><td>`&spades;`</td></tr>
+            <tr><th>Код</th><td>`&amp;nbsp;`</td><td>`&amp;lt;`</td><td>`&amp;gt;`</td><td>`&amp;amp;`</td><td>`&amp;larr;`</td><td>`&amp;spades;`</td></tr>
+          </tbody>
+        </table>
+    li.action <a href="http://www.freeformatter.com/html-entities.html">Пълен списък</a>
+= slide 'Основни HTML тагове' do
+  dl
+    dt Системни
+    dd html, body, head, title, script, style, meta, link
+    dt Структурни
+    dd div, p, span, object, param
+    dt Форматиращи
+    dd del, ins, strong, em, sub, sup, wbr, br
+    dt Списъци
+    dd ul, ol, li, dl, dt, dd
+    dt Форми
+    dd form, fieldset, legend, label, input, textarea, button, select, option, optgroup
+    dt Таблици
+    dd table, thead, tfoot, tbody, tr, td, th
+    dt Други
+    dd img, iframe, a
+= slide 'Системни тагове' do
+  list:
+    doctype - не е таг, но все едно - задава doctype на документа и се пише в началото - за HTML 5 пишете &lt;!DOCTYPE html&gt;, за останалите ги google-вате
+    `html` - root елемента на документа
+    `head` - елемент, съдържащ неща нужни на браузъра - метаинформация, стилове, скриптове и тн
+    `body` - елемент, съдържащ информацията, коята се визуализира
+    `title` - заглавието на дадения прозорец/таб
+    `script` - обикновено съдържа javascript код, но ако се зададе друга стойност на типа може да се използва и като обикновен контейнер на каквото решите
+    `style` - съдържа стиловете ви
+    `meta` - метаинформация като encoding, author, summary и тн
+    `link` - връзка към друг файл - css, favicon...
+= slide 'Основни тагове' do
+  ul
+    li.action `div` - обикновен правоъгълник без семантичен смисъл - повечето уебсайтове и до днес използват основно вложени div-ове за layout
+    li.action `p` - параграф
+    li.action `span` - обикновен таг за обграждане на фраза/текст, обикновено с цел добавяне на стилове върху него
+    li.action
+      div `img` - картинка
+      ul
+        li атрибут `src` - задава адреса на картинката
+        li атрибут `alt` - текст, който се показва ако тя е недостъпна
+    li.action
+      div `a` - това е нашия хирерлинк (anchor)
+      ul
+        li атрибут `href` - къде води линка
+        li атрибут `target` - къде да се отвори
+    / li.action `object` и `param` - някакъв обект обикновено flash, съответно някакво видео или игра (и някакви параметри за обекта)
+= slide 'Форматиращи тагове' do
+  list:
+    `del` - deleted - <del>Премахнат текст</del>
+    `ins` - inserted - <ins>Добавен</ins>
+    `em` - emphasis - <em>Наблегнат текст</em>
+    `strong` - strong emphasis - <strong>Важен текст</strong>
+    `sub` - H<sub>1</sub>
+    `sup` - x<sup>n</sup>
+    `br` -  break row - \n в html - нов ред
+    `wbr` - word break - Потенциално място за пренасяне на дума
+= slide 'Списъци' do
+  list:
+    `ul` - Unordered List - този с bullet point-ите
+    `ol` - Ordered List - 1, 2, 3, I, II, III, A, B, C
+    `li` - List Item - елемент от горните 2 списъка
+    `dl` - Definition List - съдържа термини и описания
+    `dt` - Definition Term - термин
+    `dd` - Definition Description - описание
+= slide 'Списъци - Демо' do
+  textarea.new-demo
+    | <h4>Unordered List:</h4>
+      <ul>
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+      </ul>
+
+      <h4>Ordered List:</h4>
+      <ol>
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+      </ol>
+
+      <h4>Definition List:</h4>
+      <dl>
+        <dt>Cola</dt>
+        <dt>Coffee</dt>
+        <dd>Both Contain caffeine<dd>
+
+        <dt>Tea</dt>
+        <dd>Relaxes you<dd>
+
+        <dt>Milk</dt>
+        <dd>Is important for young kids</dd>
+        <dd>Contains Calcium</dd>
+      </dl>
+= slide 'Форми' do
+  list:
+    `form` - web форма - важни са атрибутите и `method="post/get"` и `action="url"`
+    `fieldset` - елемент, групиращ релевантни части от формата
+    `legend` - заглавие на parent fieldset-а си
+    `input` - поле за въвеждане. За важен атрибут се счита `name` - при подаване на данните после се достъпва стойността чрез него. Един от малкото самозатварящи тагове.
+    `label` - "етикет" на даден input - тоест пише за какво е. Може или да обгради input тага или да има атрибут "for" и тогава кликвайки върху текста от label-a фокуса на клавиатурата ще се прихване от дадения input
+    `textarea` - Правоъгълник с много редове за попълване на данни - като голям input. За разлика от него обаче textarea <em>НЕ Е</em> самозатварящ се таг.
+    `button` - бутон - при натискането му се изпраща дадената форма или се изпълнява някакъв javascript код, който сте задали
+    `select` - dropdown меню или нещо друго когато има атрибут multi
+    `option` - опция от select
+    `optgroup` - група от опции - не е задължително да се групират. Ако се групират обаче може да зададете и label атрибута - име на групата
+= slide 'Форми - Demo' do
+  textarea.new-demo
+    | <form>
+        <fieldset>
+          <legend> Register </legend>
+          <label> Username <input placeholder="John Smith"> </label>
+          <label> Password <input type="password">          </label>
+          <label> Email    <input type="email" placeholder="a@a.com"> </label>
+          Gender
+          <label> Male   <input type="radio" name="gender" value="M"> </label>
+          <label> Female <input type="radio" name="gender" value="F"> </label>
+          Age Group
+          <select>
+            <option value="1"> Kid (0-12) </option>
+            <option value="2"> Teen (13-19) </option>
+            <option value="3"> Adult (20+) </option>
+          </select>
+        </fieldset>
+      </form>
+= slide 'Таблици' do
+  list:
+    `table` - таблица
+    `thead` - заглавна част на таблицата
+    `tbody` - основна част на таблицата
+    `tfoot` - долна част на таблицата
+    `tr` - table row - ред
+    `td` - table data - клетка
+    `th` - table header - заглавна клетка (обикновено съдържа име на ред, колона)
+= slide 'Таблици - Demo' do
+  textarea.new-demo
+    | <table border="1">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Savings</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td>Sum</td>
+            <td>$180</td>
+          </tr>
+        </tfoot>
+        <tbody>
+          <tr>
+            <td>January</td>
+            <td>$100</td>
+          </tr>
+          <tr>
+            <td>February</td>
+            <td>$80</td>
+          </tr>
+        </tbody>
+      </table>
+/ = slide 'Frames (Фреймове / Рамки)' do
+/   list:
+/     `frame`, `frameset`, `noframes`
+/     <blockquote>An elegant weapon for a more civilised age<blockquote> - Obi Wan</blockquote></blockquote>
+/     Или нещо което много хора мразеха и накрая се оттърваха - <a href="http://www.apptools.com/rants/framesevil.php">Why Frames Are Evil</a> - премахнати са в HTML 5
+/     Преди много много години в един далечен web не беше нужно php за някои от нещата, нямаше и ajax, но имаше фреймове. Разделяха сайта на парчета - меню, съдържание и други и ги зареждаха в фреймове, намиращи се във frameset.
+/     Това време отмина. Остана само Люк (наречен iframe) - последният джедай.
+/     `iframe` - "рамка" съдържаща друга страница - остана в стандарта може би основно заради security причини
+= slide 'Frames Demo' do
+  ul
+    li С тагът iframe можете да вградите друга страница във вашата.
+    li По-рано имаше и други подобни тагове, но се премахнаха.
+  textarea.new-demo
+    iframe src='https://goo.gl/ydUi9s'
+= slide 'HTML5' do
+  dl
+    dt Премахнати елементи в HTML 5
+    dd acronym, applet, basefont, big, center, dir, font, frame, frameset, noframes, strike, tt
+    dt Непрепоръчителни елементи
+    dd b, i, small
+    dt Нови семантични структурни елементи - доста препоръчителни
+    dd
+      ' header, footer, aside, nav, article, section, figure, figcaption, mark
+      span.note тази група се води, че не работи под IE < 9, но има лесен polyfill
+    dt Нови media елементи
+    dd embed, video, source, audio, track
+    dt Нов canvas елемент
+    dd използва се за чертаене на графики или като платно за рисуване на игри и други
+    dt Нов datalist елемент
+    dd дефинира опции за html5 autocomplete на даден input
+    dt Много нови типове за input
+    dd email, number, tel, color, range, search, url, time, date, datetime, datetime-local, month, week
+= slide 'Semantics' do
+  / .two-columns
+  /   div
+  /     h2 HTML 4
+  /     img src="images/html4.png"
+  /   div
+  /     h2 HTML 5
+  /     img src="images/html5_structure.png"
+  table
+    tr
+      th HTML 4
+      th HTML 5
+    tr
+      td
+        img src="images/html4.gif"
+      td
+        img src="images/html5_structure.gif"
+
+= slide 'Новите HTML5 елементи подробно' do
+  list:
+    `header` - заглавна част, обикновено съдържа лого и евентуално навигация
+    <del>`hgroup` - група от заглавие, подзаглавие и тн</del> - премахнато
+    `footer` - завършваща част, обикновено съдържа &copy; и други
+    `aside` - странична част, съдържаща реклами и неща, свързани с основния материал
+    `nav` - навигация
+    `main` - основното съдържание на страницата - не трябва да съдържа елементи, налични в други страници като менюта
+    `article` - елемент, съдържащ информация, самостоятелно обособена, която може да бъде извадена от контекста на страницата и да не губи своя смисъл. Обикновено има header и евентуално footer
+    `section` - елемент, който обособява секция от страницата. По стандарт се счита, че трябва всяка секция трябва да има заглавие
+    `figure` - контейнер за картинка (още позната като фигура), очаква се да съдържа figcaption
+    `figcaption` - име или коментар към картинката
+    `mark` - новият span - използва се за маркиране на даден текст - в някои браузъри има default-ни стойности за цвят на текста и фона
+/ = slide 'Как да ги подкарам на IE 6-8?' do
+/   ul
+/     li Това вече не би трябвало да ни интересува много, но терминалите на летища, гари, метро използват нещо наречено SiteKiosk, което реално е просто старо IE
+/     li
+/       | <xmp><!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--></xmp>
+/     li
+/       | Или можете да си напишете набързо своя версия - не сме учили още js, но не е сложно:
+/         <xmp><!--[if lt IE 9]><script>(function(){
+/         var HTML5_ELEMENTS = ['header', 'footer', 'aside', 'nav', 'article', 'section', 'figure', 'figcaption', 'mark'];
+/         for (var i = HTML5_ELEMENTS.length - 1; i >= 0; i--) document.createElement(HTML5_ELEMENTS[i]);
+/         })()</script><![endif]--></xmp>
+/     li Сложете го някъде в началото на страницата (head)
+/     li Задайте и CSS-a за всеки случай:
+/     li <code>header, footer, aside, nav, article, section, figure, figcaption {display: block}</code>
+= slide 'HTML5 media demo' do
+  p embed, video, source, audio, track, canvas, svg - <a href="http://caniuse.com">caniuse.com</a>
+  textarea.new-demo
+    | <h4>Audio</h4>
+      <audio controls>
+        <source src="http://w3schools.com/html/horse.mp3" type="audio/mpeg">
+      </audio>
+
+      <h4>Video</h4>
+      <video width="320" height="240" controls>
+        <source src="http://w3schools.com/html/movie.mp4" type="video/mp4">
+      </video>
+
+      <h4>SVG (Scalable Vector Graphics)</h4>
+      <svg height="100">
+        <polygon points="45,5 15,100 90,40 0,40 75,100" style="fill:#6a6"/>
+      </svg>
+
+      <h4>Canvas</h4>
+      <canvas width="20" height="10"> Draw here with javascript. </canvas>
+
+  / <polygon points="100,10 40,180 190,60 10,60 160,180"
+        <polygon points="9,1 3,20 18,8 0,8 15,20" style="fill-rule:nonzero;" />
+  / style="fill:#6a6;stroke:#339;stroke-width:5;fill-rule:evenodd;" />
+  / <polygon points="9,1 3,19.8 18,7.8 0,7.8 15,19.8" style="fill-rule:nonzero;" />
+= slide 'HTML5 forms demo' do
+  textarea.new-demo
+    | <h4>HTML5 Autocomplete with datalist</h4>
+      <input list="browsers">
+
+      <datalist id="browsers">
+        <option value="Internet Explorer">
+        <option value="Firefox">
+        <option value="Chrome">
+        <option value="Opera">
+        <option value="Safari">
+      </datalist>
+
+      <h4>New input types</h4>
+      <label> Range  <input type="range" min="0" max="100"> </label>
+      <label> Search <input type="search"> </label>
+      <label> Color  <input type="color">  </label>
+      <label> Date   <input type="date">   </label>
+
+/ = slide 'Бонус - XHTML 2' do
+/   list:
+/     Всъщност има и XHTML 2 и макар и едва ли скоро ще ви се наложите да пишете на него, е добре поне да знаете за съществуването му.
+/     <a href="http://xhtml.com/en/future/x-html-5-versus-xhtml-2/">XHTML 2 vs HTML 5</a>
+/     Някои интересни особености около него:
+/     `nl` таг - Navigation List. Освен `li`-та съдържа и един `label` в началото.
+/     `di` таг, който да групира термини (`dt`) и описания (`dd`) в definition list-a (`dl`)
+/     `href` атрибутът е валиден за всеки елемент (всеки елемент може да е линк)
+/     `h` таг, който да описва заглавие на секция - по-удобно и семантично от /h[1-6]/
+/     `role` атрибут, който също има потенциал
+/     Между другото CSS може да се прилага и на HTML и XHTML и на какъвто и да е XML
