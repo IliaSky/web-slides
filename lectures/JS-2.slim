@@ -14,7 +14,7 @@
   p В JavaScript има функционален scope. Тоест:
   list:
     Променливи декларирани с `var` се ограничават до <b>функцията</b>, която ги съдържа
-    => Конструкции като `if`, `for`, `while` и подобни <b>нямат</b> собствен scope
+    &#61;> Конструкции като `if`, `for`, `while` и подобни <b>нямат</b> собствен scope
     Променливи декларирани с `let` (ES6) работят както сме свикнали
     Недекларираните променливи се търсят до най-близкия по-горен scope, където са дефинирани
     Ако не декларираме променливата никъде - тя става глобална (`window.myVar`)
@@ -46,12 +46,11 @@
     li.action
       p Можем да го сменим по 4 начина:
       ol
-        li.action `foo.func = func` - закачаме функцията и към друг обект
+        li.action `fooa.func &#61; func` - закачаме функцията и към друг обект
         li.action `func.call(bar, arg1, arg2, arg3)` - експлицитно задаваме контекста при извикването
         li.action `func.apply(bar, [arg1, arg2, arg3])` - същото, но аргументите са в масив
-        li.action `var bound = func.bind(b)` - фиксираме this към даден обект завинаги (ES5)
+        li.action `var bound &#61; func.bind(b)` - фиксираме this към даден обект завинаги (ES5)
 
-/`
 = slide 'What is this? - Call and Apply' do
   pre.highlight.js
     | window.name = "Super Window";
@@ -165,6 +164,7 @@
           configurable: true          //                     | but is valid js...
         });                           //                     | don't do this
       }
+
 = slide 'JQuery' do
   #my-id This is a div with id = my-id
   pre.highlight.js
@@ -187,7 +187,6 @@
 
       // bind a handler to the root but trigger only when the selector matches
       $(document).on('click', 'button', logMe); // will work on buttons created later
-
 
 = slide 'JS is growing' do
   list:
@@ -232,13 +231,13 @@
       const meet = (name='partner', greeting='Howdy') => { // default params
         friends.push({name: name, greeting: greeting});
 
-        return \`${greeting}, ${name}!\`;           // No need for + ' ' + stuff
+        return \`\${greeting}, \${name}!\`;           // No need for + ' ' + stuff
       };
 
       let colors = ['#F00', '#00F']
       let poem = `
-        Roses are ${colors[0]},
-        Violets are ${colors[1]}.
+        Roses are \${colors[0]},
+        Violets are \${colors[1]}.
         Homeworks are rough,
         But at least we're tough!
       `;
@@ -272,7 +271,7 @@
         let [first, ,last] = 'Ivan I. Petrov'.split(' ');
 
         let greetings = friends.map(
-          ({name, greeting}) => \`${name}: ${greeting}\`
+          ({name, greeting}) => \`\${name}: \${greeting}\`
         ).join('\n');
 
         let pay = new Promise((resolve, reject) => {...});
@@ -282,13 +281,6 @@
           .then(async3)
           .then(async4)
           .then(data => nyanCatAudio.play());
-
-/var car = {
-          start: function(){ this.running = true; },
-          wheels: 4
-        };
-        var suzuki = Object.create(car);
-        suzuki.isJapanese = true;
 
 = slide 'ES6 Classes' do
   .two-columns.highlight.js
@@ -381,6 +373,7 @@
     Имаме 2 допълнителни действия, които се правят
     Ако е нещо, което лесно може да се напише с обикновен js (например promise, fetch) - polyfill - реално импортваме имплементация
     Ако е нещо, което използва неподдържан синтаксис (arrow functions, classes) - transpiler - това е скрипт, който минава през кода ви и генерира еквивалентен на него с по-стария синтаксис
+
 = slide 'Babel transpiler' do
   ul
     li.action Трансформира ES6 код до еквивалентен ES5 код - така ще работи навсякъде
