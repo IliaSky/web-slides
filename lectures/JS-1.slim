@@ -20,13 +20,6 @@
         li.action <a href="https://kangax.github.io/compat-table/es6/">ES6 (ES2015)</a> +: Chrome + Firefox, но не и IE или мобилни
     li.action Днес ще разгледаме първите 2, третата ще разгледаме другия път (тогава ще покажем и как да я подкарваме навсякъде).
 
-= slide 'JavaScript в HTML' do
-  | <xmp>
-      <script src="file.js"></script>
-      <script>...</script>
-    </xmp>
-  p `type="text/javascript"` е по default.
-
 = slide 'Променливи' do
   pre.highlight.js
     | var meaningOfLife = 42;       // typeof meaningOfLife = 'number'
@@ -55,6 +48,22 @@
 
       typeof fibonacci              // object
       Array.isArray(fibonacci)      // true
+
+      fibonacci.splice(index, removeCount, item1, item2, ...) ¿
+
+  .questions
+    li
+      p splice задава индекс от който да премахва removeCount елементи (ако е > 0) и добавя нови елементи (ако се подадат такива аргументи)
+      pre.highlight.js
+        | console.log(fibonacci.splice(0, 1, false)); // [undefined]
+          console.log(fibonacci); // [false, true, 1, 'two', 3.0, 5, 7]
+          fibonacci.splice(2, 0, 'one');
+          console.log(fibonacci); // [false, true, 'one', 1, 'two', 3.0, 5, 7]
+          console.log(fibonacci.splice(3, 1)); // [1]
+          console.log(fibonacci); // [false, true, 'one', 'two', 3.0, 5, 7]
+      p Не се използва често, понеже мутира масива и работата с index-и е error prone, но е най-ефективният начин да се премахне елемент от масив
+      p Може да ползвате <code>arr.filter(e => e !== item)</code> ако искате да получите нов масив без съответни елементи без мутиране на оригиналния
+
 
 = slide 'Обекти (речници)' do
   p Или още map, хешове, речници, асоциативни масиви и други. Съдържа двойки с ключ и стойност. Ключовете са низове.
@@ -126,9 +135,27 @@
       }
 
       console.log(txt); // John Doe 25
+      console.log(Object.values(person).join(' ')); // John Doe 25
 
-      Object.keys(person).reduce((a, key) => a + ' ' + person[key]);
+      Object.keys(person);    // ['firstName', 'lastName', 'age']
+      Object.values(person);  // ['John', 'Doe', 25]
+      Object.entries(person); // [ ['firstName', 'John'], ['lastName', 'Doe'], ['age', 25] ]
 
+
+= slide 'JavaScript в HTML' do
+  | <xmp>
+      <script src="file.js"></script>
+      <script>...</script>
+    </xmp>
+  p Атрибути на script тага:
+  ul
+    li.action
+      p `type` - какъв тип скрипт закачаме за HTML документа
+      p По default е `type="text/javascript"`
+    li.action `async` - сваля скрипта и спира парсването на HTML DOM дървото, за да изпълни сваления скрипт
+    li.action `defer` - сваля скрипта и едновременно с това парсва HTML DOM дървото. Скриптът се изпълнява, след като парсването приключи.
+  p.action
+    a [href="https://www.growingwiththeweb.com/2014/02/async-vs-defer-attributes.html"] async vs defer attributes
 
 = slide 'Глобални обекти в браузъра' do
   ul
@@ -201,9 +228,18 @@
           button.onclick = clickHandler; // this way we can have only one handler
 
 
+= slide 'Bubbling vs Capturing' do
+  ul
+    li.action `Bubbling` - когато настъпи събитие върху даден елемент, първо се изпълнява handler функцията върху него, след това върху родителския му елемент и т.н. до достигане до кореновия елемент.
+    li.action Можем да предотвратим този ефект с `event.stopPropagation()`
+    li.action `Capturing` - handler функцията се изпълнява първо върху кореновия елемент и се подава надолу до достигане на целевия елемент. След това се предава обратно нагоре по веригата (bubbling).
+    li.action
+      a [href="https://javascript.info/bubbling-and-capturing"] Bubbling and capturing
+
 = slide 'JSON' do
   ul
-    li.action JSON \= JavaScript Object Notation
+    li.action
+      | JSON = JavaScript Object Notation
     li.action Тоест JSON е стринг, който изглежда почти идентично на JS обект. Има само 2 ограничения:
     li.action Ключовете и стринговете задължително трябва да са в двойни кавички
     li.action Стойностите могат да са само `string`, `number`, `object`, `array` или `true`, `false`, `null`
@@ -226,12 +262,12 @@
               "arr": [1, 2, 3],
               "obj": {"naughty": null, "nice": true}
             }
-    li.action `JSON.stringify(obj) => json` и `JSON.parse(json) => obj`
-/`
+    li.action 
+      | `JSON.stringify(obj) => json` и `JSON.parse(json) => obj`
 
 = slide 'AJAX' do
   list:
-    AJAX \= Asynchronous JavaScript and XML (но в днешно време е JSON)
+    AJAX &#61; Asynchronous JavaScript and XML (но в днешно време е JSON)
     Дава ни възможност да получим данни от сървъра, без да презареждаме страницата.
     Всичко става асинхронно, тоест при изпращането на заявката се задава callback функция, която да обработи данните, когато те пристигнат.
 
