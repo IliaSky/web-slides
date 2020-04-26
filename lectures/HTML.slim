@@ -79,7 +79,7 @@
             <tr><th>Код</th><td>`&amp;nbsp;`</td><td>`&amp;lt;`</td><td>`&amp;gt;`</td><td>`&amp;amp;`</td><td>`&amp;larr;`</td><td>`&amp;spades;`</td></tr>
           </tbody>
         </table>
-    li.action <a href="http://www.freeformatter.com/html-entities.html">Пълен списък</a>
+    li.action <a href="https://www.freeformatter.com/html-entities.html">Пълен списък</a>
 = slide 'Основни HTML тагове' do
   dl
     dt Системни
@@ -240,7 +240,7 @@
 /   list:
 /     `frame`, `frameset`, `noframes`
 /     <blockquote>An elegant weapon for a more civilised age<blockquote> - Obi Wan</blockquote></blockquote>
-/     Или нещо което много хора мразеха и накрая се оттърваха - <a href="http://www.apptools.com/rants/framesevil.php">Why Frames Are Evil</a> - премахнати са в HTML 5
+/     Или нещо което много хора мразеха и накрая се оттърваха - <a href="https://www.apptools.com/rants/framesevil.php">Why Frames Are Evil</a> - премахнати са в HTML 5
 /     Преди много много години в един далечен web не беше нужно php за някои от нещата, нямаше и ajax, но имаше фреймове. Разделяха сайта на парчета - меню, съдържание и други и ги зареждаха в фреймове, намиращи се във frameset.
 /     Това време отмина. Остана само Люк (наречен iframe) - последният джедай.
 /     `iframe` - "рамка" съдържаща друга страница - остана в стандарта може би основно заради security причини
@@ -249,7 +249,7 @@
     li С тагът iframe можете да вградите друга страница във вашата.
     li По-рано имаше и други подобни тагове, но се премахнаха.
   textarea.new-demo
-    iframe src='https://goo.gl/ydUi9s'
+    iframe src='https://iliasky.com/www/presentations/'
 = slide 'HTML5' do
   dl
     dt Премахнати елементи в HTML 5
@@ -303,7 +303,7 @@
 /   ul
 /     li Това вече не би трябвало да ни интересува много, но терминалите на летища, гари, метро използват нещо наречено SiteKiosk, което реално е просто старо IE
 /     li
-/       | <xmp><!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--></xmp>
+/       | <xmp><!--[if lt IE 9]><script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]--></xmp>
 /     li
 /       | Или можете да си напишете набързо своя версия - не сме учили още js, но не е сложно:
 /         <xmp><!--[if lt IE 9]><script>(function(){
@@ -314,16 +314,16 @@
 /     li Задайте и CSS-a за всеки случай:
 /     li <code>header, footer, aside, nav, article, section, figure, figcaption {display: block}</code>
 = slide 'HTML5 media demo' do
-  p embed, video, source, audio, track, canvas, svg - <a href="http://caniuse.com">caniuse.com</a>
+  p embed, video, source, audio, track, canvas, svg - <a href="https://caniuse.com">caniuse.com</a>
   textarea.new-demo
     | <h4>Audio</h4>
       <audio controls>
-        <source src="http://w3schools.com/html/horse.mp3" type="audio/mpeg">
+        <source src="https://w3schools.com/html/horse.mp3" type="audio/mpeg">
       </audio>
 
       <h4>Video</h4>
       <video width="320" height="240" controls>
-        <source src="http://w3schools.com/html/movie.mp4" type="video/mp4">
+        <source src="https://w3schools.com/html/movie.mp4" type="video/mp4">
       </video>
 
       <h4>SVG (Scalable Vector Graphics)</h4>
@@ -356,15 +356,3 @@
       <label> Search <input type="search"> </label>
       <label> Color  <input type="color">  </label>
       <label> Date   <input type="date">   </label>
-
-/ = slide 'Бонус - XHTML 2' do
-/   list:
-/     Всъщност има и XHTML 2 и макар и едва ли скоро ще ви се наложите да пишете на него, е добре поне да знаете за съществуването му.
-/     <a href="http://xhtml.com/en/future/x-html-5-versus-xhtml-2/">XHTML 2 vs HTML 5</a>
-/     Някои интересни особености около него:
-/     `nl` таг - Navigation List. Освен `li`-та съдържа и един `label` в началото.
-/     `di` таг, който да групира термини (`dt`) и описания (`dd`) в definition list-a (`dl`)
-/     `href` атрибутът е валиден за всеки елемент (всеки елемент може да е линк)
-/     `h` таг, който да описва заглавие на секция - по-удобно и семантично от /h[1-6]/
-/     `role` атрибут, който също има потенциал
-/     Между другото CSS може да се прилага и на HTML и XHTML и на какъвто и да е XML

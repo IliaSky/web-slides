@@ -6,7 +6,7 @@ var base = link.replace(/\/[^\/]+$/, '/');
 if (location.origin == 'file://') {
   window.onbeforeprint = function(){
     $('a[href^="file://"]').each(function(){
-      this.href = this.href.replace(base, 'http://iliasky.com/www/presentations/');
+      this.href = this.href.replace(base, 'https://iliasky.com/www/presentations/');
     });
   };
   if (window.matchMedia) {
