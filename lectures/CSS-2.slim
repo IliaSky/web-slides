@@ -197,13 +197,63 @@
   list:
     Да си изберем подходящ редактор, конфигурираме го и ако нещо ни липсва - го добавяме чрез плъгин.
     Ако ползвате Notepad++ например може да отидете в `Settings -> Preferences -> AutoComplete -> autoclose html/xml tags`.
-    От плъгините Emmet е най-вероятно най-полезният.
+    Ако предпочитате VS Code, в marketplace-а има доста разширения, които улесняват писането (например <a href="https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css">HTML CSS Support</a>).
     Можем да помислим и за някакъв HTML и/или CSS препроцесор
     Можете да разгледате <a href="https://iliasky.com/blog/write-html-css-fast/">този линк</a>, който е точно на тази тема
-= slide 'Emmet Intro' do
-  iframe.intro src="https://docs.emmet.io/#emmet--the-essential-toolkit-for-web-developers"
-= slide 'Emmet Tips' do
-  iframe.intro src="https://designshack.net/articles/css/6-awesome-emmet-css-time-saving-tips/"
+
+= slide 'CSS препроцесори - SASS / LESS' do
+  list:
+    Това са скриптови езици, които се компилират до CSS.
+    И двата езика са open-source.
+    Новият SCSS (Sassy CSS) синтаксис използва подобен на CSS синтаксис с блоково форматиране и затова е предпочитан.
+    Предоставят механизми за "писане" на CSS като използване на променливи, функции, миксини, влагане на селектори един в друг.
+    Една от най-силните страни на тези препроцесори е, че позволяват компилиране на стиловете в реално време.
+= slide 'Пример за променливи' do
+  ul
+    li.action
+      ' Следният Less:
+      pre.highlight.css
+        | @color-red: #f00;
+          h1 {
+            color: @color-red;
+          }
+    li.action
+      ' Или аналогичният Sass код:
+      pre.highlight.css
+        | #color-red: #f00;
+          h1 {
+            color: #color-red;
+          }
+    li.action
+      ' Ще се компилира до следния CSS код:
+      pre.highlight.css
+        | h1 {
+            color: #ff0000;
+          }
+= slide 'Пример за mixin' do
+  ul
+    li.action
+      ' Обикновено ги създаваме, за да можем да ги преизползваме в целия код, а и за да зададем по-семантични имена на стиловете ни.
+    li.action
+      ' Например, можем да си дефинираме стилове само за мобилни устройства и да ги wrap-нем в създаден от нас миксин:
+      pre.highlight.css
+        | $small-screen: 576px;
+          @mixin mobile-only {
+            @media (max-width: #{$small-screen}) {
+                @content;
+            }
+          }
+    li.action
+      ' И след това да задаваме специфични за елементите ни стилове чрез тях:
+      pre.highlight.css
+        | .element {
+            padding: 15px;
+            // change padding for phones only
+            @include mobile-only {
+                padding: 20px;
+            }
+          }
+
 = slide 'Debug' do
   list:
     Вече сте започнали проекта си и трябва да видите защо нещо се чупи?
@@ -216,6 +266,7 @@
     При инспектора обаче рискувате да не успеете да пропуснете нещо и да трябва да повтаряте действието.
     За такива ситуации има chrome extension на име <a href="https://chrome.google.com/webstore/detail/stylebot/oiaejidbmkiecgbjeifoejpgmdaleoha" target="_blank">stylebot</a> - дава ви възможност да пишете директно в неговия панел и промените да се запазват. След инсталиране трябва да check-нете "Allow access to file URLs" от chrome://extensions/
     Бонус: Чрез него можете и да си правите или добавяте ваши стилове към уебсайтове, които посещавате често (например нощни теми).
+
 = slide 'Задача' do
   img src="images/home-page-design.gif"
 /= slide 'И ако искате' do
